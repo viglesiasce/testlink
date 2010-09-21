@@ -185,6 +185,7 @@ class bugzillaInterface extends bugtrackingInterface
 			if('RESOLVED' == $status || 'VERIFIED' == $status || 'CLOSED' == $status){
 				$str = "<del>$severity - " . htmlspecialchars($id). "</del>";
 			}else{
+		//when its is resolved but severity >critical ensure that the font is red and larger for visibility
 		if (!is_null($severity))
                 {
 		 if( 'critical' == $severity  || 'blocker' == $severity){
