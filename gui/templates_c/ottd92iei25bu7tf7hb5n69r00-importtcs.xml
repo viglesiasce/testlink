@@ -1,0 +1,2274 @@
+<testcases>
+<testcase internalid="8136" name="ONT 250x T.38 support"><node_order>3</node_order><externalid>8136</externalid><summary><![CDATA[Equipment Required:<br/><br/>GPON OLT (BLC-6322), GPON ONTs.<br/><br/>Test overview<br/>==========================================================================================<br/>INITIALIZATION PHASE ==========================================================================================<br/>1. Verify BLC software version<br/><br/>------------------------------------------------------------------------------------------<br/>2. Verify ONT software version<br/><br/>------------------------------------------------------------------------------------------<br/>3. Check memory available on OLT and ONT if possible.<br/><br/>------------------------------------------------------------------------------------------<br/><br/>==========================================================================================<br/>TESTING PHASE<br/>==========================================================================================<br/>1. Verify T.38 can be configured and negotiated in a call correctly.<br/>2. Verify T.38 can not be configured on non-250x ONT's.<br/>3. Verify T.38 can be removed and no longer is advertised. <br/><br/>=================================================================================<br/>CLOSING PHASE<br/>=================================================================================<br/>1. Record any logged errors or anomalies<br/><br/>--------------------------------------------------------------------------------<br/>2. Check alarms/vlm for errors<br/><br/>---------------------------------------------------------------------------------<br/>3. Record memory on OLT and ONT if possible.<br/><br/>=================================================================================<br/>Attachments<br/>=================================================================================<br/>console trace of commands been entered.<br/>]]></summary><preconditions>BLC 6322.
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="NID"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3649" name="SIP overide - Registrar"><node_order>3</node_order><externalid>3649</externalid><summary><![CDATA[Added to 6.2R4 for bug 26661.<br/><br/>Verify that SIP parameters can be ovveriden for registrar and backup registrar.  Verify this can be done via the CLI and EWI.<br/><br/>Verify that the parameters are saved and actually work.<br/><br/>Verify that the ovveride can be removed and uses the profile parameters.<br/>]]></summary><preconditions>Softswitch and POTS BLC that supports SIP.
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3651" name="Register with FQDN"><node_order>3</node_order><externalid>3651</externalid><summary><![CDATA[Verify that you can register with a SIP Proxy using an FQDN.  <br/><br/>For example,<br/>Configure the sip proxy for metaswitch.testlab.com and have the blc configured with a dns server that will resolve metaswitch.testlab.com.<br/><br/>Verify you can configure the domain with another address that isn't resolveable in the dns server.  Make sure the metaswitch is setup with the same domain name though.<br/><br/>For example,<br/>Set sip proxy on the metaswitch to use your name.  Configure your name in the sip domain.  Still have the proxy resolveable to dns server configured.<br/>]]></summary><preconditions>BLC with POTS ports.
+SIP proxy
+SIP BLC
+IP phone or softphone
+IAD supporting SIP
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3652" name="Move between endpoints"><node_order>3</node_order><externalid>3652</externalid><summary><![CDATA[Configure a SIP phone or softphone to register on one dsl port.  Move the phone to another dsl port and verify that device can register and complete calls.<br/><br/>This should be tested with static and dynamic associations.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+SIP proxy
+SIP phone or softphone
+IAD supporting SIP
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3653" name="Configuration via CLI - Profile Parameters"><node_order>3</node_order><externalid>3653</externalid><summary><![CDATA[1. Callplan can be configured, edited, and deleted.  Verify call plan can handle calls made to various amounts of digits dialed, can use feature codes, and will not wait for more digits when # is used.<br/>2. Proxy address and port number can be configured, edited, and deleted.  Verify that an IP address or a DNS address can be used.<br/>3. Registrar address and port number can be configured, edited, and deleted.  Verify that an IP address or a DNS address can be used.  Verify that the Proxy is used in the absence of a registrar.<br/>4. Registration timeout.  Verify that timeout value can be configured, edited, or removed and defaulted.  I am not sure at this time what the expected behavior should be after the timeout, but make sure floods of traffic don't happen.<br/>5. Backup proxy.  Verify that the backup proxy can be configured, edited, and removed.  Test to see what happens when there is a backup proxy, but no primary.  Test various combinations with and without a registrar.<br/>6. Backup registrar.  Verify that the backup registrar can be configured, edited, and removed. Test to see what happens when there is a backup registrar, but no primary.  Test with various combinations with and without proxy.<br/><br/><br/>Verify that values outside the valid range are not excepted.<br/>Verify all options are shown.<br/>Spaces should be tested in all fields.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3654" name="Configuration via EWI - Global Parameters"><node_order>3</node_order><externalid>3654</externalid><summary><![CDATA[Verify Global Parameters can be configured for the following:<br/><br/>enable/disable SIP<br/>Set the transport to UDP, TCP or TLS.<br/>Set the port #.<br/>Default should be 5060,5061,TLS.<br/>Select the interface (BVI)<br/><br/>Verify that values outside the valid range are not excepted.<br/>Verify all options are shown.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3655" name="Configuration saved across reboot"><node_order>3</node_order><externalid>3655</externalid><summary><![CDATA[Verify that after configuration changes are made, there is a warning before rebooting specifying to save changes first.<br/><br/>Verify changes are saved when rebooted, when configuration is saved.<br/><br/>Verify changes are not saved when config isn't saved before the reboot.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3656" name="SIP with ESA"><node_order>3</node_order><externalid>3656</externalid><summary><![CDATA[The FS specifies that there may be implementation issues.<br/><br/>Verify that SIP still works when ESA is enabled.<br/><br/>Verify what happens when ESA kicks in.<br/><br/>Verify ESA doesn't show up when not ESA aware.<br/><br/>Verify a secondary proxy can be used before ESA kicks in.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3657" name="SIP status via CLI"><node_order>3</node_order><externalid>3657</externalid><summary><![CDATA[Verify that the status is shown correctly for the different POTS states.  This would include, but not limited to the following conditions:<br/><br/>Active call<br/>Disconnect<br/>Idle<br/><br/><br/>SIP application disabled and enabled.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3658" name="SIP status via EWI"><node_order>3</node_order><externalid>3658</externalid><summary><![CDATA[Verify that the status is shown correctly for the different POTS states.  This would include, but not limited to the following conditions:<br/><br/>Active call<br/>Disconnect<br/>Idle<br/><br/><br/>SIP application disabled and enabled.<br/><br/>Verify that the home page LED and status is shown correctly.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3659" name="Overnight BCG - long call duration"><node_order>3</node_order><externalid>3659</externalid><summary><![CDATA[Verify that bulk call can be performed within IP network.  Also verify that bulk call results are within the expected range when calling out to the PSTN.  Run bulk call for at least 24 hrs.<br/><br/>This test should be performed in a triple play environment.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+Ameritec BCG
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3660" name="DTMF tones"><node_order>3</node_order><externalid>3660</externalid><summary><![CDATA[Verify all DTMF tones can be sent, including:<br/><br/>*<br/>#<br/>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+Analog phone.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3675" name="Overnight BCG - high bcph"><node_order>3</node_order><externalid>3675</externalid><summary><![CDATA[Verify that bulk call can be performed within IP network (Occam to Occam).  Also verify that bulk call results are within the expected range when calling out to the PSTN (Occam to PSTN).  Run bulk call for at least 24 hrs.<br/><br/>This test should be performed in a triple play environment.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+Ameritec BCG
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3676" name="SIP- Tone generation - Offhook warning"><node_order>3</node_order><externalid>3676</externalid><summary><![CDATA[Set up a BLC w/ pots connected to a softswitch CA. Using a handset to BLC confirm that offhook warning tone is sent correctly. <br/><br/><br/><br/>endpoint should show ROH:<br/><br/>doublay#show sip endpoints<br/>Port Admn Oper Mode Registrar Hook State        Last Dialed      Connections<br/>   1   UP   UP  SIP   Primary  Off ROH<br/>]]></summary><preconditions>6151, 6248, 6252, 6150,6246, SIP proxy, callid handsets. 
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3677" name="SIP -CC- VMWI  (requires SMDI vmail server)"><node_order>3</node_order><externalid>3677</externalid><summary><![CDATA[Set up a BLC w/ pots connected to an Occam CA. Using a handset to BLC confirm that stutter dialtone is sent correctly. <br/>Snoop packet to confirm that VMWI is in the RQNT. <br/><br/>configure switch for individual subscriber line to support audible/and visual MWI. Configure msr scripts on META ems client to produce VMWI alerts for the subscriber line. <br/><br/>Using a VMWI box and handset. Confirm that VMWI is sent and cleared from line, as well as stutter tone if audible is enabled. <br/>]]></summary><preconditions>6151, 6248, 6252, 6150, 6640, MetaSwitch, callid handsets. 
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3678" name="SIP -CC- AMWI  (requires SMDI vmail server)"><node_order>3</node_order><externalid>3678</externalid><summary><![CDATA[Test Audible MWI. <br/>When a message indicator is `on` and audible MWI is used, confirm the correct stutter tone is heard to alert the user. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3679" name="Reload with calls off hook"><node_order>3</node_order><externalid>3679</externalid><summary><![CDATA[Place one call from occam subscriber to another occam subscriber, and another call from an occam subscriber to the pstn.  While both calls are up, reboot the BLC.  Verify that the call states and hookstates are correct when the blc comes back up.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3680" name="SIP - Call transfer"><node_order>3</node_order><externalid>3680</externalid><summary><![CDATA[Test Call Transfer <br/>Enable Call transfer on the Switch/BLC. <br/>Verify that the user can correctly transfer calls. Test conditions where the subscriber goes on and off hook at different times during the tranfer. Verify all conditions are handled correctly. <br/><br/>###################################################################################<br/>added during the 5.4R3 release:<br/>###################################################################################<br/><br/>there are 2 basic forms of call transfer: blind call transfer and attended call transfer.  we currently do not have full functionality for this since our implementation has a funky 3-way calling/call transfer implementation.  bug 18739 covers the issues surrounding this.  comment #7 has what Colin believes is the propper behavior.  we do not have all of this currently implemented.<br/><br/>below are basic scenarios for call transfer:<br/><br/>######################################################################<br/>Call Transfer – Unattended / Blind<br/>######################################################################<br/><br/>EQUIPMENT NEEDED:  <br/>BLC POTs 6xxx (3)<br/>Phones (3) <br/><br/>FEATURE DESCRIPTION:<br/>Unattended call transfer allows phone A to connect a call from phone B to phone C.  Phone A does not establish a connection with phone C before connecting phone B.<br/><br/>TEST SETUP:<br/>Connect three phones to BLC POTs 6xxxs<br/><br/>TEST A:<br/>Place a call from phone B to phone A.  After the connection is established between phone A and phone B press the hook flash button on phone A.  After receiving dial tone on phone A, dial the number for phone C.  Hang up phone A.  B should be connected to phone C.<br/><br/>EXPECTED RESULT:<br/>Placing phone A on hook should ring phone C.  Taking phone B off hook should connect phones B and C.  Taking phone A back off hook should not re-establish the connected to either phone B or phone C.  Placing phones B or C on hook should not reconnect the remaining phone to phone A.  <br/><br/><br/>##############################################################################<br/>Call Transfer – Attended / Consultation<br/>###############################################################################<br/><br/><br/>EQUIPMENT NEEDED:  <br/>BLC POTs 6xxx (3)<br/>Phones (3) <br/><br/>FEATURE DESCRIPTION:<br/>Attended call transfer allows phone A to connect a call from phone B to phone C.  Phone A is able to establish a connection to phone C before connecting phone B.<br/><br/>TEST SETUP:<br/>Connect three phones to BLC POTs 6xxxs<br/><br/>TEST A:<br/>Place a call from phone B to phone A.  After the connection is established between phone A and phone B press the hook flash button on phone A.  After receiving dial tone on phone A, place a call from phone A to phone C.  After connection between phone A and phone C is established, hang up phone A.  B should be connected to phone C.<br/><br/>EXPECTED RESULT:<br/>Placing phone A on hook should connect phones B and C.  Taking phone A back off hook should not re-establish the connected to either phone B or phone C.  Placing phones B or C on hook should not reconnect the remaining phone to phone A.  <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3681" name="SIP -  Forward/network disconnect"><node_order>3</node_order><externalid>3681</externalid><summary><![CDATA[Test configurable forward/network disconnect. <br/>Enable network disconnect on the softswitch and the blc.  <br/>Verify the disconnect works. Use a backlit phone to verify loss of battery when disconnect occurs. Make call, hang up far side, watch local handset for battery. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3682" name="SIP -  CID basic number delivery"><node_order>3</node_order><externalid>3682</externalid><summary><![CDATA[Test basic Caller ID. <br/><br/>Using Caller ID enabled subscribers, verify that basic CID is presented to the CID capable handset. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3683" name="SIP -  CID name, number, and neg. string testing - coppercom"><node_order>3</node_order><externalid>3683</externalid><summary><![CDATA[Test basic Caller ID on the Metaswitch with a SIP call from a BLC. <br/><br/>Using Caller ID enabled subscribers, verify the following:<br/>- that basic CID is presented to the CID capable handset.<br/>- Verify that Caller name is presented<br/><br/>-Verify a user who has special characters in their name string. Also test lower and upper case alpha in combo with numeric characters. <br/>-Verify white space(s) or blank names. <br/>-Verify `long` CID strings. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3684" name="SIP-CC -  CWCID -number, name and string verification"><node_order>3</node_order><externalid>3684</externalid><summary><![CDATA[Test Call waiting Caller ID on the Metaswitch with a SIP call. <br/><br/>Using CWCID enabled subscribers, verify the following:<br/>- that basic CWCID is presented to the CWCID capable handset.<br/>- Verify that Caller name is presented<br/><br/>-Verify a user who has special characters in their name string. Also test lower and upper case alpha in combo with numeric characters. <br/>-Verify white space(s) or blank names. <br/>-Verify `long` CID strings. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3685" name="SIP -  CWCID - SIP to SIP basic"><node_order>3</node_order><externalid>3685</externalid><summary><![CDATA[Test Call waiting Caller ID. <br/><br/>Using CWCID enabled subscribers, verify the following:<br/>- that basic CWCID is presented to the CWCID capable handset.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3686" name="SIP -  Distinctive RING"><node_order>3</node_order><externalid>3686</externalid><summary><![CDATA[Configure distintive ring cadence on the softswitch. Verify the occam SIP subscriber generates the correct cadences. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3687" name="SIP -  Dial tone"><node_order>3</node_order><externalid>3687</externalid><summary><![CDATA[Verify Occam generates the correct dial tone when using SIP. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3688" name="SIP `*` and `#`  DTMF Detection"><node_order>3</node_order><externalid>3688</externalid><summary><![CDATA[Using both SIP to a softswitch confirm that dial tone is broken after dialing first digit. <br/><br/>Confirm that `*` and `#` tones are handled correctly. <br/>]]></summary><preconditions>6151, 6248, 6252, 6150, 6640, Abacus + PCG cards, MetaSwitch, CopperCom, callid handsets. 
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3689" name="SIP - Tone generation -network busy tone"><node_order>3</node_order><externalid>3689</externalid><summary><![CDATA[Set up a BLC w/ pots connected to a softswitch CA. Using a handset to BLC confirm that network busy tone is sent and played correctly. <br/>]]></summary><preconditions>6151, 6248, 6252, 6150, 6640, MetaSwitch, callid handsets. 
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3690" name="SIP -  CW tone"><node_order>3</node_order><externalid>3690</externalid><summary><![CDATA[Configure switch/ BLC for CW capable. <br/><br/>Confirm that there are at least two call waiting tones played to alert the user that a call is in waiting. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3691" name="SIP -  DTMF detection during `speed dialing` - Metaswitch"><node_order>3</node_order><externalid>3691</externalid><summary><![CDATA[Using a sage and a speed dial capable handset (maybe abacus as well)  <br/>Verify different interdigit times (in ms), verify that we can handle faster interdigit times with out losing digits on the Metaswitch.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3692" name="SIP -  3 way calling switch mux - CopperCom"><node_order>3</node_order><externalid>3692</externalid><summary><![CDATA[Configure switch for 3 way calling capable so the call is mixed on the switch not on the BLC. <br/>Confirm this works, endpoints can make calls after call ends, rejoin 3way, check call quality, etc..<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3693" name="SIP -  3 way calling BLC MUX"><node_order>3</node_order><externalid>3693</externalid><summary><![CDATA[Configure switch for 3 way calling capable so the call is mixed on the BLC not on the SWITCH. <br/>Confirm this works, endpoints can make calls after call ends, rejoin 3way, check call quality, etc..<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3694" name="SIP -  3 way calling- ESA, MGCP, SIP scenario testing"><node_order>3</node_order><externalid>3694</externalid><summary><![CDATA[Configure switch for 3 way calling capable so the call is mixed on the BLC not on the SWITCH. <br/>Confirm this works with ESA, SIP, and MGCP. Try combinations of the 3 protocols on 3 subscribers. Rotate which protocol is used in X, Y, Z in the following example scenarios. <br/><br/>1)X calls Y, X brings in Z, Z hangs up, y, hangs up, X hangs up<br/>2)X calls Y, X brings in Z, X hangs up, y, hangs up, Z hangs up<br/>3)X calls Y, Y brings in Z, Z hangs up, y, hangs up, X hangs up<br/>4)X calls Y, Y brings in Z, X hangs up, y, hangs up, Z hangs up<br/><br/>etc, etc....<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3695" name="SIP -  ESA SIP interop."><node_order>3</node_order><externalid>3695</externalid><summary><![CDATA[Test calling to and from SIP to ESA endpoints. Change the ESA state by controlling the subscriber admin status on the switch. <br/><br/>Verify that the `handoff` between ESA and SIP works correctly. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3700" name="SIP -  Registration to CC"><node_order>3</node_order><externalid>3700</externalid><summary><![CDATA[Confirm SIP can register with CC<br/>With and without authentication. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3701" name="SIP -  Off hook warning tone"><node_order>3</node_order><externalid>3701</externalid><summary><![CDATA[Confirm that while using SIP, and the phone is left off hook, an offhook warning tone is generated to alert the user. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3702" name="SIP -  Different Packetization intervals to CC"><node_order>3</node_order><externalid>3702</externalid><summary><![CDATA[Change the packetization intervals on the CC and the BLC confirm that the different values work betweent the BLC and the switch, and that the BLC obeys the switch when using different values.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3703" name="SIP -  Toggle admin state"><node_order>3</node_order><externalid>3703</externalid><summary><![CDATA[Toggle voice port and SIP admin state while registered with the CC. Confirm that the state of both objects recover and work correctly after the toggling. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3704" name="SIP -  LOS to CC"><node_order>3</node_order><externalid>3704</externalid><summary><![CDATA[Disconnect (pull cable, etc) the BLC from the CC during a call, while idle and registered, while registering, etc.. <br/>confirm the subscriber recovers correctly. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3705" name="SIP -  SIP to PSTN on CC -basic"><node_order>3</node_order><externalid>3705</externalid><summary><![CDATA[Verify SIP to PSTN on the CC using both handsets as well as bulk call testing.  <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3706" name="SIP -  SIP to PSTN on CC -negative"><node_order>3</node_order><externalid>3706</externalid><summary><![CDATA[Verify SIP to PSTN with negative tests:<br/><br/>-test 3way calling in both mixing on the blc and switch scenarios. <br/>-test forward disconnect<br/>-test different endpoint capablilities conifgured. <br/><br/><br/>etc, etc, <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3707" name="SIP -  voice quality"><node_order>3</node_order><externalid>3707</externalid><summary><![CDATA[Test voice quality with sage. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3708" name="SIP -  bulk call testing"><node_order>3</node_order><externalid>3708</externalid><summary><![CDATA[Test bulk SIP calls using Abacus or Ameritec, test BLC to BLC SIP, and SIP to PSTN. <br/><br/>This should be tested using G711 and G726.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3709" name="SIP -  basic handset call using SIP to CC"><node_order>3</node_order><externalid>3709</externalid><summary><![CDATA[Test a few basic handset calls using SIP to the CC. Verify.(entrance test)<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3710" name="SIP -  Call fowarding with CC"><node_order>3</node_order><externalid>3710</externalid><summary><![CDATA[Configure BLC subscribers using SIP to the CC enabled for call forwarding. <br/><br/>Verify that call forwarding works. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3711" name="SIP -  Basic FAX and modem tests with CC"><node_order>3</node_order><externalid>3711</externalid><summary><![CDATA[Test fax and modem calls as well as duration of call/modulation with SIP to the CC. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3712" name="SIP - CC-  Move user/number between blades."><node_order>3</node_order><externalid>3712</externalid><summary><![CDATA[Move UA/number to different blade. Verify with CC<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3718" name="SIP - Metaswitch-  Move user/number between blades."><node_order>3</node_order><externalid>3718</externalid><summary><![CDATA[Move UA/number to different blade. Verify with Metaswitch. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3719" name="SIP -  Basic FAX and modem tests with Metaswitch"><node_order>3</node_order><externalid>3719</externalid><summary><![CDATA[Test fax and modem calls as well as duration of call/modulation with SIP to the Metaswitch.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3729" name="SIP -  Call forwarding with metaswitch"><node_order>3</node_order><externalid>3729</externalid><summary><![CDATA[Configure BLC subscribers using SIP to the Metaswitch enabled for call forwarding. <br/><br/>Verify that call forwarding works. <br/><br/><br/><br/><br/>###############################################<br/>added the following description in 5.4R3:<br/>###############################################<br/>to enable call forwarding busy on the meta:<br/><br/>on the subscriber line, busy call forwarding must be subscribed to (subscribed=true)in the gui.  the call forwarding number can either be added via the gui or thru star code.  thru the gui, the subscriber line.  enabled = true and a valid call forwarding number must be entered.  to disable via the gui, enabled = false.<br/><br/>to enable busy call forwarding via the * codes:<br/><br/>on phone A dial *91 followed imeadiately by the forwarding number for phone B (no #).  listen for a small stutter tone on phone A.  the switch will automaticly ring phone B.  for call forwarding to take effect phone B must answer this call.  if not call forwarding will not be enabled.<br/><br/>to disable call busy  call forwarding:<br/><br/>from phone A just dial *91.  Phone a will hear a short stutter tone and call forwarding will be disabled.<br/><br/><br/><br/>##############################################################<br/><br/>additional call forwarding options are:<br/><br/>unconditional call forwarding.  *72 enables. *73 disables<br/><br/>delayed call forwarding.  *92 enalbes.  *93 disables.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3730" name="SIP -  basic handset call using SIP to Metaswitch"><node_order>3</node_order><externalid>3730</externalid><summary><![CDATA[Test a few basic handset calls using SIP to the Metaswitch. Verify.(entrance test)<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3731" name="SIP -  bulk call testing - Metaswitch"><node_order>3</node_order><externalid>3731</externalid><summary><![CDATA[Test bulk SIP calls using Abacus or Ameritec, test BLC to BLC SIP, and SIP to PSTN. With the Metaswitch <br/><br/>This should be tested with G711 and G726.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3732" name="SIP -  voice quality - Metaswitch"><node_order>3</node_order><externalid>3732</externalid><summary><![CDATA[Test voice quality of SIP with sage on the Metaswitch<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3733" name="SIP -  SIP to PSTN on Metaswitch -negative"><node_order>3</node_order><externalid>3733</externalid><summary><![CDATA[Verify SIP to PSTN with negative tests:<br/><br/>-test 3way calling in both mixing on the blc and switch scenarios. <br/>-test forward disconnect<br/>-test different endpoint capablilities conifgured. <br/><br/><br/>etc, etc, <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3734" name="SIP -  SIP to PSTN on Metaswitch -basic"><node_order>3</node_order><externalid>3734</externalid><summary><![CDATA[Verify SIP to PSTN on the Metaswitch using both handsets as well as bulk call testing.  <br/><br/><br/>Modified March 2007 for the following:<br/><br/>Test star codes<br/>Test class 5 features:<br/>900 Restricted - Prevent subscriber from dialing 900 calls<br/>Automatic Callback<br/>Anonymous Call Rejection<br/>Automatic Recall *69 level1 <br/>Automatic  recall *69 level 2<br/>Call Forwarding Busy Line - Forwards incoming calls when subscriber is busy. <br/>Activation code: *68. Deactivation code: *88<br/>Call Forwarding Don't Answer - Forwards incoming calls when subscriber don't answer.<br/> Activation code: *92. Deactivation code: *93<br/>Call Forwarding Variable - Forwards incoming calls regardless of the busy/idle status <br/>of the subscriber.  Activation code: *72. Deactivation code: *73<br/>Calling Identity Delivery - The calling party number, name, date and time, is displayed <br/>on the called party's telephone<br/>Caller ID on Call Waiting<br/>of calling ID on a per call basis. Activation code: *82  & *70 off<br/>Calling Number Delivery - The calling party number is displayed on the called party's telephone<br/>Call Waiting - Audible tone to subscriber during an in progress call, that another call is waiting<br/>Denied Origination - Subscriber is denied originating any calls<br/>Denied Termination - Calls to subscriber will not complete<br/>Hotline Feature<br/>Flexible ANI II Digits - To differentiate between subscriber type, e.g. Coin Line<br/>Multiple PIC - For subscribers with INTERLATA and INTRALATA PIC's<br/>Nuisance Call Feature<br/>Remote Access to call forwarding<br/>Selective Call Acceptance<br/>Selective Call Forwarding<br/>Selective Call Rejection<br/>Speed dial 30 - Dial Activation code, followed by 2 digit number between 20 and 48,<br/> followed by directory number.   Activation Code: *75<br/>Speed dial 8 - Dial Activation code, followed by a 1 digit number between 2 and 8,<br/> followed by directory number.   Activation Code: *74<br/>Single Party Revertive - On incoming calls, subscriber can perform hook flash,  get<br/>dial tone, then dial own number that will ring another phone on same line (Teen3 ringing).<br/>Station Suspend<br/>TCAP Voice Mail - visual Voice mail indication is achieved through SS7 links<br/>tcAP Voice Mail - audible Voice mail indication is achieved through SS7 links<br/>Toll Restriction with and without Toll Free<br/>Teen service - Assign a different number on the same line that will have distinctive ringing<br/>Three Way Calling - During an existing call, after hook flash and dial tone, dials a different <br/>number, hook flash again to bridge all three calls.<br/>Warm Line Feature<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3735" name="SIP -  LOS to Metaswitch"><node_order>3</node_order><externalid>3735</externalid><summary><![CDATA[Disconnect (pull cable, etc) the BLC from the Metaswitch during a call, while idle and registered, while registering, etc.. <br/>confirm the subscriber recovers correctly. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3736" name="SIP -  Toggle admin state - Metaswitch"><node_order>3</node_order><externalid>3736</externalid><summary><![CDATA[Toggle voice port and SIP admin state while registered with the Metaswitch. Confirm that the state of both objects recover and work correctly after the toggling. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3737" name="SIP -  Different Packetization intervals to Metaswitch"><node_order>3</node_order><externalid>3737</externalid><summary><![CDATA[Change the packetization intervals on the Metaswitch and the BLC confirm that the different values work betweent the BLC and the switch, and that the BLC obeys the switch when using different values.<br/><br/>Editted in 5.3 to add following rule:<br/><br/>General rule when setting up Jitter-Delay and Packetization. The Packetization has to be half of the Jitter-Delay period.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3738" name="SIP -  Off hook warning tone - Metaswitch"><node_order>3</node_order><externalid>3738</externalid><summary><![CDATA[Confirm that while using SIP, and the phone is left off hook, an offhook warning tone is generated to alert the user with the Metaswitch.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3739" name="SIP -  Registration to Metaswitch"><node_order>3</node_order><externalid>3739</externalid><summary><![CDATA[Confirm SIP can register with Metaswitch<br/>With and without authentication. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3740" name="SIP -  ESA SIP interop - Metaswitch"><node_order>3</node_order><externalid>3740</externalid><summary><![CDATA[Test calling to and from SIP to ESA endpoints. Change the ESA state by controlling the subscriber admin status on the soft switch. <br/><br/>Verify that the `handoff` between ESA and SIP works correctly. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3741" name="SIP -  3 way calling- ESA, MGCP, SIP scenario testing - Meta"><node_order>3</node_order><externalid>3741</externalid><summary><![CDATA[Configure switch for 3 way calling capable so the call is mixed on the BLC not on the SWITCH. (Use Metaswitch)<br/>Confirm this works with ESA, SIP, and MGCP. Try combinations of the 3 protocols on 3 subscribers. Rotate which protocol is used in X, Y, Z in the following example scenarios. <br/><br/>1)X calls Y, X brings in Z, Z hangs up, y, hangs up, X hangs up<br/>2)X calls Y, X brings in Z, X hangs up, y, hangs up, Z hangs up<br/>3)X calls Y, Y brings in Z, Z hangs up, y, hangs up, X hangs up<br/>4)X calls Y, Y brings in Z, X hangs up, y, hangs up, Z hangs up<br/><br/>etc, etc....<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3742" name="SIP -  3 way calling BLC MUX - Metaswitch"><node_order>3</node_order><externalid>3742</externalid><summary><![CDATA[Configure switch for 3 way calling capable so the call is mixed on the BLC not on the SWITCH. <br/>Confirm this works, endpoints can make calls after call ends, rejoin 3way, check call quality, etc..<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3743" name="SIP -  CW tone - Metaswitch"><node_order>3</node_order><externalid>3743</externalid><summary><![CDATA[Configure switch/ BLC for CW capable. <br/><br/>Confirm that there are at least two call waiting tones played to alert the user that a call is in waiting. Use the Metaswitch for this test.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3744" name="SIP - Tone generation - network busy tone - Metaswitch"><node_order>3</node_order><externalid>3744</externalid><summary><![CDATA[Set up a BLC w/ pots connected to a softswitch CA. Using a handset to BLC confirm that network busy tone is sent and played correctly with the Metaswitch.<br/>]]></summary><preconditions>6151, 6248, 6252, 6150, 6640, MetaSwitch, callid handsets. 
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3746" name="SIP `*` and `#`  DTMF Detection - Metaswitch"><node_order>3</node_order><externalid>3746</externalid><summary><![CDATA[Using both SIP to a softswitch confirm that dial tone is broken after dialing first digit. <br/><br/>Confirm that `*` and `#` tones are handled correctly by the Metaswitch<br/>]]></summary><preconditions>6151, 6248, 6252, 6150, 6640, Abacus + PCG cards, MetaSwitch, CopperCom, callid handsets. 
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3748" name="SIP -  Dial tone - Metaswitch"><node_order>3</node_order><externalid>3748</externalid><summary><![CDATA[Verify Occam generates the correct dial tone when using SIP and the Metaswitch as the softswitch.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3749" name="SIP -  Distinctive RING - Metaswitch"><node_order>3</node_order><externalid>3749</externalid><summary><![CDATA[Configure distintive ring cadence on the softswitch. Verify the occam SIP subscriber generates the correct cadences. <br/><br/>Distincitve ringing is generated under the Teen Services.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3751" name="SIP -  CWCID -basic - Metaswitch"><node_order>3</node_order><externalid>3751</externalid><summary><![CDATA[Test Call waiting Caller ID with the Metaswitch and a SIP call. <br/><br/>Using CWCID enabled subscribers, verify the following:<br/>- that basic CWCID is presented to the CWCID capable handset.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3753" name="SIP -  CID basic number delivery"><node_order>3</node_order><externalid>3753</externalid><summary><![CDATA[Test basic Caller ID with a SIP call to the Metaswitch. <br/><br/>Using Caller ID enabled subscribers, verify that basic CID is presented to the CID capable handset. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3755" name="SIP -  Forward/network disconnect - CopperCom"><node_order>3</node_order><externalid>3755</externalid><summary><![CDATA[Test configurable forward/network disconnect. <br/>Enable network disconnect on the softswitch and the blc.  <br/>Verify the disconnect works. Use a backlit phone to verify loss of battery when disconnect occurs. Make call, hang up far side, watch local handset for battery. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3756" name="SIP -  Forward/network disconnect - Metaswitch"><node_order>3</node_order><externalid>3756</externalid><summary><![CDATA[Test configurable forward/network disconnect. <br/>Enable network disconnect on the softswitch and the blc.  <br/>Verify the disconnect works. Use a backlit phone to verify loss of battery when disconnect occurs. Make call, hang up far side, watch local handset for battery. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3757" name="SIP - Call transfer - Metaswitch"><node_order>3</node_order><externalid>3757</externalid><summary><![CDATA[Test Call Transfer with a SIP call to the Metaswitch.<br/>Enable Call transfer on the Switch/BLC. <br/>Verify that the user can correctly transfer calls. Test conditions where the subscriber goes on and off hook at different times during the tranfer. Verify all conditions are handled correctly. <br/><br/><br/>the meta switch requires enabling call transfer. this can be done on a line by line basis.  search for subscriber line.  break out tree.  under `multi party call services` calltrance subscribe must be set to true.<br/><br/>###################################################################################<br/>added during the 5.4R3 release:<br/>###################################################################################<br/><br/>there are 2 basic forms of call transfer: blind call transfer and attended call transfer. we currently do not have full functionality for this since our implementation has a funky 3-way calling/call transfer implementation. bug 18739 covers the issues surrounding this. comment #7 has what Colin believes is the propper behavior. we do not have all of this currently implemented.<br/><br/>below are basic scenarios for call transfer:<br/><br/>######################################################################<br/>Call Transfer – Unattended / Blind<br/>######################################################################<br/><br/>EQUIPMENT NEEDED:<br/>BLC POTs 6xxx (3)<br/>Phones (3)<br/><br/>FEATURE DESCRIPTION:<br/>Unattended call transfer allows phone A to connect a call from phone B to phone C. Phone A does not establish a connection with phone C before connecting phone B.<br/><br/>TEST SETUP:<br/>Connect three phones to BLC POTs 6xxxs<br/><br/>TEST A:<br/>Place a call from phone B to phone A. After the connection is established between phone A and phone B press the hook flash button on phone A. After receiving dial tone on phone A, dial the number for phone C. Hang up phone A. B should be connected to phone C.<br/><br/>EXPECTED RESULT:<br/>Placing phone A on hook should ring phone C. Taking phone B off hook should connect phones B and C. Taking phone A back off hook should not re-establish the connected to either phone B or phone C. Placing phones B or C on hook should not reconnect the remaining phone to phone A.<br/><br/><br/>##############################################################################<br/>Call Transfer – Attended / Consultation<br/>###############################################################################<br/><br/><br/>EQUIPMENT NEEDED:<br/>BLC POTs 6xxx (3)<br/>Phones (3)<br/><br/>FEATURE DESCRIPTION:<br/>Attended call transfer allows phone A to connect a call from phone B to phone C. Phone A is able to establish a connection to phone C before connecting phone B.<br/><br/>TEST SETUP:<br/>Connect three phones to BLC POTs 6xxxs<br/><br/>TEST A:<br/>Place a call from phone B to phone A. After the connection is established between phone A and phone B press the hook flash button on phone A. After receiving dial tone on phone A, place a call from phone A to phone C. After connection between phone A and phone C is established, hang up phone A. B should be connected to phone C.<br/><br/>EXPECTED RESULT:<br/>Placing phone A on hook should connect phones B and C. Taking phone A back off hook should not re-establish the connected to either phone B or phone C. Placing phones B or C on hook should not reconnect the remaining phone to phone A.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3758" name="SIP - AMWI - Metaswitch"><node_order>3</node_order><externalid>3758</externalid><summary><![CDATA[Test Audible MWI with a SIP endpoint registered on the Metaswitch. <br/>When a message indicator is `on` and audible MWI is used, confirm the correct stutter tone is heard to alert the user. <br/><br/>Editted October 16th 2006 to add:<br/>Be sure to enalbe MWI in the SIP profile<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3759" name="SIP - VMWI - Metaswitch"><node_order>3</node_order><externalid>3759</externalid><summary><![CDATA[Set up a BLC w/ pots connected to an Occam CA. Using a handset to BLC confirm that stutter dialtone is sent correctly. <br/>Snoop packet to confirm that VMWI is in the RQNT. <br/><br/>configure switch for individual subscriber line to support audible/and visual MWI. Configure msr scripts on META ems client to produce VMWI alerts for the subscriber line. <br/><br/>Using a VMWI box and handset. Confirm that VMWI is sent and cleared from line, as well as stutter tone if audible is enabled. <br/><br/><br/>Edited October 17th 2006:<br/>VMWI is not RQNT for SIP.<br/>DOn't forget to enable MWI on your SIP profile or this will not work.<br/>]]></summary><preconditions>6151, 6248, 6252, 6150, 6640, MetaSwitch, callid handsets. 
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3760" name="SIP- Tone generation - Offhook warning - Metaswitch"><node_order>3</node_order><externalid>3760</externalid><summary><![CDATA[Set up a BLC w/ pots connected to a softswitch CA. Using a handset to BLC confirm that offhook warning tone is sent correctly. <br/>]]></summary><preconditions>6151, 6248, 6252, 6150,6246, SIP proxy, callid handsets. 
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3779" name="Configuration via CLI - Global Parameters"><node_order>3</node_order><externalid>3779</externalid><summary><![CDATA[Verify Global Parameters can be configured for the following:<br/><br/>enable/disable SIP<br/>Set the transport to UDP, TCP or TLS.<br/>Set the port #.<br/>Default should be 5060,5061,TLS.<br/>Select the interface (BVI)<br/><br/>Verify that values outside the valid range are not excepted.<br/>Verify all options are shown.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3780" name="Configuration via CLI - Port Parameters"><node_order>3</node_order><externalid>3780</externalid><summary><![CDATA[Verify Port Parameters can be configured for the following:<br/><br/>1. Username can be configured.  Verify that special characters are excepted (-_.) as well as numbers and letters.  I am not sure what will happen with spaces.<br/>2. Domain name can be configured.  Verify that a domain name can be configured other than the proxy.  Verify the proxy is used when one isn't specified.<br/>3. Authusername can be configured.  Verify that a user other than the `username` can be used for authentication.  Verify if one isn't specified, it should use the `username`.<br/>4. Password can be configured.  Verify that an authentication password can be configured for the authusername.  Verify that the registration fails when the password is incorrect.  Verify that the information isn't sent when authentication isn't enabled.<br/>5. Verify displayname can be configured and shows correctly.<br/>6. Profile can be attached. Verify that profile can be attached, changed, and has a default.<br/><br/><br/>Verify that values outside the valid range are not excepted.<br/>Verify all options are shown.<br/>Spaces should be tested in all fields.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3781" name="Configuration via EWI- Port Parameters"><node_order>3</node_order><externalid>3781</externalid><summary><![CDATA[Verify Port Parameters can be configured for the following:<br/><br/>1. Username can be configured.  Verify that special characters are excepted (-_.) as well as numbers and letters.  I am not sure what will happen with spaces.<br/>2. Domain name can be configured.  Verify that a domain name can be configured other than the proxy.  Verify the proxy is used when one isn't specified.<br/>3. Authusername can be configured.  Verify that a user other than the `username` can be used for authentication.  Verify if one isn't specified, it should use the `username`.<br/>4. Password can be configured.  Verify that an authentication password can be configured for the authusername.  Verify that the registration fails when the password is incorrect.  Verify that the information isn't sent when authentication isn't enabled.<br/>5. Verify displayname can be configured and shows correctly.<br/>6. Profile can be attached. Verify that profile can be attached, changed, and has a default.<br/><br/><br/>Verify that values outside the valid range are not excepted.<br/>Verify all options are shown.<br/>Spaces should be tested in all fields.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3782" name="Configuration via EWI- Profile Parameters"><node_order>3</node_order><externalid>3782</externalid><summary><![CDATA[1. Callplan can be configured, edited, and deleted.  Verify call plan can handle calls made to various amounts of digits dialed, can use feature codes, and will not wait for more digits when # is used.<br/>2. Proxy address and port number can be configured, edited, and deleted.  Verify that an IP address or a DNS address can be used.<br/>3. Registrar address and port number can be configured, edited, and deleted.  Verify that an IP address or a DNS address can be used.  Verify that the Proxy is used in the absence of a registrar.<br/>4. Registration timeout.  Verify that timeout value can be configured, edited, or removed and defaulted.  I am not sure at this time what the expected behavior should be after the timeout, but make sure floods of traffic don't happen.<br/>5. Backup proxy.  Verify that the backup proxy can be configured, edited, and removed.  Test to see what happens when there is a backup proxy, but no primary.  Test various combinations with and without a registrar.<br/>6. Backup registrar.  Verify that the backup registrar can be configured, edited, and removed. Test to see what happens when there is a backup registrar, but no primary.  Test with various combinations with and without proxy.<br/><br/><br/>Verify that values outside the valid range are not excepted.<br/>Verify all options are shown.<br/>Spaces should be tested in all fields.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3783" name="Profile changes with calls active"><node_order>3</node_order><externalid>3783</externalid><summary><![CDATA[Place one call from occam subscriber to another occam subscriber, and another call from an occam subscriber to the pstn.  While both calls are up, make changes to the SIP Profile parameters.  Verify that the calls are not impacted, and the changes are made correctly.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3784" name="SIP config saved across reboot."><node_order>3</node_order><externalid>3784</externalid><summary><![CDATA[Configure SIP endpoint global, port, and profile parameters.  Do not save changes and make sure there is a warning about unsaved configuration changes.  Make sure that when the BLC is rebooted, changes are not saved.<br/><br/>Configure the SIP endpoint again, but this time save the changes.  Verify that all fields were saved upon a reset.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3849" name="Failover - Proxy"><node_order>3</node_order><externalid>3849</externalid><summary><![CDATA[Configure the blc with a backup proxy.  Have the primary failover while performing each of the following.<br/><br/>Call setup.<br/>Call teardown.<br/>Active call.<br/>Call waiting.         <br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3850" name="Failover - Registrar"><node_order>3</node_order><externalid>3850</externalid><summary><![CDATA[Configure the blc with a backup regisrar.  Have the primary failover while performing each of the following.<br/><br/>Call setup.<br/>Call teardown.<br/>Active call.<br/>Call waiting.         <br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3851" name="SIP port UDP"><node_order>3</node_order><externalid>3851</externalid><summary><![CDATA[Configure the Global parameters to use udp.<br/><br/>Will add to this test case as I learn more.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3852" name="SIP port TCP"><node_order>3</node_order><externalid>3852</externalid><summary><![CDATA[Configure the Global parameters to use TCP.<br/><br/>Will add to this test case as I learn more.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3853" name="SIP port TLS"><node_order>3</node_order><externalid>3853</externalid><summary><![CDATA[Configure the Global parameters to use TLS.<br/><br/>Will add to this test case as I learn more.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3854" name="SIP defaults"><node_order>3</node_order><externalid>3854</externalid><summary><![CDATA[Verify that SIP defaults are as followed:<br/><br/>UDP, bvi1, port 5060.<br/><br/>When TLS is used, it should default to port 5061.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3855" name="SIP - Last number dialed"><node_order>3</node_order><externalid>3855</externalid><summary><![CDATA[Verify last number dialed is correct.<br/>Verify that the last number dialed is correct after receiving a call.<br/>Verify what happens when `*` features are used.<br/>Verify what happens when using various digit maps.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3856" name="SIP - actual connections"><node_order>3</node_order><externalid>3856</externalid><summary><![CDATA[Verify that the info shown for actual connections is displayed correctly.<br/>Verify that this info is shown correctly for incoming and outgoing calls.<br/><br/>I am not sure if this info will be in the EWI.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3857" name="SIP - long and short experations"><node_order>3</node_order><externalid>3857</externalid><summary><![CDATA[Verify that short expirations can be used with long calls.  Make sure that calls are not affected, and that states are correct.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3859" name="SIP overide - proxy"><node_order>3</node_order><externalid>3859</externalid><summary><![CDATA[Added to 6.2R4 for bug 26661.<br/><br/>Verify that SIP parameters can be ovveriden for proxy and backup proxy.  Verify this can be done via the CLI and EWI.<br/><br/>Verify that the parameters are saved and actually work.<br/><br/>Verify that the ovveride can be removed and uses the profile parameters.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3861" name="Modem through Coppercom w/compression"><node_order>3</node_order><externalid>3861</externalid><summary><![CDATA[All fax and modem calls should always negotiate G711.<br/><br/>Configure both SIP endpoints to do compression.  Connect a modem to both endpoints and verify that G711 is negotiated.  <br/>]]></summary><preconditions>Samsung Msys 5200
+Toshiba TF671
+Modems
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3862" name="Fax through Coppercom w/compression"><node_order>3</node_order><externalid>3862</externalid><summary><![CDATA[All fax and modem calls should always negotiate G711.<br/><br/>Configure both SIP endpoints to do compression.  Connect a fax to both endpoints and verify that G711 is negotiated.  <br/>]]></summary><preconditions>Samsung Msys 5200
+Toshiba TF671
+Modems
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3863" name="Fax through Metaswitch w/compression"><node_order>3</node_order><externalid>3863</externalid><summary><![CDATA[All fax and modem calls should always negotiate G711.<br/><br/>Configure both SIP endpoints to do compression.  Connect a fax to both endpoints and verify that G711 is negotiated.  <br/>]]></summary><preconditions>Samsung Msys 5200
+Toshiba TF671
+Modems
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3864" name="Modem through Metaswitch w/compression"><node_order>3</node_order><externalid>3864</externalid><summary><![CDATA[All fax and modem calls should always negotiate G711.<br/><br/>Configure both SIP endpoints to do compression.  Connect a modem to both endpoints and verify that G711 is negotiated.  <br/>]]></summary><preconditions>Samsung Msys 5200
+Toshiba TF671
+Modems
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3866" name="Digit map"><node_order>3</node_order><externalid>3866</externalid><summary><![CDATA[Verify all instances of digit maps work correctly.<br/><br/>I will add to this test case when I know the different options are.<br/><br/><br/>. Indicates a single-digit placeholder. For example, 555.... matches any dialed string beginning with 555, plus at least four additional digits. <br/> <br/>[ ] Indicates a range of digits. A consecutive range is indicated with a hyphen (-); for example, [5-7]. A nonconsecutive range is indicated with a comma (,); for example, [5,8]. Hyphens and commas can be used in combination; for example, [5-7,9]. <br/><br/>Note Only single-digit ranges are supported. For example, [98-102] is invalid. <br/> <br/>( ) Indicates a pattern; for example, 408(555). It is used in conjunction with the symbol ?, %, or +. <br/> <br/>? Indicates that the preceding digit occurred zero or one time. Enter ctrl-v before entering ? from your keyboard. <br/> <br/>%  Indicates that the preceding digit occurred zero or more times. This functions the same as the `*` used in regular expression. <br/> <br/>+  Indicates that the preceding digit occurred one or more times. <br/> <br/>T  Indicates the interdigit timeout. The router pauses to collect additional dialed digits. <br/> <br/><br/>Grace Wu<br/>***********************************************************<br/>1) Add reference `RFC3435, Section 2.1.5` for digit map:<br/><br/>   * Digit:    A digit from `0` to `9`.<br/>   * Timer:    The symbol `T` matching a timer expiry.<br/>   * DTMF:     A digit, a timer, or one of the symbols `A`, `B`, `C`,<br/>               `D`, `#`, or `*`.  Extensions may be defined.<br/>   * Wildcard: The symbol `x` which matches any digit (`0` to `9`).<br/>   * Range:    One or more DTMF symbols enclosed between square brackets<br/>               (`[` and `]`).<br/>   * Subrange: Two digits separated by hyphen (`-`) which matches any<br/>               digit between and including the two.  The subrange<br/>               construct can only be used inside a range construct,<br/>               i.e., between `[` and `]`.<br/>   * Position: A period (`.`) which matches an arbitrary number,<br/>               including zero, of occurrences of the preceding<br/>               construct.<br/><br/>2) Bug 17735 comment 6<br/>------- Additional Comment #6 From Colin Whittaker  2006-10-31 16:02 -------<br/>Ok, so valid characters in the digitmap are:<br/>0-9,'[',']','-','x','X',' ','.','|','*','T'<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+4 POTS phones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3868" name="SIP -  Different ports for SIP signaling with CC"><node_order>3</node_order><externalid>3868</externalid><summary><![CDATA[Configure BLC to use different src and destination sip ports. The default is 5060. <br/>Verify this works with the softswitch. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3872" name="SIP-CC-*69 AR - SIP to PSTN"><node_order>3</node_order><externalid>3872</externalid><summary><![CDATA[*69 on the coppercom can be enable at two levels.<br/>Level1: upon using *69 the switch will automatically dial the last incoming caller. <br/>Level1:upon using *69 the switch will give a message with info regarding the last incoming caller and options whether or not to dial that number. <br/><br/><br/><br/>Customer reported:<br/>Ac/ar is not working on a pstn/sip basis… pstn calls sip #, sip fone dials #69, should redial last incoming call. Doesn’t.  <br/>]]></summary><preconditions>SIP softswitch and POTS BLC
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3873" name="SIP-CC-*72 verification (CFV)"><node_order>3</node_order><externalid>3873</externalid><summary><![CDATA[Verify *72 with CC....<br/>3rivers findings...<br/>*72 should give a conf. tone (stutter dial tone), then enter 7 digits for forward dn, then conf tone again, and activated call forwarding….  with the coppercom this can also be enabled thru the GUI.  If CFV is enalbed thru the GUI or via a handset, beofore changing the forward number, *73 (or deactivate thru the gui-not disable).  <br/><br/>####################################################<br/>from Izaak's class 5 feature testing doc:<br/>####################################################<br/><br/>Test case Summary:  Call Forward Activation (*72) / Deactivation (*73)<br/>Equipment Needed:  <br/>BLC <br/>Phones (3) <br/><br/>FEATURE DESCRIPTION<br/>Call forward activation (*72) allows incoming calls to be forwarded to another phone.  Call forward deactivation (*73) cancels call forwarding activation (*72).<br/><br/>TEST SETUP	<br/>Connect three phones to BLC <br/><br/>TEST A<br/>Take phone A off hook, enter *72 followed by the number of the phone to be forwarded to (phone B).  Place phone A on hook.  Place a call from phone C to phone A.<br/><br/>EXPECTED RESULT:<br/>Phone C should call phone B. <br/><br/><br/>TEST B<br/>After call forwarding has been set from phone A to phone B, enter *73 on phone A and hang up phone A.  Place a call from phone C to phone A.<br/><br/>EXPECTED RESULT:<br/>Phone C should call phone A.<br/>]]></summary><preconditions>SIP softswitch and POTS BLC
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3874" name="SIP-CC-*73"><node_order>3</node_order><externalid>3874</externalid><summary><![CDATA[verifiy *73 with CC.<br/><br/>3rivers findings...<br/><br/>*73 is deactivation code, and works mostly….<br/><br/><br/>####################################################<br/>from Izaak's class 5 feature testing doc:<br/>####################################################<br/><br/>Test case Summary:  Call Forward Activation (*72) / Deactivation (*73)<br/>Equipment Needed:  <br/>BLC <br/>Phones (3) <br/><br/>FEATURE DESCRIPTION<br/>Call forward activation (*72) allows incoming calls to be forwarded to another phone.  Call forward deactivation (*73) cancels call forwarding activation (*72).<br/><br/>TEST SETUP	<br/>Connect three phones to BLC <br/><br/>TEST A<br/>Take phone A off hook, enter *72 followed by the number of the phone to be forwarded to (phone B).  Place phone A on hook.  Place a call from phone C to phone A.<br/><br/>EXPECTED RESULT:<br/>Phone C should call phone B. <br/><br/><br/>TEST B<br/>After call forwarding has been set from phone A to phone B, enter *73 on phone A and hang up phone A.  Place a call from phone C to phone A.<br/><br/>EXPECTED RESULT:<br/>Phone C should call phone A.<br/>]]></summary><preconditions>SIP softswitch and POTS BLC
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3875" name="SIP-CC-Call transfer between SIP to PSTN"><node_order>3</node_order><externalid>3875</externalid><summary><![CDATA[verifiy call transfer to and from SIP to PSTN<br/><br/>3rivers findings...<br/><br/> <br/>Call transfer to pstn fails, drops calls rather than joins them together.<br/>]]></summary><preconditions>SIP softswitch and POTS BLC
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3911" name="ESA + SIP: SIP is disabled then enabled."><node_order>3</node_order><externalid>3911</externalid><summary><![CDATA[1)Shut down SIP and verify that the endpoints immediately go into ESA mode (conf t, no sip) and that calls can still be placed to all the other ports on that local mg blade.<br/><br/>2)Shut down sip on 2 MG's and verify that the endpoints immediately go into ESA mode (conf t, no mgcp) and that calls can still be placed to all the other ports on the opposite blc (ie from mg1 to mg2 and mg2 to mg1)<br/><br/>3)shut down 2 ports on the tgw associated with 2 different mg/esa blades and verify that those ports on the mgs go into esa mode. <br/>]]></summary><preconditions>6x5x MG blc's, Abacus callgen and handsets, 6660 for ESA config.</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3912" name="SIP -  *69 AR (automatic recall)"><node_order>3</node_order><externalid>3912</externalid><summary><![CDATA[Configure the switch to permit the *69 call return feature (either level1 or level2 aided return service). <br/><br/>Using handsets verify this works from our SIP endpoints.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3913" name="SIP-CC-*74 -speed dialing 8"><node_order>3</node_order><externalid>3913</externalid><summary><![CDATA[verifiy *74 with CC.<br/>Speed Dialing 8 (SPD8) <br/>This feature provides the subscriber with eight speed dialing numbers. When enabled, the speed-dialed numbers can be entered by the System Administrator or the subscriber. <br/><br/>To enter or edit the speed dial numbers, click the Modify button next to Speed Dialing 8 List on the Subscriber Care window. <br/><br/>Speed dial list access code: *74. The subscriber enters (or changes) a number by dialing the activation code, waiting for the prompt, and dialing the speed code (2 - 9), the number to be dialed followed by #. <br/><br/>To use speed dial, the subscriber dials the code (2 - 9) followed by #. <br/><br/>Notes <br/>If this feature is assigned to the BLHG, the speed dialing list is shared among all the terminals, however, if the terminal has its own SPD8 list, the terminal's list takes higher priority.<br/>This feature applies to originating calls.<br/>The use of # is optional.<br/>After a short delay (about 10 seconds), the numbers entered are processed.<br/>Speed Dial 8 can be used with SPD30.<br/>]]></summary><preconditions>SIP softswitch and POTS BLC
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3914" name="SIP-CC-*75 -speed dialing 30"><node_order>3</node_order><externalid>3914</externalid><summary><![CDATA[Speed Dialing 30 (SPD30) <br/>This feature provides the subscriber with 30 speed dialing numbers. When enabled, the speed-dialed numbers can be entered by the System Administrator or the subscriber. <br/><br/>To enter or edit the speed dial numbers, click the Modify button next to Speed Dialing 30 List on the Subscriber Care window. <br/><br/>Speed dial list access code: *75. The subscriber enters (or changes) a number by dialing the activation code, waiting for the prompt, and dialing the speed code (20 - 49), the number to be dialed followed by #. <br/><br/>To use speed dial, the subscriber dials the code (20 - 49) followed by #. <br/><br/>Notes <br/>If this feature is assigned to the BLHG, the speed dialing list is shared among all the terminals, however, if the terminal has its own SPD30 list, the terminal's list takes higher priority.<br/>This feature applies to originating calls.<br/>The use of # is optional. <br/>After a short delay (about 10 seconds), the numbers entered are processed.<br/>Speed Dial 30 can be used with Speed Dialing 8 (SPD8).<br/><br/>--------------------------------------------------------------------------------<br/>]]></summary><preconditions>SIP softswitch and POTS BLC
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3919" name="SIP - Speed Calling - Metaswitch"><node_order>3</node_order><externalid>3919</externalid><summary><![CDATA[Test Speed CAlling with a SIP call to the Metaswitch.<br/>Enable Call transfer on the Switch. <br/>Verify that Speed Calling 1 and 2 digits works on the metaswitch with a SIP call<br/>Use *74 to set up 1 digit speed calls and (I think the valid access codes are 2-9)<br/>Use *75 to set up 2 digit speed calls. ( I think the valid range in 20-49)<br/><br/>the meta has an option for speed dialing that alows only single digit dialing, only double digit speed dail or both.  make sure these are set.<br/><br/>to enabled speed dialing on the Metaswitch dial * code followed immediately by the access code  followed immediately by the phone number.  then you shoud get a quick tone back from the switch.<br/><br/>Then dial x# or xx# to get those numbers to be speed dialed. <br/><br/>Make sure calls go through.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3934" name="SIP: Changing mode between SIP and MGCP"><node_order>3</node_order><externalid>3934</externalid><summary><![CDATA[Note: 6.2R4 this test case was added to chack the fix for bug 26423.<br/><br/>The mode changes between SIP and MGCP should be smooth and not leave ports stuck in ESA. The following tests need to be run for mode changes:<br/><br/>1)With a port that is idle<br/>2)With a port that is active - offhook<br/>3)With a port that is ringing<br/>]]></summary><preconditions>6x5x MG blc's, Abacus callgen equipment, handsets, MetaSwitch or CopperCom
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3937" name="CC- gr303 -  Forward/network disconnect"><node_order>3</node_order><externalid>3937</externalid><summary><![CDATA[Test configurable forward/network disconnect. <br/>Enable network disconnect on the softswitch and the blc.  <br/>Verify the disconnect works. Use a backlit phone to verify loss of battery when disconnect occurs. Make call, hang up far side, watch local handset for battery. <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3938" name="SIP-CC-*66 AC  SIP to PSTN"><node_order>3</node_order><externalid>3938</externalid><summary><![CDATA[This test is for *66.<br/>This feature is used on phoneA where:<br/>PhoneA dials PhoneB who is busy. PhoneA hangs up and dials *66 waits for switch to acknowledge then hangs up. <br/>When phoneB hangs up and is free phoneA will ring, when phoneA picks up it will auto ring phoneB. <br/><br/>Ac/ar is not working on a pstn/sip basis… pstn calls sip #, sip fone dials #69, should redial last incoming call. Doesn’t.  *66 works the same i.e. not….<br/>]]></summary><preconditions>SIP softswitch and POTS BLC
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3939" name="SIP-CC-*66 AC SIP to SIP"><node_order>3</node_order><externalid>3939</externalid><summary><![CDATA[This test is for *66.<br/>This feature is used on phoneA where:<br/>PhoneA dials PhoneB who is busy. PhoneA hangs up and dials *66 waits for switch to acknowledge then hangs up. <br/>When phoneB hangs up and is free phoneA will ring, when phoneA picks up it will auto ring phoneB. <br/>]]></summary><preconditions>SIP softswitch and POTS BLC
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3951" name="SIP overide -  Registration Timeout"><node_order>3</node_order><externalid>3951</externalid><summary><![CDATA[Verify that SIP parameters can be ovveriden for  Registration Timeout.  Verify this can be done via the CLI and EWI.<br/><br/>Verify that the parameters are saved and actually work.<br/><br/>Verify that the ovveride can be removed and uses the profile parameters.<br/>]]></summary><preconditions>Softswitch and POTS BLC that supports SIP.
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3952" name="SIP-CC-SIP with TCP /TLS"><node_order>3</node_order><externalid>3952</externalid><summary><![CDATA[Confirm that SIP messages can be sent securly using TLS and TCP. <br/>]]></summary><preconditions>SIP softswitch and POTS BLC
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3953" name="SIP -  CWCID -PSTN to SIP"><node_order>3</node_order><externalid>3953</externalid><summary><![CDATA[Test with PSTN to SIP, where PSTN is the 3rd party calling in and SIP is displaying<br/><br/><br/>Test Call waiting Caller ID. <br/><br/>Using CWCID enabled subscribers, verify the following:<br/>- that basic CWCID is presented to the CWCID capable handset.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3954" name="SIP -  CWCID -SIP to PSTN"><node_order>3</node_order><externalid>3954</externalid><summary><![CDATA[<br/>Test with SIP to PSTN where SIP is the 3rd party calling in and SIP is displaying<br/><br/>Test Call waiting Caller ID. <br/><br/>Using CWCID enabled subscribers, verify the following:<br/>- that basic CWCID is presented to the CWCID capable handset.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3965" name="SIP CLI- enter all commands and check for limits"><node_order>3</node_order><externalid>3965</externalid><summary><![CDATA[Excute all new commands related to SIP, make sure the help strings, upper and lower limits are tested and correct. Make sure correct error messages are generated.<br/>]]></summary><preconditions>BLC with POTS ports</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3966" name="SIP - FAX tests with G726 Codec first in list Metaswitch"><node_order>3</node_order><externalid>3966</externalid><summary><![CDATA[Test fax calls on SIP endpoints with G726 as the highest priorty Codec, make sure the DSP detects the fax and uses G711 Codec.<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. Fax machines
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3968" name="Call Length SIP test (Blade to Blade)"><node_order>3</node_order><externalid>3968</externalid><summary><![CDATA[Make a SIP call between blades and leave it off hook for the weekend. Make sure two way voice is still working after the weekend. <br/>]]></summary><preconditions>BLCs with POTs, handsets and Softswitch SIP ports.
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3969" name="Registrar"><node_order>3</node_order><externalid>3969</externalid><summary><![CDATA[Configure the blc with a proxy and a regisrar.  Verify that the registration is sent to the registrar and calls are setup to the proxy.<br/><br/>Verify what happens when the registration expires while the call is active.<br/>]]></summary><preconditions>BLC with SIP POTS ports.
+Softswitch configured for SIP.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3982" name="SIP - 900 restricted access"><node_order>3</node_order><externalid>3982</externalid><summary><![CDATA[Configure SIP subscriber with restricted 900 access. <br/>Confirm that when they dial 900 numbers they get the appropriate response from the switch<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3983" name="SIP - (ACR)anonymous call rejections sip to sip"><node_order>3</node_order><externalid>3983</externalid><summary><![CDATA[Configure Anonymous  call rejection on sip subscriber. <br/>Call in with sip subscriber witholding/blocking caller id presentation. <br/>Confirm call is rejected. <br/><br/><br/>ACR enables the subscriber to automatically block calls from parties whose DNs are marked `Private.` When subscribed and activated, it routes incoming calls to an announcement if the calling party number is marked `Private.` <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3984" name="SIP - (ACR) anonymous call rejections pstn to sip"><node_order>3</node_order><externalid>3984</externalid><summary><![CDATA[Configure Anonymous  call rejection on sip subscriber. <br/>Call in with pstn subscriber witholding/blocking caller id presentation. <br/>Confirm call is rejected. <br/><br/><br/>ACR enables the subscriber to automatically block calls from parties whose DNs are marked `Private.` When subscribed and activated, it routes incoming calls to an announcement if the calling party number is marked `Private.` <br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3985" name="SIP - (CIDS) caller id delivery suppression"><node_order>3</node_order><externalid>3985</externalid><summary><![CDATA[Verify CIDS:<br/><br/>Calling Identity Delivery/Suppression (CIDS) <br/>CIDS controls the delivery of caller ID on a per-call basis. This feature is activated to make an anonymous call and is deactivated to show the calling ID again. <br/><br/>Vertical Service Codes <br/>Activation code: *67 (when provided with the recall dial tone, the subscriber enters the number to call. The subscriber's name and number are not delivered to the called party).<br/>Those subscribers that have calling identity delivery restricted (CPN Presentation field set to Restricted) can override the feature on a per-call basis. <br/><br/>Deactivation code: *82 (when provided with the recall dial tone, the subscriber enters the number to call. The subscriber's name and number are displayed to the called party, providing the called party has subscribed to Caller Identity Delivery (CID).<br/>]]></summary><preconditions>6151, 6252, 6150, 6640,6244, 6246, SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="3993" name="Long duration of single connected call"><node_order>3</node_order><externalid>3993</externalid><summary><![CDATA[Connect two handsets, leave connected overnight. Verify that the call stays up and the ONT does have any negative affects from it. (mem leaks, voice port stuck, screeching, etc). <br/><br/><br/>Test with SIP and MGCP when applicable. <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4027" name="SIP - crash on three way call - 18310"><node_order>3</node_order><externalid>4027</externalid><summary><![CDATA[This is reproducible with every call. Phone A calls phone B and establishes a<br/>call. Phone A sends a hook-flash and dials phone C, phone C is busy and a tone<br/>is played to phone A. Phone A hook-flashes again to return to the original call<br/>but continues to receive the busy tone from the DSP as sipuad crashes. <br/><br/>Verify that the sip app doesn't crash when a 3 way call is made to a busy endpoint.<br/>]]></summary><preconditions>pots blc with sip endpoints
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4041" name="Can't control C to stop SIP debug-17922"><node_order>3</node_order><externalid>4041</externalid><summary><![CDATA[When SIP debug was running, it wasn't possible to stop the debug until another packet was received after the control-c.<br/><br/>Enable sip debug on a single port.  Let the buffer get full and then ctrl-c to stop the debug.  <br/><br/>Verify that the prompt returns immediately.<br/><br/>Stop the debug while the last line is a different color than the default.  When the debug was stopped, it would change the default prompt to the color of the last line of the debug output.<br/><br/>Verify that the color of the font is not changed when debug is stopped.<br/>]]></summary><preconditions>BLC with SIP debug running.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4042" name="SIP memory leak -18453"><node_order>3</node_order><externalid>4042</externalid><summary><![CDATA[While running bulk call against the Coppercom using the Ameritec, I discovered that SIP was leaking memory.<br/><br/>To verify how much memory an application is using, go into linux and issue the following command:<br/>ps lax<br/><br/>Verify the amount of memory being used after all ports have been offhook at once.  Run bcg test for a week and monitor memory usage.<br/>]]></summary><preconditions>BLC with SIP pots running bcg with the Ameritec.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4073" name="Class Features and * Code Testing"><node_order>3</node_order><externalid>4073</externalid><summary><![CDATA[Test Class 5 features with SIP against the Metaswitch.<br/>Test SIP to SIP, PSTN to SIP and PSTN to SIP calls for the following:<br/><br/>Caller ID<br/>Caller ID Callwaitng<br/>VMWI<br/>AMWI<br/>Callwaiting<br/>3 Way calling<br/>Call Transfer<br/>Blind Call Transfer<br/><br/>Call into voice mail and retrive messages<br/><br/>Test start codes:<br/>*69<br/>Speed Dialing 8 and 30 : *72, *74 configure the speed dial from the phone<br/>Other star codes as needed<br/>Call forwarding all the different types, blind, busy, follow me, find me.<br/>]]></summary><preconditions>SIP endpoint and Metaswitch.</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4097" name=" Bug   17917 - Default Digit Map and * keys"><node_order>3</node_order><externalid>4097</externalid><summary><![CDATA[Verfiy the fix for bug   17917 	. Make sure the * key is dectected with default SIP profile digit map.<br/>]]></summary><preconditions>BLCs with SIP endpoints.
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4099" name="SIP FQDN-18335"><node_order>3</node_order><externalid>4099</externalid><summary><![CDATA[While testing SIP FQDN I found that I had to bounce SIP after a reload for the dns to work.<br/><br/>To verify:<br/>1.  Configure BLC with DNS server (192.168.76.49) and domain (testlab.com).<br/>2.  Configure sip to use `metaswitch.testlab.com`.<br/>3.  Configure the metaswitch to use domain of testlab.com on the sip endpoint.<br/>4.  After voice is working with fqdn, reboot the blc.<br/><br/>Verify that voice works after the blc is back up without having to do anything.<br/>]]></summary><preconditions>BLC with SIP pots running bcg with the Ameritec.</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4101" name="(SIP)140 testcases - Complete CC interop test matrix"><node_order>3</node_order><externalid>4101</externalid><summary><![CDATA[See attached excel sheet for SIP CC interop cases and results<br/>]]></summary><preconditions>CC switch, pots BLCs, handsets, etc..
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4578" name="SIP to PSTN long duration fax"><node_order>3</node_order><externalid>4578</externalid><summary><![CDATA[Send multiple 15 page faxes from SIP endpoint to PSTN endpoint.<br/>Send multiple 15 page faxes from PSTN endpoint to SIP endpoint.<br/>]]></summary><preconditions>toshiba and samsung fax machines.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4579" name="SIP to PSTN long duration modem"><node_order>3</node_order><externalid>4579</externalid><summary><![CDATA[Using either the Coppercom or Metaswitch, make a modem connection to a RAS server.  Use default voice profile settings.<br/><br/>Document connection rate of at least 3 connections.<br/>Send data across modem connection and document throughput.<br/>Leave the call up overnight and check to make sure that the throughput rate hasn't degraded before disconnecting.<br/>Verify that that there are not alot of underflows or overflows on the voice port.<br/>]]></summary><preconditions>Coppercom or Metaswitch with RAS.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4849" name="bug 18703:   Add Distintive Ringing to SIP"><node_order>3</node_order><externalid>4849</externalid><summary><![CDATA[SIP has an Alert-Info: header that can contain a string indicating the type of<br/>ringing to use.<br/>Typically this has contained an URL with a audio file to play for SIP phones.<br/>Since we are a POTS service, we can only do ringing cadences.<br/>Some Bellcore spec. defines 5 cadences <br/>#1 is our standard ringing.<br/><br/>So I recommend:<br/>We ring with #1 if the Alert-Info: header is absent.<br/>We ring with the cadence # of the first numeral present in the Alert-Info: header.<br/><br/>So if we get:<br/>Alert-Info: ring 3<br/>We ring with bellcore 3 from the table below.<br/><br/>ringparms ring_type [] = {<br/>{   /* bellcore 1 */<br/>    1,      /* numCads, # of cadences */<br/>    2000,    /* tMake1, 2 sec */<br/>    4000,    /* tBreak1 4 sec */<br/>    0,      /* tMake2 */<br/>    0,      /* tBreak2 */<br/>    0,      /* tMake3 */<br/>    0       /* tBreak3 */<br/>},  <br/>{   /* bellcore 2 */<br/>    2,      /* numCads, # of cadences */<br/>    800,    /* tMake1, 0.8 sec */<br/>    400,     /* tBreak1 0.4 sec */<br/>    800,    /* tMake2  0.8 sec */<br/>    4000,    /* tBreak2 4.0 sec */<br/>    0,      /* tMake3 */<br/>    0       /* tBreak3 */<br/>},  <br/>{   /* bellcore 3 */<br/>    3,      /* numCads, # of cadences */<br/>    400,    /* tMake1, 0.4 sec */<br/>    200,    /* tBreak1 0.2 sec */<br/>    400,    /* tMake2  0.4 sec */<br/>    200,    /* tBreak2 0.2 sec */<br/>    800,   /* tMake3  0.8 sec */<br/>    4000    /* tBreak3 4.0 sec */<br/>},  <br/>{   /* bellcore 4 */<br/>    3,      /* numCads, # of cadences */<br/>    300,     /* tMake1, 0.3 sec */<br/>    200,     /* tBreak1 0.2 sec */<br/>    1000,    /* tMake2  1.0 sec */<br/>    200,     /* tBreak2 0.2 sec */<br/>    300,     /* tMake3  0.3 sec */<br/>    4000     /* tBreak3 4.0 sec */<br/>},  <br/>{   /* bellcore 5 */<br/>    1,      /* numCads, # of cadences */<br/>    500,    /* tMake1, 0.5 sec */<br/>    5500,   /* tBreak1 5.5 sec */<br/>    0,      /* tMake2 */<br/>    0,      /* tBreak2 */<br/>    0,      /* tMake3 */<br/>    0       /* tBreak3 */<br/>}<br/>};<br/><br/><br/>As per Colin:<br/>I used metaswitch. I don't know how Coppercom configures distinctive ring.<br/>On meta, go to the line and configure teen services.<br/>Also, you will need to add the strings in the gw model.<br/>]]></summary><preconditions>MetaSwitch, BLC with POTS, handsets</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="4882" name="making a call when domain is configured, bug 19881"><node_order>3</node_order><externalid>4882</externalid><summary><![CDATA[Verify that endpoint configured to use a domain can make a call.<br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5000" name="Basic  distincive ringing -bellcore-dr1"><node_order>3</node_order><externalid>5000</externalid><summary><![CDATA[Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines. <br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line. <br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2 <br/>ring3 - bellcore-dr3<br/>and so on. <br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on. <br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used. <br/>Table 3: 	GR-506 Ring Patterns<br/>Ring ID	Ring Pattern in ms<br/>1	2000 on, 4000 off<br/>2	800 on, 400 off, 800 on, 4000 off<br/>3	400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4	300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5	500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5001" name="Basic  distincive ringing -bellcore-dr2"><node_order>3</node_order><externalid>5001</externalid><summary><![CDATA[Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines. <br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line. <br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2 <br/>ring3 - bellcore-dr3<br/>and so on. <br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on. <br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used. <br/>Table 3: 	GR-506 Ring Patterns<br/>Ring ID	Ring Pattern in ms<br/>1	2000 on, 4000 off<br/>2	800 on, 400 off, 800 on, 4000 off<br/>3	400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4	300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5	500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5002" name="Basic  distincive ringing -bellcore-dr3"><node_order>3</node_order><externalid>5002</externalid><summary><![CDATA[Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines. <br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line. <br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2 <br/>ring3 - bellcore-dr3<br/>and so on. <br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on. <br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used. <br/>Table 3: 	GR-506 Ring Patterns<br/>Ring ID	Ring Pattern in ms<br/>1	2000 on, 4000 off<br/>2	800 on, 400 off, 800 on, 4000 off<br/>3	400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4	300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5	500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5003" name="Basic  distincive ringing -bellcore-dr4"><node_order>3</node_order><externalid>5003</externalid><summary><![CDATA[Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines. <br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line. <br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2 <br/>ring3 - bellcore-dr3<br/>and so on. <br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on. <br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used. <br/>Table 3: 	GR-506 Ring Patterns<br/>Ring ID	Ring Pattern in ms<br/>1	2000 on, 4000 off<br/>2	800 on, 400 off, 800 on, 4000 off<br/>3	400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4	300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5	500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5004" name="Basic  distincive ringing -bellcore-dr5"><node_order>3</node_order><externalid>5004</externalid><summary><![CDATA[Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines. <br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line. <br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2 <br/>ring3 - bellcore-dr3<br/>and so on. <br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on. <br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used. <br/>Table 3: 	GR-506 Ring Patterns<br/>Ring ID	Ring Pattern in ms<br/>1	2000 on, 4000 off<br/>2	800 on, 400 off, 800 on, 4000 off<br/>3	400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4	300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5	500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5005" name="CID date test -META"><node_order>3</node_order><externalid>5005</externalid><summary><![CDATA[Verify SIP caller id (CID) date is correctly adjusted for NTP offset of GMT time. Using a CID capable handset verify that the CID date/time is correctly displayed to the CPE device. <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5006" name="CID - test with bellcore values 1-5"><node_order>3</node_order><externalid>5006</externalid><summary><![CDATA[Test that the CID information is correct during all 5 belcore ring values. <br/><br/>Verify SIP caller id (CID) date is correctly adjusted for NTP offset of GMT time. Using a CID capable handset verify that the CID date/time is correctly displayed to the CPE device. <br/>Verify calling number /name is correct as well. <br/> <br/><br/>See 3.0R4 distinctive ringing testcases for information on setting up distinctive ringing tests to produce all 5 bellcore ring values.<br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5007" name="CWCID date test"><node_order>3</node_order><externalid>5007</externalid><summary><![CDATA[Verify SIP call waiting caller id (CWCID) date is correctly adjusted for NTP offset of GMT time. Using a CWCID capable handset verify that the CWCID date/time is correctly displayed to the CPE device. <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5008" name="Line characteristics/REN distincive ringing -bellcore-dr1-5"><node_order>3</node_order><externalid>5008</externalid><summary><![CDATA[Test all 5 cadences with a REN value of 5 applied to the line. This can be produce with a combination of a SAGE, REN circuit, or 5-8 phones on the same line,  Record results.<br/><br/>Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines. <br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line. <br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2 <br/>ring3 - bellcore-dr3<br/>and so on. <br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on. <br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used. <br/>Table 3: 	GR-506 Ring Patterns<br/>Ring ID	Ring Pattern in ms<br/>1	2000 on, 4000 off<br/>2	800 on, 400 off, 800 on, 4000 off<br/>3	400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4	300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5	500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5009" name="Simultaneous  distincive ringing"><node_order>3</node_order><externalid>5009</externalid><summary><![CDATA[Test non standard ring cadence while ringing both pots ports on the ONT at the same time. <br/><br/><br/><br/><br/>Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines. <br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line. <br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2 <br/>ring3 - bellcore-dr3<br/>and so on. <br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on. <br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used. <br/>Table 3: 	GR-506 Ring Patterns<br/>Ring ID	Ring Pattern in ms<br/>1	2000 on, 4000 off<br/>2	800 on, 400 off, 800 on, 4000 off<br/>3	400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4	300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5	500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5010" name="Basic  SIP call A to B (regression)"><node_order>3</node_order><externalid>5010</externalid><summary><![CDATA[Test basic SIP calls from one handset to another. <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5011" name="Basic SIP attended call transfer  with dist ring(regression)"><node_order>3</node_order><externalid>5011</externalid><summary><![CDATA[Test basic SIP attended call transfer with distinctive ringing. Where A, and C are ONT endpoints, and B can be either ONT or BLC...<br/><br/>B calls A, <br/>A answers and connects to B, <br/>A flashes gets dial tone and dials phone C, <br/>C answers connects to A & B, <br/>A hangs up leaving B+C talking. <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5012" name="Basic functionality of teen services"><node_order>3</node_order><externalid>5012</externalid><summary><![CDATA[Test basic call functionality for lines using teen services. Test basic A-B calling. To set up teen services see below for info...<br/><br/><br/><br/><br/><br/><br/><br/><br/>Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines.<br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line.<br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2<br/>ring3 - bellcore-dr3<br/>and so on.<br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on.<br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used.<br/>Table 3:      GR-506 Ring Patterns<br/>Ring ID     Ring Pattern in ms<br/>1     2000 on, 4000 off<br/>2     800 on, 400 off, 800 on, 4000 off<br/>3     400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4     300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5     500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5013" name="CID deliv  teen services"><node_order>3</node_order><externalid>5013</externalid><summary><![CDATA[Test basic CID delivery for lines using teen services.  To set up teen services see below for info...<br/><br/><br/><br/><br/><br/><br/><br/><br/>Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines.<br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line.<br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2<br/>ring3 - bellcore-dr3<br/>and so on.<br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on.<br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used.<br/>Table 3:      GR-506 Ring Patterns<br/>Ring ID     Ring Pattern in ms<br/>1     2000 on, 4000 off<br/>2     800 on, 400 off, 800 on, 4000 off<br/>3     400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4     300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5     500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5014" name="Do not disturb - teen services"><node_order>3</node_order><externalid>5014</externalid><summary><![CDATA[Test basic do not disturb feature for lines using teen services.  To set up teen services see below for info...<br/><br/><br/><br/><br/><br/><br/><br/><br/>Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines.<br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line.<br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2<br/>ring3 - bellcore-dr3<br/>and so on.<br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on.<br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used.<br/>Table 3:      GR-506 Ring Patterns<br/>Ring ID     Ring Pattern in ms<br/>1     2000 on, 4000 off<br/>2     800 on, 400 off, 800 on, 4000 off<br/>3     400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4     300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5     500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5015" name="Call forwarding - teen services"><node_order>3</node_order><externalid>5015</externalid><summary><![CDATA[Test basic call forwarding feature for lines using teen services.  To set up teen services see below for info...<br/><br/><br/><br/><br/><br/><br/><br/><br/>Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines.<br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line.<br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2<br/>ring3 - bellcore-dr3<br/>and so on.<br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on.<br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used.<br/>Table 3:      GR-506 Ring Patterns<br/>Ring ID     Ring Pattern in ms<br/>1     2000 on, 4000 off<br/>2     800 on, 400 off, 800 on, 4000 off<br/>3     400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4     300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5     500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5016" name="Voice mail and MWI - teen services"><node_order>3</node_order><externalid>5016</externalid><summary><![CDATA[Test basic voice mail/MWI feature for lines using teen services.  To set up teen services see below for info...<br/><br/><br/><br/><br/><br/><br/><br/><br/>Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines.<br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line.<br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2<br/>ring3 - bellcore-dr3<br/>and so on.<br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on.<br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used.<br/>Table 3:      GR-506 Ring Patterns<br/>Ring ID     Ring Pattern in ms<br/>1     2000 on, 4000 off<br/>2     800 on, 400 off, 800 on, 4000 off<br/>3     400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4     300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5     500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5017" name="Meta SIP bulk call test  - teen services"><node_order>3</node_order><externalid>5017</externalid><summary><![CDATA[Run call tests using SIP lines configured for distinctive ringing/teen services. <br/>Run roughly 1 call every 15-20 seconds per port in a bi-directional calling pattern. Expect at least 99% completion. <br/><br/><br/><br/>  To set up teen services see below for info...<br/><br/><br/><br/><br/><br/><br/><br/><br/>Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines.<br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line.<br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2<br/>ring3 - bellcore-dr3<br/>and so on.<br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on.<br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used.<br/>Table 3:      GR-506 Ring Patterns<br/>Ring ID     Ring Pattern in ms<br/>1     2000 on, 4000 off<br/>2     800 on, 400 off, 800 on, 4000 off<br/>3     400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4     300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5     500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5019" name="CID date test while adjusting NTP offset"><node_order>3</node_order><externalid>5019</externalid><summary><![CDATA[Verify SIP caller id (CID) date is correctly adjusted for NTP offset of GMT time. Change the NTP offset and confirm that CID adjusts correctly without reboot/reset. <br/><br/> Using a CID capable handset verify that the CID date/time is correctly displayed to the CPE device. <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5022" name="Distincive ringing special strings/chars (negative)"><node_order>3</node_order><externalid>5022</externalid><summary><![CDATA[Configure special characters, null, or long AlertINFO strings within the Meta's MG model the ONT is referencing. Verify these strings are ignored by the ONT. <br/><br/><br/><br/><br/><br/><br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines. <br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line. <br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2 <br/>ring3 - bellcore-dr3<br/>and so on. <br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on. <br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used. <br/>Table 3: 	GR-506 Ring Patterns<br/>Ring ID	Ring Pattern in ms<br/>1	2000 on, 4000 off<br/>2	800 on, 400 off, 800 on, 4000 off<br/>3	400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4	300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5	500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5034" name="Anonymous call rejection - teen services"><node_order>3</node_order><externalid>5034</externalid><summary><![CDATA[Test basic do not anonymous call rejection for lines using teen services.  Setup the teen service line for anonymous call rejection and a remote line for calling name/number blocking on delivery. The call should be rejected by the switch when calling this teen service line. To set up teen services see below for info...<br/><br/><br/><br/><br/><br/><br/><br/><br/>Verify Distinctive ringing using cadence defined as bellcore-drX (see summary for value to test).<br/>Use Metaswitch to insert this Alert-info string in the invite by setting up teen service lines.<br/>In the Media gateway model the strings for each ring type can be added and will be matched with each level of teen service line.<br/>for example:<br/>ring1 = bellcore-dr1<br/>ring2 = bellcore-dr2<br/>ring3 - bellcore-dr3<br/>and so on.<br/>The primary line will ring with dr1 and the 1st teen service line will ring with dr2, 2nd teen service line will ring with dr3 and so on.<br/>After setting up the teen service numbers on the single subscriber port, dial each number from a remote phone and verify the different ring cadences are used.<br/>Table 3:      GR-506 Ring Patterns<br/>Ring ID     Ring Pattern in ms<br/>1     2000 on, 4000 off<br/>2     800 on, 400 off, 800 on, 4000 off<br/>3     400 on, 200 off, 400 on, 200 off, 800 on, 4000 off<br/>4     300 on, 200 off, 1000 on, 200 off, 300 on, 4000 off<br/>5     500 on <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5040" name="CID date test -CopperCom"><node_order>3</node_order><externalid>5040</externalid><summary><![CDATA[Verify SIP caller id (CID) date is correctly adjusted for NTP offset of GMT time. Using a CID capable handset verify that the CID date/time is correctly displayed to the CPE device. <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5079" name="Fax/Modem testing"><node_order>3</node_order><externalid>5079</externalid><summary><![CDATA[Verify basic v.90 connectivity using SIP with the GPON ONT.  At this time, the clock source is from the PON TDM as NSP is not supported.<br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5155" name="SIP -  ESA SIP interop - Metaswitch"><node_order>3</node_order><externalid>5155</externalid><summary><![CDATA[Test calling to and from SIP to ESA endpoints. Change the ESA state by controlling the subscriber admin status on the soft switch. <br/><br/>Verify that the `handoff` between ESA and SIP works correctly. <br/>]]></summary><preconditions>Seagull, 6660-0x SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5158" name="SIP -  ESA callfeature: Call-waitng"><node_order>3</node_order><externalid>5158</externalid><summary><![CDATA[That Call Waiting works when enabled in ESA mode. <br/>That Call Waiting doesn't work  when disabled in ESA mode.<br/>]]></summary><preconditions>Seagull, 6151, 6660-0x SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5159" name="SIP -  ESA callfeature: CallerID"><node_order>3</node_order><externalid>5159</externalid><summary><![CDATA[That CallerID works when enabled in ESA mode. <br/>That CallerID doesn't work  when disabled in ESA mode.<br/>]]></summary><preconditions>Seagull, 6151, 6660-0x SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5160" name="SIP -  ESA callfeature: 3way"><node_order>3</node_order><externalid>5160</externalid><summary><![CDATA[That 3way works when enabled in ESA mode. <br/>That 3way doesn't work  when disabled in ESA mode.<br/>]]></summary><preconditions>Seagull, 6151, 6660-0x SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5161" name="SIP -  ESA callfeature: CallerID blocking"><node_order>3</node_order><externalid>5161</externalid><summary><![CDATA[That CallerID blocking works when enabled in ESA mode. <br/>That CallerID blocking doesn't work  when disabled in ESA mode.<br/>]]></summary><preconditions>Seagull, 6151, 6660-0x SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5162" name=" ESA local hunt groups"><node_order>3</node_order><externalid>5162</externalid><summary><![CDATA[ESA local huntgroups work.<br/>]]></summary><preconditions>Seagull, 6151, 6660-0x SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5163" name=" ESA global hunt groups"><node_order>3</node_order><externalid>5163</externalid><summary><![CDATA[ESA global huntgroups work.<br/>]]></summary><preconditions>Seagull, 6151, 6660-0x SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5209" name=" ESA announcements work and are played"><node_order>3</node_order><externalid>5209</externalid><summary><![CDATA[ESA announcements work and are played correctly. Also downloaded.<br/>]]></summary><preconditions>Seagull, 6151, 6660-0x SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5210" name=" ESA Holler Tone is played after been off-hook"><node_order>3</node_order><externalid>5210</externalid><summary><![CDATA[1. Get endpoints into SIP state.<br/>2. Take phone off-hook.<br/>3. Does the holler tone play? Check the ONT console as well.<br/>]]></summary><preconditions>Seagull, 6151, 6660-0x SIP proxy/softswitch, callid handsets. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5241" name="Bug 55569 - CS1500 SIP Info issues / errors"><node_order>3</node_order><externalid>5241</externalid><summary><![CDATA[This test case is for ONT bug 55569.<br/><br/>The problem is as follows:<br/><br/>Place a call from ONT A to ONT B.  Let ONT B ring.  After ~30 seconds the CS1500<br/>sends a REQUEST / INFO message to the ONT.  In response to the INFO the ONT<br/>sends a `415 unsupported media` message.  The 415 from the ONT lists INFO as a<br/>supported method.<br/><br/>If you hang up phone A after the ONTs have received the INFO requests from the<br/>CS1500, ONT B will respond to the cancel from the CS1500 with a `503 server<br/>error` message.  ONT never stops ringing even though ONT A is on hook.<br/><br/>If you hang up phone A BEFORE the ONTs have received the INFO request from the<br/>CS1500, ONT B responds correctly to the cancel from the CS1500.<br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5242" name="Bug 56046 - MetaSwitch MWI issues"><node_order>3</node_order><externalid>5242</externalid><summary><![CDATA[This test case is for ONT bug 56046.<br/><br/>The problem is as follows:<br/><br/>I configured the MetaSwitch to provide voice mail service and the ONT for MWI.  I see the ONT correctly subscribe for the MWI service after registration, but it looks like the ONT never re-subscribes.  The MetaSwitch sends notifies to the ONT with the state of the subscription periodically.  After an hour the MetaSwitch times out the ONT's MWI subscription.  The MetaSwitch sends a notify to the ONT that says `Subscription-State: terminated;reason=timeout`.<br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5244" name="SIP fails to register after 20 hours"><node_order>3</node_order><externalid>5244</externalid><summary><![CDATA[SIP fails to register after 20 x the registration time 3600 seconds, or 20 hours. This occurs when MWI is enabled on the ONT and disabled in the Metaswitch. If both have it enabled or both have it disabled, then it works fine. <br/><br/>Test by setting the Metaswitch with MWI disabled, ONT under test set with MWI enabled. Run for approx 24 hours and verify that the ONT is still registered to the Metaswitch.<br/>]]></summary><preconditions>6312/6314, Active ONT with Pots interface and Metaswitch.</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5255" name="Revertive ringing/home intercom SIP"><node_order>3</node_order><externalid>5255</externalid><summary><![CDATA[Confirm SIP revertive ringing works. <br/>Using 2 handsets off a single voice port (sharing the same phone line). <br/>Pick up the phone, dial your own number and hangup. The phone should ring you back. Pick up the phone (and in theory pick up the 2nd handset as well). You should be able to maintain voice path between these phone on the same line w/o the switch interrupting with busy/howler tone to alert you you've left the phone offhook. <br/>Leave the phones offhook for 5 minutes to confirm. <br/>]]></summary><preconditions>2 handsets, ont, olt, proxy. </preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5256" name="Revertive ringing-ring cadence via translator"><node_order>3</node_order><externalid>5256</externalid><summary><![CDATA[Confirm SIP revertive ringing's distinctive cadence works from the translator.<br/><br/>1Menu: Interface-voice , syntax: xservices revert_ring [ring pattern] (Default to 1 if not specified)<br/>Syntax to be further defined...?<br/><br/>Confirm that changing the ring cadences works for all 5 ring cadences. <br/><br/>Using 2 handsets off a single voice port (sharing the same phone line). <br/>Pick up the phone, dial your own number and hangup. The phone should ring you back. Pick up the phone (and in theory pick up the 2nd handset as well). You should be able to maintain voice path between these phone on the same line w/o the switch interrupting with busy/howler tone to alert you you've left the phone offhook. <br/>Leave the phones offhook for 5 minutes to confirm. <br/>]]></summary><preconditions>2 handsets, ont, olt, proxy. 
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5257" name="Revertive ringing-ring cadence via gui"><node_order>3</node_order><externalid>5257</externalid><summary><![CDATA[Confirm SIP revertive ringing's distinctive cadence works from the gui<br/><br/><br/>gui Syntax to be further defined...?<br/><br/>Confirm that changing the ring cadences works for all 5 ring cadences. <br/><br/>Using 2 handsets off a single voice port (sharing the same phone line). <br/>Pick up the phone, dial your own number and hangup. The phone should ring you back. Pick up the phone (and in theory pick up the 2nd handset as well). You should be able to maintain voice path between these phone on the same line w/o the switch interrupting with busy/howler tone to alert you you've left the phone offhook. <br/>Leave the phones offhook for 5 minutes to confirm. <br/>]]></summary><preconditions>2 handsets, ont, olt, proxy. 
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5261" name="Bug 21502,21416: SIP memory leak with change of date"><node_order>3</node_order><externalid>5261</externalid><summary><![CDATA[Bug 21502, is  SIP memory leak that was discovered when the date is changed by large amount when a call is up. Cause a memory to be alloc but never released for ever call made after the fact. This is also linked to Bug 21416, make sure the SIP endpoints stay registered with the clock change as well.<br/><br/><br/>Make a SIP call. Have the call up and running. <br/>Change the time and date on the BLC by large amount while the call is up.<br/>Hang up call.<br/>Make serveral more calls. <br/>Monitor the memory usage of the SIPUAD in linux (ps -elf) make sure the memory is been returned and there is no memory leak.<br/><br/>Input comment to bug 21502 and 21416.<br/>]]></summary><preconditions>Ring with SIP endpoints and SIP switch,
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5262" name="Negative testing on digit collection"><node_order>3</node_order><externalid>5262</externalid><summary><![CDATA[Found in SIP testing of GPON ONT, bug 21457.<br/><br/>Enter an endless stream of digits into the phone on a SIP endpoint. Make sure that the phone stops collection of digits after 15 and sends digits to switch for processing. Old behaviour was to cause SIPUAD to crash.<br/>]]></summary><preconditions>Ring with SIP endpoints and a SIP switch.</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5274" name="SIP proxy UDP/TCP port number can be configured"><node_order>3</node_order><externalid>5274</externalid><summary><![CDATA[This testcase was written due to bug 20410. See bug 20410 for all the details.<br/><br/>Make sure you can set the SIP udp/tcp ort number using the command<br/><br/>BLC(config)#sip port<br/>  <1025-65535>   UDP/TCP port number<br/><br/>Do negative tests on the port number.<br/>Check that you can set it via the EWI.<br/><br/>Next make sure you can still make calls using the new port number. Sniff that traffic to make sure the new port numbers has taken effect and is working.<br/>]]></summary><preconditions>SIP UA, BLC, handsets and sniffer
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5275" name="Long digit map entries"><node_order>3</node_order><externalid>5275</externalid><summary><![CDATA[This testcase was written because of bug 20256.<br/><br/>The customer had very long digit maps longer than 128 characters. It caused sip to crash. There was a 2 part fix.<br/><br/>Part One: To have SIP recover right away if it crashes, easy to test:<br/><br/>* setup a valid SIP profile attached to a port<br/>* configure a digit-map in the profile greater than 128 characters<br/>* drop to linux<br/>* killall -TERM sipuad<br/><br/>Wait for sipuad to restart. You should see messages like this in VLM:<br/><br/>Feb 20 21:06:18 (none) SIP[1663]: Killed by signal 15<br/>Feb 20 21:06:22 (none) pm: pm_wait: sipuad has died with an exit status of 255. <br/>Feb 20 21:06:22 (none) SIP[14359]: SIP daemon version 1.0 started<br/><br/>Part Two<br/><br/>Able to add in cli digit maps up to 850 characters long. With the EWI up to 256.<br/><br/><br/>Make sure you can still make calls with the long digit map in place.<br/>]]></summary><preconditions>SIP UA, BLCs, handsets and PC for EWI testing.</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5290" name="Cancel call waiting basic functionality-gui"><node_order>3</node_order><externalid>5290</externalid><summary><![CDATA[Configure a SIP ONT subscriber `A` who is enabled to accept calls in waiting on the switch. <br/>Enable the cancel call waiting feature via the GUI<br/>TEST1:<br/>First test to make sure call waiting works. A calls B, C calls A, A flashes to answer and toggle between B and C. Confirm this works. <br/><br/>TEST2:<br/>Now test CCW....<br/>A dials *70 followed by B's phone number, and connects. C dials A, and A returns busy. Phone A should not hear a CW or CWCID alert beep/tones. <br/><br/>TEST3:<br/>Confirm this is cleared correctly for the next call. <br/>Repeat test1 and expect call waiting to work again.  Check for CWCID in this call. <br/>]]></summary><preconditions>2 handsets, ont, olt, proxy. 
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5295" name="Revertive ringing/home intercom SIP-CID"><node_order>3</node_order><externalid>5295</externalid><summary><![CDATA[Confirm caller id with SIP revertive ringing works. <br/>Using 2 handsets off a single voice port (sharing the same phone line). <br/>Pick up the phone, dial your own number and hangup. The phone should ring you back and present to you the Caller-ID between 1st and 2nd rings. <br/><br/>Pick up the phone (and in theory pick up the 2nd handset as well). You should be able to maintain voice path between these phone on the same line w/o the switch interrupting with busy/howler tone to alert you you've left the phone offhook. <br/>Leave the phones offhook for 5 minutes to confirm. <br/>]]></summary><preconditions>2 handsets, ont, olt, proxy. 
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5313" name="Revertive ringing/home intercom SIP part 2"><node_order>3</node_order><externalid>5313</externalid><summary><![CDATA[One of A's phones picks up, and there is 2-way mdia with B.<br/>Action: Flash-hook on A's phone.<br/>Confirm: Hear stutter dialtone on A's phone.<br/>Action: Hang up A's phone.<br/>Confirm: All A's phones now ring.<br/>Action: Pick up A's other phone.<br/>Confirm: Ringing stops, and there is 2-way media with B.<br/>Action: Hang up the phones, and pick one of A's again. <br/>Confirm: Dialtone heard, and able to make an outbound call.<br/>]]></summary><preconditions>2 handsets, ont, olt, proxy. 
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5322" name="Cancel call waiting- clearing"><node_order>3</node_order><externalid>5322</externalid><summary><![CDATA[Configure CCW on an ONT pots line with call waiting enabled<br/>dial *70 and wait for new dial tone. Hang up to clear the *70 state. Make a call and connect. While connected dial into the original line from a 3rd party, confirm call waiting is achieved (ccw tones are heard, CWCID is played,etc). <br/>]]></summary><preconditions>2 handsets, ont, olt, proxy. 
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5440" name="SIP - distinctive ringing"><node_order>3</node_order><externalid>5440</externalid><summary><![CDATA[Using SIP to Metaswitch  verify the distinctive ringing feature on an ONT running 4.0.<br/>Insure that changing the ring pattern (such as using teen services) actually changes the ring pattern that the handset uses<br/>]]></summary><preconditions>MS softswitch, handsets, ON234x,OLT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5441" name="SIP -  ESA SIP interop - Metaswitch"><node_order>3</node_order><externalid>5441</externalid><summary><![CDATA[Test calling to and from SIP to ESA endpoints. Change the ESA state by controlling the subscriber admin status on the soft switch. <br/><br/>Verify that the `handoff` between ESA and SIP works correctly in these three scenarios:<br/><br/>1. OLT loses connectivity to switch (shutdown OLT `eps all` ports)<br/>2. ONT loses connection to switch (assign proxy server non-existent IP in same subnet or statically assigning IP address)<br/>]]></summary><preconditions>OLT, ON234x ,SIP proxy/softswitch, callid handsets, 6660, 6640
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5483" name="SIP: Pre-Pended Digits- Zilla#22388,21041,22042"><node_order>3</node_order><externalid>5483</externalid><summary><![CDATA[SIP: Pre-Pended Digits and DTMF Detection failure.<br/><br/><br/>Bulk SIP calls run against 3.1R1_P4.<br/>]]></summary><preconditions>Ameritech call generator</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5499" name="Registration Failures - Zilla#22304, 21886, 22384"><node_order>3</node_order><externalid>5499</externalid><summary><![CDATA[This is a placeholder for the new test case template!SIP: Registration failures. <br/>This has not been able to be reproduced here.<br/>To be provided to 3Rivers and Valley to verify.<br/><br/>Basic SIP call functionality to be tested to verify nothing has been broken.<br/>]]></summary><preconditions>Ameritech call generator
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5501" name="SIP: Proxy Unreachable, Zilla#21941"><node_order>3</node_order><externalid>5501</externalid><summary><![CDATA[SIP: ONT intermittently gets stuck in the Proxy unreachable state.<br/>This has not been reproduced here.<br/><br/>Valley Tel. and 3Rivers to verify.<br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5850" name="Bug: 22266 International Dialing 15 Digits w/ sip"><node_order>3</node_order><externalid>5850</externalid><summary><![CDATA[Bug: 22266 ENMR-Plateau: International Dialing 15 Digits fails (SLX:<br/>001-00-017457)<br/>TEST: Using SIP and tcpdump to capture, verify that 15 digits are not<br/>sent in invite as fault using older build, then verify up to 30 can be present in invite withfixed build<br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5851" name="Bug:22177 Fax with direct media"><node_order>3</node_order><externalid>5851</externalid><summary><![CDATA[Bug:22177 Emery Telcom: On-net fax fails from 5.4R5 Blade (SLX:<br/>001-00-016849)<br/>TEST: Using a soft MGCP call to the META toggle between direct media and<br/>indirect media (in the Meta's MG-Model) to verify the faulted fax with the older build and  fixed with the new.<br/>The direct media setting on the meta switch can be found in the media-gateway model referenced per subscriber. This controls the rtp path either through the switch or direct peer to peer. <br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="5856" name="Basic SIP regression"><node_order>3</node_order><externalid>5856</externalid><summary><![CDATA[Connect SIP users to Metaswitch ... <br/>Verify basic call functionality including:<br/>-sip waiting<br/>-sip call waiting caller id<br/>-sip lcfo<br/>-sip bulk call (48 hours with 99% or greater)<br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="6191" name="Verify SIP digit maps work correctly"><node_order>3</node_order><externalid>6191</externalid><summary><![CDATA[Verify that the DELL Telephone digit map is parsed correctly to the ONT.<br/>]]></summary><preconditions>GPON ONT, 6322.</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7352" name="Retry-After header Field"><node_order>3</node_order><externalid>7352</externalid><summary><![CDATA[SUBSCRIBE failure when 503 code recieved. SIP Client fails to restart SUBSCRIBE<br/>Oz#24566/ Oz#24609<br/><br/>  SIP testing to continue to send SUBSCRIBE messages when Call-Agent sends an error message (503) with Retry Header Field populated with a time-out value<br/>]]></summary><preconditions>6252-xx
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7363" name="  Basic  Call Connection"><node_order>3</node_order><externalid>7363</externalid><summary><![CDATA[ On-Net: phone A calls B  normal 7 digit calling for call completion and confirmation of talk path.<br/>]]></summary><preconditions>BLC-6252-x,  MetaSwitch</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7438" name="*98 support"><node_order>3</node_order><externalid>7438</externalid><summary><![CDATA[Unrestricted  Star Code. Subscriber dials *98. Sends *98 to Call-Agent.<br/>  Phone A dials *98 and sends a INVITE with *98 up to the Call-Agent for a switch provisioned feature.<br/>]]></summary><preconditions>6322,ON2442, MetaSwitch</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7511" name="Verify Home Intercom functionality"><node_order>3</node_order><externalid>7511</externalid><summary><![CDATA[Verify that Home Intercom works correctly to the MetaSwitch.<br/>]]></summary><preconditions>6252-02
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7608" name="SIP, Interoperability with Broadworks"><node_order>3</node_order><externalid>7608</externalid><summary><![CDATA[Test interoperability to Broadworks...needs to be tested by customer.<br/>]]></summary><preconditions></preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7609" name="Hotline"><node_order>3</node_order><externalid>7609</externalid><summary><![CDATA[Using MGCP to both Nortel and Metaswitch. Verify Hotline feature. <br/><br/>Hotline number should be configured on the UA (possibly by starcode) per admin via the configuration interface of the ONT. Upon offhook event the ONT should dial this configured number.<br/><br/><br/>Functional Spec of the feature can be found here:<br/>http://wiki/index.php/SIP_Warmline_SWFS<br/>]]></summary><preconditions>MS softswitch, handsets 
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7610" name="Warmline"><node_order>3</node_order><externalid>7610</externalid><summary><![CDATA[Using MGCP to both Nortel and Metaswitch. Verify Warmline feature. <br/><br/>Warmline number should be configured on the UA per admin via the configuration interface of the ONT. Upon offhook event + X number of seconds the ONT should dial this configured number.<br/><br/><br/>Functional Spec of the feature can be found here:<br/>http://wiki/index.php/SIP_Warmline_SWFS<br/>]]></summary><preconditions>MS softswitch, handsets 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7666" name="SIP call transfer and 3-way calling bug18739"><node_order>3</node_order><externalid>7666</externalid><summary><![CDATA[Feature: SIP<br/>SubFeature: call transfer, 3 way call<br/><br/>Summary:<br/>Call transfer modifies how 3-way calling works.<br/><br/>With 3-way calling, the party that initiates the 3-way call must stay on the<br/>line.  If they drop, they will be called back.<br/><br/>With Call Transfer active, then the person that initiates the 3-way call can<br/>drop from the call either before the new party answers (Blind Call Transfer) or<br/>after they answer (attended call transfer or the polite way to achieve call<br/>transfer that makes sure that the other party does not end up abandoned).<br/>With Call Transfer taking precedence over 3-way-calling, enabling call transfer would automatically enable the modified 3-way-calling, even if 3-way-calling is disabled.<br/><br/>Test case specifics:<br/>To test that call-transfer and 3-way-calling. <br/><br/>Documentation:<br/><br/><br/>Duration:<br/>Est. time to execute:<br/>Actual time to execute:<br/><br/>Test overview<br/><br/>INITIALIZATION PHASE<br/>1. Verify BLC software version<br/>2. Check memory on the blade.<br/><br/>TESTING PHASE<br/>Verify for all BLC supported SIP from cli as well as from ewi:<br/><br/>Expected actions are for 3 way calling and call transfer:<br/><br/>A calls B<br/>B calls C<br/><br/>3 way calling<br/>--------------<br/>C rings<br/> B hangs up -> B's phone rings to reconnect to A<br/> B flashes -> C disconnected, return to A calls B<br/><br/>C answers<br/> B hangs up -> C disconnected, B's phone rings to reconnect to A<br/> B flashes -> 3 way call.<br/><br/>3 way call.<br/> B hangs up -> Both calls disconnected.<br/> B flashes -> C disconnected. return to A calls B<br/><br/><br/>Call Transfer<br/>--------------<br/>C rings<br/> B hangs up -> A gets transfered to C's ringing phone.<br/> B flashes -> C disconnected, return to A calls B<br/><br/>C answers<br/> B hangs up -> A gets transfered to C.<br/> B flashes -> 3 way call.<br/><br/>3 way call<br/> B hangs up -> A gets transfered to C.<br/> B flashes -> C disconnected. return to A calls B<br/><br/>-Verify that SIP profile with call-transfer is working  <br/>-Verify that SIP profile with 3-way-calling is working  <br/><br/>CLOSING PHASE<br/>1. Record any logged errors or anomalies<br/>2. Check alarms/vlm for errors<br/>3. Check memory in the blades.  <br/>]]></summary><preconditions>BLC 6150,6151,6152,6246,6252,6322
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7714" name="SIP call transfer and 3-way calling - ON 23xx"><node_order>3</node_order><externalid>7714</externalid><summary><![CDATA[Feature: SIP<br/>SubFeature: call transfer, 3 way call<br/><br/>Summary:<br/>According the Metaswich, the call transfer feature and the 3 way call feature are not enabled at the same time.<br/>This does allow for fully attended call transfer, i.e. flash to add on the new call.<br/>flash back to the original call to advise the transferee of the new call status.<br/>Hangup to transfer or flash to disconnect the new call.<br/><br/>Test case specifics:<br/>To test that call-transfer and 3-way-calling can't be enabled at the same time.<br/><br/>Documentation:<br/><br/><br/>Duration:<br/>Est. time to execute:<br/>Actual time to execute:<br/><br/>Test overview<br/><br/>INITIALIZATION PHASE<br/>1. Verify BLC/ONT software version<br/>2. Check memory on the blade.<br/><br/>TESTING PHASE<br/><br/>**** This test can be done with test 7666 due to BLCs coverage ****<br/><br/>Verify for ON 2340/2364 Ethernet FTTP ONT family (running ONTOS 4.0 or later) supported SIP from cli as well as from ewi:<br/>-Verify that call-transfer and 3-way-calling can't be enabled at the same time<br/>-Verify that SIP profile with call-transfer is working <br/>-Verify that SIP profile with 3-way-calling is working <br/><br/>CLOSING PHASE<br/>1. Record any logged errors or anomalies<br/>2. Check alarms/vlm for errors<br/>3. Check memory in the blades. <br/>]]></summary><preconditions>BLCs (6150,6151,6152,6246,6252) and 2340/2364 Ethernet FTTP ONT family
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7715" name="SIP call transfer and 3-way calling - ON 24xx"><node_order>3</node_order><externalid>7715</externalid><summary><![CDATA[Feature: SIP<br/>SubFeature: call transfer, 3 way call<br/><br/>Summary:<br/>According the Metaswich, the call transfer feature and the 3 way call feature are not enabled at the same time.<br/>This does allow for fully attended call transfer, i.e. flash to add on the new call.<br/>flash back to the original call to advise the transferee of the new call status.<br/>Hangup to transfer or flash to disconnect the new call.<br/><br/>Test case specifics:<br/>To test that call-transfer and 3-way-calling can't be enabled at the same time.<br/><br/>Documentation:<br/><br/><br/>Duration:<br/>Est. time to execute:<br/>Actual time to execute:<br/><br/>Test overview<br/><br/>INITIALIZATION PHASE<br/>1. Verify BLC/ONT software version<br/>2. Check memory on the blade.<br/><br/>TESTING PHASE<br/><br/>**** This test can be done with test 7666 due to BLCs coverage ****<br/><br/>Verify for ON 2440 ONT family supported SIP from CLI as well as from EWI:<br/>-Verify that call-transfer and 3-way-calling can't be enabled at the same time<br/>-Verify that SIP profile with call-transfer is working <br/>-Verify that SIP profile with 3-way-calling is working <br/><br/>CLOSING PHASE<br/>1. Record any logged errors or anomalies<br/>2. Check alarms/vlm for errors<br/>3. Check memory in the blades.<br/>]]></summary><preconditions>BLC 6322 (only this?) and ON 2440 ONT family
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7716" name="SIP call transfer and 3-way calling - ON 25xx"><node_order>3</node_order><externalid>7716</externalid><summary><![CDATA[Feature: SIP<br/>SubFeature: call transfer, 3 way call<br/><br/>Summary:<br/>According the Metaswich, the call transfer feature and the 3 way call feature are not enabled at the same time.<br/>This does allow for fully attended call transfer, i.e. flash to add on the new call.<br/>flash back to the original call to advise the transferee of the new call status.<br/>Hangup to transfer or flash to disconnect the new call.<br/><br/>Test case specifics:<br/>To test that call-transfer and 3-way-calling can't be enabled at the same time.<br/><br/>Documentation:<br/><br/><br/>Duration:<br/>Est. time to execute:<br/>Actual time to execute:<br/><br/>Test overview<br/><br/>INITIALIZATION PHASE<br/>1. Verify BLC/ONT software version<br/>2. Check memory on the blade.<br/><br/>TESTING PHASE<br/><br/>**** This test can be done with test 7666 due to BLCs coverage ****<br/><br/>Verify for ON 2500 ONT family supported SIP from CLI as well as from EWI:<br/>-Verify that call-transfer and 3-way-calling can't be enabled at the same time<br/>-Verify that SIP profile with call-transfer is working <br/>-Verify that SIP profile with 3-way-calling is working <br/><br/>CLOSING PHASE<br/>1. Record any logged errors or anomalies<br/>2. Check alarms/vlm for errors<br/>3. Check memory in the blades. <br/>]]></summary><preconditions>BLC 6322 (only this?) and ON 2500 ONT family
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7881" name="SIP Domain"><node_order>3</node_order><externalid>7881</externalid><summary><![CDATA[Feature<br/>VoIP<br/><br/>SubFeature<br/>SIP Domain	<br/><br/>Summary <br/>This test is to test that the ONT can register with a SIP domain instead of only an IP. <br/><br/><br/>Equipment required<br/><br/>1 234x ONT, 1 631x/6450 blade<br/><br/>Test overview<br/><br/>INITIALIZATION PHASE<br/>1.	Verify BLC software version<br/>2.	Verify blacklist alarm state is clear<br/>3.	Check memory available<br/>4.	Check network connectivity<br/>5.	Verify system logging is configured (SNMP/syslog)<br/><br/><br/>TESTING PHASE<br/>1.	Power on an ONT that has a data service provisioned. <br/>2.	Ensure SIP VoIP service is provisioned at the OLT and ONT such that calls can be made and received<br/>3.	Change the SIP domain at the Metaswitch to any string X.<br/>4.	Ensure that the ONT is no longer registered then configure the SIP domain on the ONT to be string X. <br/>5.	Ensure that calls can be made and received without issues.<br/><br/>CLOSING PHASE<br/>1.	Tear down connections for test tools and stop the running traffic or calls.<br/>2.	Record statistics from the test run.<br/>3.	Record any logged errors or anomalies<br/>4.	Verify clean teardown of traffic and calls<br/>5.	Check alarms<br/>]]></summary><preconditions>1 234x ONT, 1 631x/6450 blade</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7883" name="SIP Digit Map *XX [0-9].T"><node_order>3</node_order><externalid>7883</externalid><summary><![CDATA[Feature<br/>VoIP<br/><br/>SubFeature<br/>SIP Digit Map *xx [0-9].T	<br/><br/>Summary <br/>This test is to test that the ONT can use a SIP digit map of “*xx [0-9].T”. <br/><br/><br/>Equipment required<br/><br/>1 234x ONT, 1 631x/6450 blade<br/><br/>Test overview<br/><br/>INITIALIZATION PHASE<br/>1.	Verify BLC software version<br/>2.	Verify blacklist alarm state is clear<br/>3.	Check memory available<br/>4.	Check network connectivity<br/>5.	Verify system logging is configured (SNMP/syslog)<br/><br/><br/>TESTING PHASE<br/>1.	Power on an ONT that has a data service provisioned. <br/>2.	Ensure SIP VoIP service is provisioned at the OLT and ONT such that calls can be made and received<br/>3.	Change the SIP digit map to match *xx [0-9].T<br/>4.	Ensure that star codes are accepted immediately without the 4 second time out expiring. <br/><br/>CLOSING PHASE<br/>1.	Tear down connections for test tools and stop the running traffic or calls.<br/>2.	Record statistics from the test run.<br/>3.	Record any logged errors or anomalies<br/>4.	Verify clean teardown of traffic and calls<br/>5.	Check alarms<br/>]]></summary><preconditions>1 234x ONT, 1 631x/6450 blade
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7889" name="SIP does not trap *98"><node_order>3</node_order><externalid>7889</externalid><summary><![CDATA[Feature<br/>VoIP<br/><br/>SubFeature<br/>SIP Does not trap *98<br/><br/>Summary <br/>This test is to test that the ONT can use a *98 and pass it to the switch properly. <br/><br/><br/>Equipment required<br/><br/>1 234x ONT, 1 631x/6450 blade<br/><br/>Test overview<br/><br/>INITIALIZATION PHASE<br/>1.	Verify BLC software version<br/>2.	Verify blacklist alarm state is clear<br/>3.	Check memory available<br/>4.	Check network connectivity<br/>5.	Verify system logging is configured (SNMP/syslog)<br/><br/><br/>TESTING PHASE<br/>1.	Power on an ONT that has a data service provisioned. <br/>2.	Ensure SIP VoIP service is provisioned at the OLT and ONT such that calls can be made and received<br/>3.	Dial *98 and ensure that the ONT passes it properly to switch by doing a capture of the SIP invite packet.<br/>4.	Retest with ONT version 4.0R2_P4 and ensure that the dialed string is trapped locally and enables/disables call transfer.<br/><br/>CLOSING PHASE<br/>1.	Tear down connections for test tools and stop the running traffic or calls.<br/>2.	Record statistics from the test run.<br/>3.	Record any logged errors or anomalies<br/>4.	Verify clean teardown of traffic and calls<br/>5.	Check alarms<br/>]]></summary><preconditions>1 234x ONT, 1 631x/6450 blade
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7890" name="SIP - Verify basic  handset call a->b on diff units"><node_order>3</node_order><externalid>7890</externalid><summary><![CDATA[Using Metaswitch. Configure SIP calls between an ONT and another ONT not using the same unit for each pots port. Verify with handsets that a basic call can be made. <br/>]]></summary><preconditions>CC, and MS softswitches, handsets 
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7891" name="SIP - Verify basic  handset call a->b on same unit"><node_order>3</node_order><externalid>7891</externalid><summary><![CDATA[Using Metaswitch. Configure SIP calls between the WEDGE's 1st and 2nd pots ports. Verify with handsets that a basic call can be made. <br/><br/><br/>Make sure the case scenario in bug#21669 (GPON ONT) is working: <br/><br/>- make a single call port to port and verify there are no packets lost<br/>- make both calls simultaneously and verify there are no packets lost<br/>]]></summary><preconditions>MS softswitches, handsets, hw 2364
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7892" name="SIP - Verify basic  handset call a->b on diff units"><node_order>3</node_order><externalid>7892</externalid><summary><![CDATA[Using Metaswitch. Configure SIP calls between an WEDGE and another WEDGE not using the same unit for each pots port. Verify with handsets that a basic call can be made. <br/><br/>Make sure the case scenario in bug#21669 (GPON ONT) is working: <br/><br/>- make a single call port to port and verify there are no packets lost<br/>- make both calls simultaneously and verify there are no packets lost<br/>]]></summary><preconditions>MS softswitches, handsets
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7893" name="SIP - Reorder/howler/ Off hook warning tone/etc"><node_order>3</node_order><externalid>7893</externalid><summary><![CDATA[Using Wedge configured for SIP to Metaswitch.  Verify an offhook warning is played when the phone is left offhook and idle too long. <br/>]]></summary><preconditions>MS softswitch, handsets 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7894" name="SIP - Call Transfer Attended (3way period)"><node_order>3</node_order><externalid>7894</externalid><summary><![CDATA[Using endpoints on two different wedge's, confirm attended call transfer.<br/><br/>Action: Setup call from B to A. NOT FROM A TO B.<br/>Action: Put B on hold and call C from A<br/>Confirm: 2-way media between C and A<br/>Confirm: 0-way media between B and A<br/>Action: From A, bring B into 3-way call with A and C.<br/>Confirm: 3-way media between A, B and C<br/>Action: A leaves call.<br/>Confirm: A correctly drops out from call<br/>Confirm: 2-way media between B and C.<br/>]]></summary><preconditions>handset, metaswitch
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7896" name="SIP - Call transfer  `NOT` Attended"><node_order>3</node_order><externalid>7896</externalid><summary><![CDATA[Using Metaswitch. Verify SIP unattended call transfer works correctly. <br/><br/>The call is transferred with NO period of 3way media.<br/><br/>Action: Setup call from B to A. NOT A TO B.<br/>Action: Put B on hold and call C from A<br/>Confirm: 2-way media between C and A<br/>Confirm: 0-way media between B and A<br/>Action: Transfer B to C occurs by hanging up A<br/>Confirm: 2-way media between B and C<br/>Confirm: A correctly drops out from call<br/>]]></summary><preconditions>CC, and MS softswitches, handsets 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7899" name="SIP - Call Transfer Blind"><node_order>3</node_order><externalid>7899</externalid><summary><![CDATA[Verify blind call transfer using SIP<br/><br/>Action: Create a call from B to A<br/>Action: Blind transfer B to C occurs by hanging up A before C picks up.  B should hear ring tone.<br/>Confirm: There is never media between A and C<br/>Confirm: A drops out of call<br/>Confirm: two way media between B and C<br/>Action: Hang up all phones<br/>]]></summary><preconditions>handsets, ss
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7901" name="SIP - Call Forwarding (unconditional/delayed/busy/selective"><node_order>3</node_order><externalid>7901</externalid><summary><![CDATA[Confirm all call forwarding features work properly.  Test on endpoints btw two different wedges.<br/><br/>UNCONDITIONAL:<br/>Must first be enabled on the MetaSwitch. *72=enable; *73=disable. Dial star code and wait for stutter dialtone and then dial digits of line to be forwarded to.<br/>Action: From A, setup unconditional call forwarding to B<br/>Action: Call A from C<br/>Confirm: A rings no more than once (can be zero times)<br/>Confirm: the call is forwarded to B<br/>Action: answer phone B<br/>Confirm: two way media B to C<br/>Action: hang up B and C.<br/>Action: Cancel call forwarding on A.<br/>Confirm: call from C to A rings at A normally, is not forwarded.<br/><br/>DELAYED:<br/>Must first be enabled on the MetaSwitch. *92=enable; *93=disable. Dial star code and wait for stutter dialtone and then dial digits of line to be forwarded to.<br/>Action: From A, setup delayed call forwarding to B<br/>Action: Call A from C<br/>Confirm: A rings for the configured time before forwarding (10 seconds)<br/>Confirm: the call is forwarded to B<br/>Action: Answer phone B<br/>Confirm: two way media B to C<br/>Action: Cancel call forwarding on A.<br/>Confirm: A has dial tone.<br/>Action: C calls A.<br/>Confirm: Call is not forwarded to B after the configured period is passed (for example, may go to voicemail; reorder tone if no other service configured).<br/><br/>BUSY:<br/>Must first be enabled on the MetaSwitch.  Call-waiting must be disabled. *90=enable; *91=disable. Dial star code and wait for stutter dialtone and then dial digits of line to be forwarded to.<br/>Action: From A, setup busy call forwarding to B<br/>Action: Setup call between A and C<br/>Action: Call A from D<br/>Confirm: D is forwarded to B<br/>Action: Answer phone B<br/>Confirm: two way media between B and D<br/>Confirm: two-way media persists between A and C<br/>Action: Hang up all lines.<br/>Action: Cancel call forwarding on A.<br/>Action: Set up call between A and C.<br/>Action: Call A from D.<br/>Confirm: Call is not forwarded to B, and instead gets whatever the next configured busy treatment is (e.g. voicemail, or busy tone).<br/><br/>SELECTIVE:<br/>Must first be enabled on the MetaSwitch. *63=enable. Dial star code and follow instructions.<br/>Action: From A, setup selective call forwarding such that if B calls then B is forwarded to C<br/>Action: Call A from B<br/>Confirm: A rings no more than once (can be zero times)<br/>Confirm: B is forwarded to C<br/>Action: Answer phone C<br/>Confirm: two way media between B and C<br/>Confirm: A has dial-tone (then hang up).<br/>Action: Call A from D.<br/>Confirm: A rings as usual (or other call treatment is in place, in which case confirm that is working as expected).<br/>Action: Cancel call forwarding.<br/>Confirm: Calls from B are no longer forwarded to C.<br/>]]></summary><preconditions>handsets, ss, wedges</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7905" name="SIP - Cancel Call Waiting (*70)"><node_order>3</node_order><externalid>7905</externalid><summary><![CDATA[Feature<br/>VOIP<br/><br/>SubFeature<br/>Cancel Call Waiting<br/><br/>Summary <br/>Because of some issues seen in the field with CCW this test should be executed that it is still working with the Metaswitch and TGW. <br/><br/>INITIALIZATION PHASE<br/><br/>1.	Verify BLC software version<br/>2.	Verify blacklist alarm state is clear<br/>3.	Check memory available<br/>4.	Check network connectivity<br/>5.	Verify system logging is configured (SNMP/syslog)<br/><br/><br/>TESTING PHASE<br/>1.	Use a 4.x ONT to create a call with cancel call waiting enabled by using *70 before dialing the outbound number.<br/>2.	Call into this line from another subscriber and ensure that the line goes to busy. <br/><br/>CLOSING PHASE<br/>1.	Tear down connections for test tools and stop the running traffic or calls.<br/>2.	Record statistics from the test run.<br/>3.	Record any logged errors or anomalies<br/>4.	Verify clean teardown of traffic and calls<br/>5.	Check alarms<br/>]]></summary><preconditions>6312, ON234x
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7907" name="SIP - Fax Indirect Media"><node_order>3</node_order><externalid>7907</externalid><summary><![CDATA[Send fax (minimum 10 pages) from fax machine to windows computer equipped with `fax console` (can be downloaded for free online) on Wedges configured for SIP Indirect Media.  Confirm sent fax matches received fax (fax console will create a .TIF document of the received fax pages).<br/>]]></summary><preconditions>2 wedges, fax machine and windows fax console
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7920" name="SIP - (LCFO)forward/network disconnect"><node_order>3</node_order><externalid>7920</externalid><summary><![CDATA[Using MGCP to Metaswitch.Verify forward disconnect<br/>]]></summary><preconditions>CC, and MS softswitches, handsets 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7921" name="SIP - IP disconnect during call, before/after RSIP"><node_order>3</node_order><externalid>7921</externalid><summary><![CDATA[Using MGCP to Metaswitch. Disconnect the ONT from IP connectivity to the softswitch during different states, during a call, after and before registration, etc...<br/>]]></summary><preconditions>CC, and MS softswitches, handsets 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7924" name="SIP - Multiple Appearance Directory Numbers"><node_order>3</node_order><externalid>7924</externalid><summary><![CDATA[The `multiple appearance directory number` feature allows one number to simultaneously ring a group of phones (see configu info on Metaswitch occamwiki page).  When any one of those phones in the configured group answers the incoming call the remaining phones in the group are available again to receive calls. All phones that are not busy will ring when a new inbound call arrives.  There are three test cases.  In all, A and B are under the same MADN and on separate ONT Wedges.  Test for both MGCP-SS and GR-303.<br/><br/>Test case A - Multiple lines available:<br/>From C dial the MADN number<br/>Confirm A and B ring simultaneously<br/>Answer phone A<br/>Confirm B stops ringing, and A is connected to C<br/><br/>Test case B - One line available:<br/>Establish a call between D and A<br/>From C dial the MADN number<br/>Confirm only B rings<br/>Hang up phones A and D<br/>Confirm B continues to ring<br/>Pick up B and confirm B is connected to C<br/><br/>Test case C - No lines available, queuing:<br/>Establish a call between D and A<br/>Establish a call between C and B<br/>From E dial the MADN number<br/>Confirm E is queued (hears ringback)<br/>Hang up A and D<br/>Confirm A starts to ring with call from E<br/>Pick up A<br/>Confirm 2-way media between A and E<br/>]]></summary><preconditions>handsets, Metaswitch, ONT Wedges</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7928" name="SIP - Multiple Line Hunt Groups"><node_order>3</node_order><externalid>7928</externalid><summary><![CDATA[This feature allows a caller to dial a 'pilot number' for the group so that calls to the group are passed to a non-busy line within the Hunt Group, or may be added to a queue if all lines are busy. The non-busy lines will ring in turn according to the hunting algorithm selected, the default being a linear algorithm that tries the members in order of phone number (low to high).  There are three test cases, w/ A being on DUT configured for SIP.<br/><br/>Test case A - B is in MLHG.  Test with with A both in and out of MLHG:<br/>From A, dial the pilot number for the MLHG.<br/>Confirm B rings. Pick up and check 2 way audio.<br/><br/>Test case B - A and B are in MLHG:<br/>Enable DND on A. From C, dial the pilot number for the MLHG<br/>Confirm B rings. Pick up and check 2 way audio.<br/><br/>Test case C - A and B are in MLHG:<br/>From C, E, F, G, dial the pilot number for the MLHG<br/>Confirm A & B ring, pick up both & check 2 way audio. Confirm F is queued and then treated as busy after 15 seconds (or whatever duration is configured). <br/>Confirm call from G is rejected.<br/>Queue length (specifies max # of calls that can be queued) must equal 1 and queuing time must be limited to 15 on Metaswitch for MLHG.<br/>]]></summary><preconditions>Metaswitch, ONT Wedge, handsets
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7961" name="Call Park"><node_order>3</node_order><externalid>7961</externalid><summary><![CDATA[Tested Features:<br/>   - Call park<br/>   - Call park retrieval<br/>]]></summary><preconditions>2 sages + BLCs + Metaswitch
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="7978" name="SIP-hanging up a called SIP line Bug#21778"><node_order>3</node_order><externalid>7978</externalid><summary><![CDATA[Feature<br/>SIP<br/><br/>SubFeature<br/>Metaswitch<br/><br/>Summary <br/>When hanging up a called SIP line the Metaswitch should not reject the BYE<br/><br/>6.2R4 test plan is looking at bug 26741, bug 26580 and proper MWI and 3-way call functionality<br/><br/>INITIALIZATION PHASE<br/><br/>1.	Verify BLC software version<br/>2.	Verify blacklist alarm state is clear<br/>3.	Check memory available<br/>4.	Check network connectivity<br/> <br/><br/>TESTING PHASE<br/>-A calls B.<br/>-B hangs up.<br/>-A hangs up.<br/><br/>Verify that after hanging up, the Metaswitch is not rejecting the BYE:<br/>- A and B are not busy<br/>- A and B get disconnected immediately,and will not<br/>get forward disconnect<br/><br/> <br/><br/>CLOSING PHASE<br/>1.	Tear down connections for test tools and stop the running traffic or calls.<br/>2.	Record statistics from the test run.<br/>3.	Record any logged errors or anomalies<br/>4.	Verify clean teardown of traffic and calls<br/>5.	Check alarms<br/>]]></summary><preconditions> BLC 6150,6252
+
+
+
+
+
+
+
+
+
+</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+<testcase internalid="8004" name="SIP - SUBSCRIBE retry"><node_order>3</node_order><externalid>8004</externalid><summary><![CDATA[Feature<br/>SIP<br/><br/>SubFeature<br/>Metaswitch<br/><br/>Summary<br/>This test case is written in direct response to bug#24609 and is intended to verify that SIP SUBSCRIBE Retry-After and NOTIFY functionality related to MWI play nice and have the proper timeouts.<br/><br/>There is a specific instance that was seen at a customer site mentioned in the bug number which I am unclear on how to reproduce at this point.  <br/><br/>The less specific instance of Retry-After time is easier to duplicate and should qualify as a rough check of the basic functionality that has been put in place to take care of this issue.<br/><br/><br/>INITIALIZATION PHASE<br/><br/>1.     Verify BLC software version<br/>2.     Verify blacklist alarm state is clear<br/>3.     Check memory available<br/>4.     Check network connectivity<br/><br/><br/>TESTING PHASE<br/>1. The simplest way to verify the fix is in will be to disable MWI on the Metaswitch for the lines in question.<br/><br/>2. Enable MWI on the DUT (determine which blades need to be called out)<br/><br/>3. Take a SIP trace and confirm that SUBSCRIBE retries are seen after failure messages are received from the meta.  Note RetryAfter header time and confirm that it is being obeyed or that we default to the 10 minutes outlined in the bug.<br/><br/>4. Enable MWI on the meta and confirm the positive functionality<br/><br/><br/>CLOSING PHASE<br/>1.     Tear down connections for test tools and stop the running traffic or calls.<br/>2.     Record statistics from the test run.<br/>3.     Record any logged errors or anomalies<br/>4.     Verify clean teardown of traffic and calls<br/>5.     Check alarms<br/>]]></summary><preconditions>Meta
+SIP Endpoints</preconditions><executiontype>1</executiontype><importance>2</importance><keywords><keyword name="SIP"><notes><![CDATA[]]></notes></keyword></keywords></testcase>
+</testcases>

@@ -1,0 +1,635 @@
+<testcases>
+<testcase internalid="8020" name="Copy Running Config">
+  <node_order>3</node_order>
+  <externalid>8020</externalid>
+  <summary>Feature&lt;br&gt;CLI&lt;br&gt;SubFeature&lt;br&gt;Copy Running-Config&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This testcase is to ensure that the ONT can properly save its config locally and remotely through ftp.&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 23xx ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Setup an ONT such that it has MGMT access. Make some changes to the running config of the ONT. &lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Execute the copy running-config startup-config commands and then reload the ONT ensuring that on the next boot the changes made previously were configured properly.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Execute the copy running-config ftp://XXXX command and ensure that the ftp server receives the config file completely. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions></preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="CLI">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="8017" name="Wall Clock Change">
+  <node_order>3</node_order>
+  <externalid>8017</externalid>
+  <summary>Feature&lt;br&gt;DHCP &lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Wall Clock Change&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test verifies the proper  operation of the DHCPd client in the case of wall clock changes. The ONT should recalculate the lease end times and send out renewals as necessary. &lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 23xx ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Setup an ONT such that it MGMT connectivity to the network. Set your DHCP server to a short lease (~1hr).&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Disable NTP and set the date in linux to 1 month from the current date. Then send the dhcp renew command. &lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Turn up NTP and let it sync to the server. Check the date to be the current date. &lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that the ONT properly DHCPs within the hour.  &lt;br&gt;5.      Retest this condition with a negative wall clock change.&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions></preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="DHCP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="8016" name="Upgrade on Boot">
+  <node_order>3</node_order>
+  <externalid>8016</externalid>
+  <summary>Feature&lt;br&gt;DHCP&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This testcase is meant to verify the ability of a device coming from the factory to be upgraded as soon as it is plugged in. This specifically is testing that the sync of NTP to a server does not skew the image download timeout to cause a failed upgrade.&lt;br&gt; &lt;br&gt;Duration&lt;br&gt;&lt;br&gt;Est. time to execute: 2 hours &lt;br&gt;&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Using a 4.0 ONT using DHCP, enable the management access profiles DHCP Hotwap also ensure that the ONT is pulling down a configuration with a valid upgrade image and NTP date server.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Using this subscriber port pull the power and fiber on the ONT and swap in another.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that upon boot the newly swapped in ONT successfully upgrades then reboots. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>631X or 64XX, ON23XX, DHCP server
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="Upgrade">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7922" name="Change Channels During Call">
+  <node_order>3</node_order>
+  <externalid>7922</externalid>
+  <summary>Feature&lt;br&gt;IGMP&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Interop with Voice Stack&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test case was created in order to validate that there is no call quality effects to changing channels.&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 234x ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Power on an ONT that has a video service provisioned at the OLT. &lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use an ONT LAN port or HPNA for set top boxes.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tune 2 STBs to the same channel of the same port on the ONT.&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check that both STBs appear on the proper channel in the `show igmp` table. &lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Make a call to another endpoint on the network&lt;br&gt;6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change the channel on the STBs and listen for any clicks or artifacts in the RTP.&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions></preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="IGMP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7912" name="2 STBs Same Channel Same Port">
+  <node_order>3</node_order>
+  <externalid>7912</externalid>
+  <summary>Feature&lt;br&gt;IGMP&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;2 STBs Same Channel Same Port&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test case was created in order to validate having multiple set top boxes watch the same channel and having one of the STBs leave the channel. In bug 26212 it was found that the STB that remained on the channel would see tiling when the other STB sent its leave.&lt;br&gt;&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 234x ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Power on an ONT that has a video service provisioned at the OLT. &lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use an ONT LAN port or HPNA for set top boxes.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tune 2 STBs to the same channel of the same port on the ONT.&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check that both STBs appear on the proper channel in the `show igmp` table. &lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change the channel of STB1 and ensure that it is removed from the previous channel and added to the new one in the `show igmp` table as well as noting that there is no tiling on either of the STBs. &lt;br&gt;6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change STB2 to the same channel that STB1 is now watching and ensure the table updates properly again. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions></preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="IGMP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7910" name="Show Commands">
+  <node_order>3</node_order>
+  <externalid>7910</externalid>
+  <summary>Feature&lt;br&gt;Temperature Sensor&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Show Commands&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test is to verify that a -02 ONT can properly display the current temperature as well as a 72hr backlog of the temperature history. &lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 234x ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Power on an ONT that has a MGMT service provisioned. &lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Issue the “show environment” command on a -02 and a non-02 234x ONT. Ensure that in the case of the -02 the proper current temperature is shown as well as the highest and lowest temperatures seen. No temperature information should appear for the non-02 ONTs.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Execute the “show environment temperature” command on the -02 ONT and ensure that only the high, low, and current temperatures are displayed. Ensure this command and the “show environment temperature history” cannot be executed on a non-02.&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leave a -02 ONT up for +72hrs and ensure that the logs roll over properly and the total high and low temperatures are reflected properly. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions></preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="Temp Sensor">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7684" name="NTP on ONT 4.0">
+  <node_order>3</node_order>
+  <externalid>7684</externalid>
+  <summary>This is a placeholder for the new test case template!Feature&lt;br&gt;NTP&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;NTP has been modified to use industry standard ntpd and ntpdate from support.ntp.org version 4.2.4p5. &lt;br&gt;SYSMGR support NTP server config commands &lt;br&gt;set ntp server pri 10.2.10.10&lt;br&gt;set ntp server sec 10.0.0.8&lt;br&gt;Timezones use industry standard binary files from the tz database at elsie.nci.nih.gov. These have been compliled using the 2008 data files. &lt;br&gt;The entire timezone directory is contained in the standard linux /usr/share/zoneinfo. The zoneinfo data base covers the entire world with zone information current as of 2008. Time zone files can also be downloaded from a tftp server (see below). This feature allows customers to use current industry standard timezone files without upgrading to a new release. &lt;br&gt;SYSMGR supports a &lt;br&gt;show zoneinfo [filter] &lt;br&gt;command which will display all or a subset of the available time zones. &lt;br&gt;If the filter is lower case then a grep -i filter is applied. If the filter contains uppercase the grep filter is applied. &lt;br&gt;Examples &lt;br&gt;SYSMGR&gt;show zoneinfo US&lt;br&gt;US&lt;br&gt;US/Alaska&lt;br&gt;US/Aleutian&lt;br&gt;US/Arizona&lt;br&gt;US/Central&lt;br&gt;US/East-Indiana&lt;br&gt;US/Eastern&lt;br&gt;US/Hawaii&lt;br&gt;US/Indiana-Starke&lt;br&gt;US/Michigan&lt;br&gt;US/Mountain&lt;br&gt;US/Pacific&lt;br&gt;US/Pacific-New&lt;br&gt;US/Samoa&lt;br&gt;SYSMGR&gt;show zoneinfo guam&lt;br&gt;Pacific/Guam&lt;br&gt;A timezone is selected using &lt;br&gt;set ntp zone &lt;name&gt; [ipaddr of tftp]&lt;br&gt;if an IP address is given SYSMGR will tftp the file from the server. If no IP address is given the the file will be obtained from the zoneinfo database locally. &lt;br&gt;A show command will show the ntp configuration: &lt;br&gt;SYSMGR&gt;show ntp&lt;br&gt;Date:                          Mon Nov 10 14:13:20 PST 2008&lt;br&gt;Timezone:                      PST8PDT&lt;br&gt;Primary NTP Server:            10.0.0.8&lt;br&gt;Secondary NTP Server:          pool.ntp.org&lt;br&gt;NTP Status:&lt;br&gt;     remote           refid      st t when poll reach   delay   offset  jitter&lt;br&gt;==============================================================================&lt;br&gt; 10.0.0.8        .GPS.            1 u    -   64   17    4.341  -108.71  59.637&lt;br&gt; 64.73.32.134    64.73.0.41       2 u   36   64   17   62.743   -0.264  92.114&lt;br&gt;&lt;br&gt;SYSMGR supports a show clock command using standard linux date: &lt;br&gt;SYSMGR&gt;show clock&lt;br&gt;Tue Sep 30 10:26:37 PDT 2008&lt;br&gt;&lt;br&gt;Duration&lt;br&gt;&lt;br&gt;Est. time to execute: 4 hours &lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use the above commands to point the ONT to an appropriate NTP server.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify that before and after a reboot of the ONT the date and time are set correctly for the selected time zone (must copy running-config prior to reboot).  Repeat with every other available time zone.&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>631X or 64XX, NTP Server, ON23XX
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="NTP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7598" name="Changing IGMP VLAN">
+  <node_order>3</node_order>
+  <externalid>7598</externalid>
+  <summary>Feature&lt;br&gt;IGMP&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Changing IGMP vlan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;&lt;br&gt;For 6.2R3 verify that Bug#23611 is fixed&lt;br&gt;&lt;br&gt;This test case was created in order to validate that the validity of constant channel zapping on both HPNA and LAN ports.&lt;br&gt;For 6.2R3 verify that Bug#23611 is fixed&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 234x ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Power on an ONT that has a video service provisioned at the OLT. &lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change the igmp vlan on the ONT to match the match clause for the video service on the OLT.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run client emulators in channel zapping mode where they will watch a channel for a few seconds the zap to the next one.&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that the video quality remains constant and that all joins are successful. &lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;While this test is running make sure to use a real STB of each of the LAN and HPNA ports to do your own objective channel zapping.&lt;br&gt;6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;After channel viewing has been change the igmp vlan on the ONT to vlan X.&lt;br&gt;7.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that the channels that were being watched when the swap happened do not stay stale on the port (ie change the channel and ensure it doesn’t stick on the ports show multicast readout). Switch the igmp vlan back and ensure snooping works properly and the original channel from step 6 is viewable. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions></preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="IGMP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7597" name="Channel Zapping">
+  <node_order>3</node_order>
+  <externalid>7597</externalid>
+  <summary>Feature&lt;br&gt;IGMP&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Channel Zapping&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test case was created in order to validate constant channel zapping on both HPNA and LAN ports.&lt;br&gt;&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 234x ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Power on an ONT that has a video service provisioned at the OLT. &lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use an ONT LAN port for video client emulators (Ineoquest or Smartbits).&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run the client emulators in channel zapping mode where they will watch a channel for a few seconds the zap to the next one.&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that the video quality remains constant and that all joins are successful. &lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;While this test is running make sure to use a real STB of each of the LAN and HPNA ports to do your own objective channel zapping.&lt;br&gt;6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run this test for over 30 minutes.&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions></preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="IGMP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7593" name="#OCCAM# Slot-id Provisioning">
+  <node_order>3</node_order>
+  <externalid>7593</externalid>
+  <summary>Feature&lt;br&gt;MDU&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;#OCCAM# to set slot-id&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test case was created in order to validate that the slot-id (for an MDU application) can be set by plugging in a buttset to the unconfigured DHCPng ONT and pressing #OCCAM#&lt;slot-id&gt;. &lt;br&gt;&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 234x ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Power on an ONT that will DHCP its configuration. &lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use OCM or another DHCP server to ensure that the ONT will receive an IP based on its ClientID which will be “slotx” where x is the number entered in the slot id configuration parameter. &lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Without setting the slot id from the CLI plug in a buttset (there should be dead air) .&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dial #OCCAM# then the slot id (1-16) then # again. There should be a confirmation tone after the slot-id is set and the ONT should proceed to DHCP and download its config.&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure all configured services are up and running particularly looking at the voice. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>1 234x and 1 631x/6450
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="MDU">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7573"
+          name="Mixed Mode - Basic HPNA operation">
+  <node_order>3</node_order>
+  <externalid>7573</externalid>
+  <summary>Feature&lt;br&gt;Bridging&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Ethernet Mixed Mode - HPNA&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test case was created in order to validate the functionality of a mixed mode ONT port. Mixed mode is the operation of both tagged and untagged traffic on a particular interface.  &lt;br&gt;&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 PC, 1 234x ONT, 1 631X blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC/ONT software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configure an ONT to use a few (ie 2+) data services provisioned at the OLT. Also setup a video service (IGMP Host) on vlan X. &lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configure the ONT such that the HPNA port is in mixed mode with the command ‘mode mixed “X Y Z” ‘. This configuration will put untagged traffic onto VLAN X and allow tagged traffic from VLANs Y and Z. &lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pass traffic bidirectionally from each of the VLANs Y and Z to a network side port with VLANs Y, and Z. &lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that tagged traffic from VLANS other than Y and Z are dropped at the ONT. &lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Plug in an untagged CEB to the HPNA bus and use a STBs to do channel changing and VOD. &lt;br&gt;6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that there is not significant video degradation while the bidirectional data stays under 40Mb total (20 each direction). &lt;br&gt;7.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Make note of the CopperGate firmware running on the CEB used in step 5. Make sure to try with CEBs running both the 1.7.5 and 1.9.3 firmware versions.&lt;br&gt;8.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When both firmwares have been validated using steps 1-6, switch out the CEB to use a STB that has built in HPNA untagged mode (DUO COUNTY application). In the lab currently we can use the Motorola 1200 STB. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>1 PC, 1 234x ONT, 1 631X blade
+  
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VLAN">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7572"
+          name="Mixed Mode - Basic LAN operation">
+  <node_order>3</node_order>
+  <externalid>7572</externalid>
+  <summary>Feature&lt;br&gt;Bridging&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Ethernet Mixed Mode - LAN&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test case was created in order to validate the functionality of a mixed mode ONT port. Mixed mode is the operation of both tagged and untagged traffic on a particular interface.  &lt;br&gt;&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 PC, 1 234x ONT, 1 631X blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC/ONT software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configure an ONT to use a few (ie 2+) data services provisioned at the OLT.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configure the ONT such that ports 1 and 4 are in mixed mode with the command ‘mode mixed “X Y Z” ‘. This configuration will put untagged traffic onto VLAN X and allow tagged traffic from VLANs Y and Z. &lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pass traffic bidirectionally from each of these two ports to a network side port with VLANs X, Y, and Z. &lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that tagged traffic from VLANS other than Y and Z are dropped at the ONT. &lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that all untagged traffic is being correctly tagged with X.  &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>1 PC, 1 234x ONT, 1 631X blade
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VLAN">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7571" name="MDU - Subtended 2364 (Wedge)">
+  <node_order>3</node_order>
+  <externalid>7571</externalid>
+  <summary>Feature&lt;br&gt;Ethernet&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Use Case &lt;br&gt;&lt;br&gt;Summary &lt;br&gt;IEEE 802.1Q, or VLAN Tagging, is a networking standard written by the IEEE 802.1 workgroup allowing multiple bridged networks to transparently share the same physical network link without leakage of information between networks. IEEE 802.1Q — along with its shortened form dot1q — is commonly used to refer to the encapsulation protocol used to implement this mechanism over Ethernet networks.&lt;br&gt;Test overview&lt;br&gt;This test will ensure that the following application of the product does not cause any adverse effects:&lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WAN2 for MDU with a subtended Wedge ON2364 running CES/VOICE/DATA&lt;br&gt;        Voice/Video/Data on leading ON2343&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1. Verify ONT software version&lt;br&gt;2. Verify default config on ONT &lt;br&gt;3. Check memory available&lt;br&gt;4. Check network connectivity&lt;br&gt;5. Verify system logging is configured (SNMP/syslog)&lt;br&gt;6. Ensure that you have a console cable attached to the device under test such that the boot process can be logged. The console port on the ON234x runs at a speed of 115200 baud and uses the Occam ONT Serial Port Adapter. &lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1. Ensure that the device powers up completely and the CLI is available for use.&lt;br&gt;2. Create an OLT Subscriber interface for ONTS A and B with a service on VLAN 2 for MGMT, VLAN 55 for DATA, VLAN 7 for CES.&lt;br&gt;3. Connect ONT A’s WAN to the OLT subscriber interface and configure ONT A and B’s GigE ports as tagged VLAN 2,55, 7 and their FE ports as untagged VLAN 55. Connect Wedge B’s GigE to Wedge A’s GigE.&lt;br&gt;4. Configure another Wedge ONT C somewhere else on the ring with VLAN 55 Data and CES to Wedge ONT B. &lt;br&gt;5. Setup an FTP server PC off ONT C. Download a file off the server using a client PC off of ONT B for the duration of an overnight test. &lt;br&gt;6.  Ensure that there are no issues with the Data file transfer or CES links.&lt;br&gt;&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1. Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2. Record statistics from the test run.&lt;br&gt;3. Record any logged errors or anomalies&lt;br&gt;4. Verify clean tear down of traffic and calls&lt;br&gt;5. Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions></preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VLAN">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7568" name="LAN4 for Data">
+  <node_order>3</node_order>
+  <externalid>7568</externalid>
+  <summary>Feature&lt;br&gt;Bridging&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Console Port for Services&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test case was created in order to test the functionality of the local console port on the ONT (LAN4) to ensure that customers can still use this port for other functions (ie Data/Video).  There was a bug in the early 4.0Rx builds that erroneously sent traffic from LAN4 to the CPU causing CSR overflows and potentially crashing the ONT.&lt;br&gt;&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 PC, 1 234x ONT, 1 631X blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC/ONT software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configure an ONT to use the LAN4 port for a Data service provisioned at the OLT.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Send traffic bidirectionally through this port making sure to use the port as untagged,tagged, and mixed. &lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that when ARP or other broadcast traffic sent the CPU counters do not increase in the “show interfaces ethernet summary” command.&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that unknown unicast and multicast traffic is not being copied to the CPU with the same command as step 3. &lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once the traffic validation is complete reassign VLAN 4080 to the ONT LAN4 and ensure that a PC can connect directly to the CLI on the 169.254.1.1 address.&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>1 PC, 1 234x ONT, 1 631X blade
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="Bridging">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="7550" name="Craft Port Access">
+  <node_order>3</node_order>
+  <externalid>7550</externalid>
+  <summary>Feature&lt;br&gt;Bridging&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Craft Port&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test case was created in order to test the functionality of the local console port on the ONT to ensure that customers using static IP configurations will be able to properly configure the ONT without using a TFTPd config file. &lt;br&gt;&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;1 PC, 1 234x ONT, 1 631X blade&lt;br&gt;&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configure an Ethernet interface on a PC to have an IP in the range 169.254.1.2-254&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Restore defaults on an ONT by issuing `restore-defaults` at the CLI and ensure that it reloads after the operation.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When the ONT has fully booted and is DHCPing (red blinking light), plug the pc into the LAN4 port of the ONT and attempt to connect to the ONT using the console IP. telnet 169.254.1.1&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Make sure that you can access the ONT management interface properly. Once in configure a static IP address and connect the ONT to the network and ensure it can be accessed from its newly assigned MGMT IP address.&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When the ONT is accessible from the network reconfigure the LAN4 port to a VLAN other than 4080. The PC should no longer be able to telnet to 169.254.1.1. &lt;br&gt;6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reconfigure the port for untagged 4080 by executing the `no mode` command at the interface ethernet lan 4 configuration level and ensure the device can be accessed again through the 169.254.1.1 IP address.&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>1 PC, 1 234x ONT, 1 631X blade
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="Bridging">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="6627" name="Ethernet Port   - DQ traffic">
+  <node_order>3</node_order>
+  <externalid>6627</externalid>
+  <summary>Feature: Ethernet Port&lt;br&gt;SubFeature: DQ traffic&lt;br&gt;&lt;br&gt;Summary:&lt;br&gt;&lt;br&gt; &lt;br&gt;Test case specifics:&lt;br&gt;&lt;br&gt;This test case covers the DQ traffic on the port. &lt;br&gt;&lt;br&gt;Documentation:&lt;br&gt;&lt;br&gt;&lt;br&gt;Duration&lt;br&gt;&lt;br&gt;Est. time to execute: 1 hour per&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;Actual time to execute: N/A&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;BLC6450, ONT Wedge, 2 SBs cards (smart metrics aware cards)&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC and ONT software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available on BLC and ONT&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check ONT is ready.&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;&lt;br&gt;Test setup:&lt;br&gt;Setup: Smartbits &lt;-tagged VLAN 4 &amp; 6-&gt; OLT &lt;-fiber-&gt; Wedge &lt;-Lan 1 and 2-&gt; Smarbits&lt;br&gt;Set OLT wedge interface for 3 services: Management VLAN 2, Data VLAN 4 and Data VLAN 6&lt;br&gt;OLT should be set appropriately for TLS (double Q tag) &lt;br&gt;Set LAN 1 to tagged VLAN 4 (corresponds to C-vid 14)&lt;br&gt;Set LAN 2 to tagged VLAN 6 (corresponds to C-vid 16) &lt;br&gt;Have Smarbits generate tagged VLAN 14 and 16 traffic upstream and downstream at close to line speed (99%?). Confirm there are no dropped packets and C-vid is intact.&lt;br&gt;&lt;br&gt;- verify statics on ont&lt;br&gt;&lt;br&gt; &lt;br&gt;CLOSING PHASE&lt;br&gt;1. Record any logged errors or anomalies&lt;br&gt;2. Check alarms/vlm for errors&lt;br&gt;3. Check ont stats for errors&lt;br&gt;4. Record memory on OLT and ONT&lt;br&gt;&lt;br&gt;&lt;br&gt;Attachments&lt;br&gt;&lt;br&gt;SMB  smartcard saved files of stream config&lt;br&gt;Config files of BLC/topology&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>6322,  ONT2501, 2 SBs cards (smartmetrics aware cards)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="10/100 Ethernet Uplink">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="6626" name="Ethernet Port  - tagged traffic">
+  <node_order>3</node_order>
+  <externalid>6626</externalid>
+  <summary>Feature:  Ethernet Port&lt;br&gt;SubFeature: tagged traffic&lt;br&gt;&lt;br&gt;Summary:&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;Test case specifics:&lt;br&gt;&lt;br&gt;This test case covers the port receiving tagged traffic on the port. &lt;br&gt;&lt;br&gt;Documentation:&lt;br&gt;&lt;br&gt;&lt;br&gt;Duration&lt;br&gt;&lt;br&gt;Est. time to execute: 1 hour per&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;Actual time to execute: N/A&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;BLC6450, ONT Wedge, 2 SBs cards (smart metrics aware cards)&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC and ONT software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available on BLC and ONT&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check ONT is ready&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1. Test setup:&lt;br&gt;Setup: Smartbits &lt;-tagged VLAN 4 &amp; 6-&gt; OLT &lt;-fiber-&gt; Wedge &lt;-Lan 1 and 2-&gt; Smarbits&lt;br&gt;&lt;br&gt;Set OLT wedge interface for 3 services: Management VLAN 2, Data VLAN 4 and Data VLAN 6&lt;br&gt;Set LAN 1 to tagged VLAN 4&lt;br&gt;Set LAN 2 to tagged VLAN 6&lt;br&gt;Have Smarbits generate tagged VLAN 4 and 6 traffic upstream and downstream at close to line speed (99?). Confirm there are no dropped packets.&lt;br&gt;&lt;br&gt;2. verify statics on ont&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1. Record any logged errors or anomalies&lt;br&gt;2. Check alarms/vlm for errors&lt;br&gt;3. Check ont stats for errors&lt;br&gt;4. Record memory on BLC and ONT&lt;br&gt;&lt;br&gt;&lt;br&gt;Attachments&lt;br&gt;SMB  smartcard saved files of stream config&lt;br&gt;Config files of BLC/topology&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>BLC6450, ONT Wedge, 2 SBs cards (smart metrics aware cards)
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="10/100 Ethernet Uplink">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="6625"
+          name="Ethernet Port   - untagged traffic">
+  <node_order>3</node_order>
+  <externalid>6625</externalid>
+  <summary>Feature:  Ethernet Port&lt;br&gt;SubFeature: untagged traffic&lt;br&gt;&lt;br&gt;Summary:&lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt;Test case specifics:&lt;br&gt;&lt;br&gt;This test case covers the untagged   port receiving untagged traffic on the port. &lt;br&gt;&lt;br&gt;Documentation:&lt;br&gt;&lt;br&gt; &lt;br&gt;&lt;br&gt;Duration&lt;br&gt;&lt;br&gt;Est. time to execute: 1 hour per&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;Actual time to execute: N/A&lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;BLC6450, ONT Wedge, 2 SBs cards (smart metrics aware cards)&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.Verify BLC and ONT software version&lt;br&gt;2.Check memory available on OLT and ONT&lt;br&gt;3.Check ONT is ready.&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;&lt;br&gt;Test setup&lt;br&gt;&lt;br&gt;Setup: Smartbits &lt;-untagged VLAN 4 and 6-&gt; OLT &lt;-fiber-&gt; Wedge &lt;-Lan 1 and 2-&gt; Smarbits&lt;br&gt;&lt;br&gt;Set OLT wedge interface for 3 services: Management VLAN 2, Data VLAN 4 and Data VLAN 6&lt;br&gt;Set LAN 1 to untagged VLAN 4&lt;br&gt;Set LAN 2 to untagged VLAN 6&lt;br&gt;Have Smarbits generate untagged traffic upstream and downstream at close to line speed (99%?). Confirm thereare no dropped packets.&lt;br&gt;&lt;br&gt;1.Configure ONT  interface ethernet with the cli command&lt;br&gt; untagged vlan x&lt;br&gt;2.Set up BLC service with access profile to handle the untagged VLAN.&lt;br&gt;&lt;br&gt;Scenario 1: send known unicast&lt;br&gt;Scenario 2: send multicast traffic&lt;br&gt;Scenario 3: send broadcast traffic&lt;br&gt;Scenario 4: send unknown unicast traffic&lt;br&gt;&lt;br&gt;for each of the 4 scenarios repeat steps 3-5:&lt;br&gt;&lt;br&gt;3. Using smartbits send untagged stream of traffic at the ONT, and through the OLT configured with an untagged port that matches the S-VID in the Access profile.&lt;br&gt;&lt;br&gt;4. Capture SBs traffic on both sides using the smartbits capture feature and verify that the vlan tag is being stripped when it exits the OLT and ONT and the traffic is untagged. &lt;br&gt;&lt;br&gt;5. verify statics on ont&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1. Record any logged errors or anomalies&lt;br&gt;2. Check alarms/vlm for errors&lt;br&gt;3. Check ont stats for errors&lt;br&gt;4. Record memory on BLC and ONT&lt;br&gt;&lt;br&gt;&lt;br&gt;Attachments&lt;br&gt;EPS ring config + SBs placement&lt;br&gt;SMB  smartcard saved files of stream config&lt;br&gt;Config files of BLC/topology&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>BLC6450, ONT Wedge, 2 SBs cards (smart metrics aware cards)
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="10/100 Ethernet Uplink">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="6573" name="DHCP Events">
+  <node_order>3</node_order>
+  <externalid>6573</externalid>
+  <summary>Summary &lt;br&gt;The event manager daemon created for the wedge ONT has the following objectives:&lt;br&gt;•     Provide a flexible, lightweight alternative to syslog for generating debug messages &lt;br&gt;•     Simplify the generation of events from user and kernel space using a common API &lt;br&gt;•     Expose a useful event log to end-users (i.e., free of developer debug messages) &lt;br&gt;•     Generate a root-accessible event log containing all user events and developer events &lt;br&gt;•     Provide mechanisms for event filtering (e.g., by subsystem, port, application, event-type, etc) &lt;br&gt;•     Support stateful events (aka alarms) &lt;br&gt;•     Provide a mechanism for event-dispatch between apps &lt;br&gt;•     Provide basis for configurable event/alarm handling by end-user &lt;br&gt;•     Don't require recompile of all event generators and consumers when event in another app/module is added/removed/modified &lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;This test is intended to test the ability to generate events for DHCP. &lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1. Verify ONT software version&lt;br&gt;2. Verify default config on ONT &lt;br&gt;3. Check memory available&lt;br&gt;4. Check network connectivity&lt;br&gt;5. Verify system logging is configured (SNMP/syslog)&lt;br&gt;6. Ensure that you have a console cable attached to the device under test such that the boot process can be logged. The console port on the ON234x runs at a speed of 115200 baud and uses the Occam ONT Serial Port Adapter. &lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1. Ensure that the device powers up completely and the CLI is available for use.&lt;br&gt;2. Create transient events and alarms on the ONT by performing the following actions starting at a log level that is too low and increasing it until the event/alarm is logged for each level that is valid:&lt;br&gt;     -  DHCP Lease Renew (issue the DHCP renew command) LOG LEVEL: 3&lt;br&gt;     -  DHCP New IP assigned (after boot this should have been shown for first DHCP) LOG LEVEL: 3&lt;br&gt;     -  DHCP Lease expire ( unplug DHCP server past lease interval) LOG LEVEL:4&lt;br&gt;     -  DHCP Client Timeout (remove entry from DHCP server) LOG LEVEL: 4&lt;br&gt;3. After the events have been generated ensure that the alarms clear when the inverse action is performed. Also check the following for events/alarms:&lt;br&gt;     - Date and time are correct &lt;br&gt;     - Correct port/group/IP numbers are displayed&lt;br&gt;     - Severity is correct &lt;br&gt;     - Proper log level is adhered&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1. Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2. Record statistics from the test run.&lt;br&gt;3. Record any logged errors or anomalies&lt;br&gt;4. Verify clean tear down of traffic and calls&lt;br&gt;5. Check alarms&lt;br&gt;</summary>
+  <preconditions></preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="Event Manager">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5911" name="MGCP GR303 - CID/CWCID">
+  <node_order>3</node_order>
+  <externalid>5911</externalid>
+  <summary>Feature&lt;br&gt;Voice&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;MGCP GR303&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test is regression to ensure that MGCP GR303 lines are working properly.   &lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use 3 4.x ONTs running MGCP GR303 to a TGW.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Make an A to B call and ensure that the caller ID information is correctly displayed on handset B before picking up the call. &lt;br&gt;3.      With the A to B call still up use a handset C to call B and ensure that the caller id information is correctly displayed on handset B. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>3 Active ON234x, 631X Subscriber blade
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VoIP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5903" name="SIP- Fax">
+  <node_order>3</node_order>
+  <externalid>5903</externalid>
+  <summary>Feature&lt;br&gt;Voice&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;SIP&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test is regression to ensure that SIP lines are working properly.   &lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use 3 4.x ONT srunning SIP lines to the Metaswitch.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that the ONT lines are set for line mode VOICE-FAX-MODEM and send a fax from one ONT to another. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>3 Active ON234x, 631X Subscriber blade
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VoIP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5902" name="MGCP GR303- Fax">
+  <node_order>3</node_order>
+  <externalid>5902</externalid>
+  <summary>Feature&lt;br&gt;Voice&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;MGCP GR303&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test is regression to ensure that MGCP to TGW lines are working properly.   &lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use 3 4.x ONT srunning MGCP lines to the TGW.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that the ONT lines are set for line mode VOICE-FAX-MODEM and send a fax from one ONT to another. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>3 Active ON234x, 631X Subscriber blade
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VoIP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5901" name="MGCPSS- Fax">
+  <node_order>3</node_order>
+  <externalid>5901</externalid>
+  <summary>Feature&lt;br&gt;Voice&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;MGCPtoSS&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test is regression to ensure that MGCP to Softswitch lines are working properly.   &lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use 3 4.x ONT srunning MGCP lines to the Metaswitch.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure that the ONT lines are set for line mode VOICE-FAX-MODEM and send a fax from one ONT to another. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>3 Active ON234x, 631X Subscriber blade
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VoIP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5899" name="MGCPSS- CID/CWCID">
+  <node_order>3</node_order>
+  <externalid>5899</externalid>
+  <summary>Feature&lt;br&gt;Voice&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;MGCPtoSS&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test is regression to ensure that MGCP to Softswitch lines are working properly.   &lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use 3 4.x ONT srunning MGCP lines to the Metaswitch.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Make an A to B call and ensure that the caller ID information is correctly displayed on handset B before picking up the call. &lt;br&gt;3.      With the A to B call still up use a handset C to call B and ensure that the caller id information is correctly displayed on handset B. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>3 Active ON234x, 631X Subscriber blade</preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VoIP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5435" name="Manually Configure LAN port MDI">
+  <node_order>3</node_order>
+  <externalid>5435</externalid>
+  <summary>Summary &lt;br&gt;LANMGR supports forcing a link to specified speed and duplex settings:&lt;br&gt;&lt;br&gt;  set port &lt;port&gt; duplex half | full | auto     &lt;br&gt;  set port &lt;port&gt; speed 10 | 100 | auto         &lt;br&gt;  set port &lt;port&gt; mdi normal | crossover | auto &lt;br&gt;&lt;br&gt;If the port is enabled prior to configuration it will be enabled after. If it is disabled it will remain disabled.&lt;br&gt;&lt;br&gt;We may choose NOT to support half duplex configuration in the CLI since it has no value and increases the test burden. &lt;br&gt;&lt;br&gt;http://wiki/index.php?title=Release_4.0_Software_Functional_Specification%2C_P2P_ONT&lt;br&gt;Duration&lt;br&gt;&lt;br&gt;Est. time to execute: 1 hours&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify default config on ONT &lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Boot up an ONT243X and run the commands from above to set the port speed/duplex manually to 100Mb FULL.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run SMB traffic through the ONT port to a BLC port hooked into another SMB port.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure traffic can be passed in both directions and log the maximum throughput.&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run the command to change the mdi from auto to crossover and use a crossover cable to connect to SMB from the ONT. Ensure video can be run from this port.&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run the command to change the mdi from auto to normal and use a straight through  cable to connect to SMB from the ONT. Ensure video can be run from this port.&lt;br&gt;&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>3-4 SMB 7710 cards, 1 ONT2342, 631X or 6450 BLC
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="Configuration">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5373" name="HPNA-Basic IGMP video">
+  <node_order>3</node_order>
+  <externalid>5373</externalid>
+  <summary>Using an HPNA supported ONT, and untagged hpna client side device, verify that basic IGMP video traffic works, does not flood other ports, can join/leave channels, etc.&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>HPNA ONT, HPNA client device, PC or traffic gen
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="HPNA">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5223"
+          name="HPNA-Basic Tagged  VLAN  verification">
+  <node_order>3</node_order>
+  <externalid>5223</externalid>
+  <summary>Using an HPNA supported ONT, and tagged vlan  hpna client side device, verify that basic traffic can be passed to and from the subscriber and the network. &lt;br&gt;&lt;br&gt;configure the ONT to only allow tagged vlan  traffic. Confirm that untagged and other vlan tags are not passed. &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>HPNA ONT, HPNA client device, PC or traffic gen
+  
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="HPNA">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="4462" name="MGCP - pulse dialing">
+  <node_order>3</node_order>
+  <externalid>4462</externalid>
+  <summary>Confirm that pulse dialing works. test digits 0-9 and * and # if supported by switch. &lt;br&gt;&lt;br&gt;11= *&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>CC, and MS softswitches, handsets 
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="MGCP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="4438" name="gr303 - voice quality">
+  <node_order>3</node_order>
+  <externalid>4438</externalid>
+  <summary>Using MGCP to both CopperCom and Metaswitch. Verify acceptable voice quality measurements with sage and handset&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>CC, and MS softswitches, handsets 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="GR303">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="4409"
+          name="SIP - Fax/modem testing with NSP">
+  <node_order>3</node_order>
+  <externalid>4409</externalid>
+  <summary>Verify that NSP on the ONT can sync and remained sync'd with an Occam blade as the clock source. &lt;br&gt;&lt;br&gt;Test long durations of v90 modem and fax calls. &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions> ONT, NSP capable BLC
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VoIP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="4364"
+          name="NSP- v90 Modem with MGCP to Occam TGW">
+  <node_order>3</node_order>
+  <externalid>4364</externalid>
+  <summary>Test long duration of v90 modem tests from ONT subscriber to RAS. &lt;br&gt;Using MGCP signalling to Occam tgw. Confirm that modem rates are sustained at v90 for at least 2 hours with use of NSP. &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>CC, and MS softswitches, handsets 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="NSP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="4015"
+          name="SIP- Digit plus * and # detection on ONT">
+  <node_order>3</node_order>
+  <externalid>4015</externalid>
+  <summary>Using SIP to both CopperCom and Metaswitch. Verify all digits 1-9 plus * and # are detected on ONT. &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>CC, and MS softswitches, handsets 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VoIP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="8023" name="Feature testing - BULK">
+  <node_order>3</node_order>
+  <externalid>8023</externalid>
+  <summary>Feature&lt;br&gt;VoIP&lt;br&gt;SubFeature&lt;br&gt;Feature testing&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This testcase combines multiple call features into one script that can be executed using Abacus. The included scripts are: call waiting, cancel call waiting, automatic callback, automatic recall, three way call, pulse dialing, and a normal A-&gt;B call. &lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;Multiple (&gt;3) POTS endpoints&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Setup POTS lines on 3 different DUTs and connect them to the Abacus. Ensure that all call features are properly enabled.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;After downloading the Actions.act and Scripts.scp files (attached to the testcase) place them in the Abacus/Actions and Abacus/Scripts directories respectively. &lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go to the Abacus “Call Sequence-&gt;Actions” menu and hit open, choose the Actions.act file. Go to the Abacus “Call Sequence-&gt;Scripts” menu and hit open, choose the Scripts.scp file.  &lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set the partitioning to “All originate” for the 3 lines that will be under test. Also set the “Links” attribute to “External”. Click the “Phones” button at the top and set the external phone book so that each line has its own number configured. &lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set the script to “Master Call Feature List”. &lt;br&gt;6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Start the test and let it run for an hour. &lt;br&gt;7.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No call failures should be seen. &lt;br&gt;8.      Re-test with all applicable platforms that will be receiving this new software version.&lt;br&gt;9.      A sample environment file has been included which gives the proper DUT settings for our gear. This can be imported putting the file in your Abacus/Environment directory then using the `File-&gt;Open` menu to load the environment. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>Multiple (&gt;3) POTS endpoints
+  
+  
+  
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VoIP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5908" name="SIP- CID/CWCID">
+  <node_order>3</node_order>
+  <externalid>5908</externalid>
+  <summary>Feature&lt;br&gt;Voice&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;SIP&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test is regression to ensure that SIP to Softswitch lines are working properly.   &lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use 3 4.x ONT srunning SIP lines to the Metaswitch.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Make an A to B call and ensure that the caller ID information is correctly displayed on handset B before picking up the call. &lt;br&gt;3.      With the A to B call still up use a handset C to call B and ensure that the caller id information is correctly displayed on handset B. &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>3 Active ON234x, 631X Subscriber blade
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="VoIP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="8014" name="Info Fields">
+  <node_order>3</node_order>
+  <externalid>8014</externalid>
+  <summary>Feature&lt;br&gt;Configuration &lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Info Field&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test verifies the proper configuration of the interface info fields. These were added to add notes to any of the interfaces (serial, Ethernet, POTS) on the ON23XX family. Configuration is in the interface config level:&lt;br&gt;ONT15(config)# interface ethernet lan 1&lt;br&gt;ONT15(config-if-eth-lan1)# info &lt;br&gt;  info &lt;KEY&gt; &lt;VALUE&gt; &lt;br&gt;    Specify user information for port&lt;br&gt;&lt;br&gt;  &lt;KEY&gt;     User info key&lt;br&gt;  &lt;VALUE&gt;   Quoted user info value&lt;br&gt;ONT15(config-if-eth-lan1)# info video set_top_box&lt;br&gt;ONT15(config-if-eth-lan1)# &lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 23xx ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Setup an ONT such that it MGMT connectivity to the network. &lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configure 3 unique keys and values per available interface on the ONT.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Execute the show commands for each of the interfaces and ensure that the info fields are present and show all configured key/value pairs. &lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save the running config and reload the ONT. Upon boot check the info fields for each interface again and ensure they appear in the proper order.&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>631x/6450, 23xx 
+  
+  
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="Configuration">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="8011" name="Community Strings">
+  <node_order>3</node_order>
+  <externalid>8011</externalid>
+  <summary>Feature&lt;br&gt;SNMP &lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;Community Strings&lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test verifies the proper operation and configuration of the SNMP community string. The community string provides a password of sorts for both the read-only and read-write access of the system. If the server requesting or setting information does not have the proper community string set then access is denied for that SNMP request. &lt;br&gt;&lt;br&gt;Equipment required&lt;br&gt;&lt;br&gt;1 234x ONT, 1 631x/6450 blade&lt;br&gt;&lt;br&gt;Test overview&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Setup an ONT such that it has an SNMP traphost set then configure a unique SNMP community string for both the read-only (ro) and read-write (rw) community. Also test that setting the strings to be equivalent is blocked.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use a Linux workstation with the netsnmp libraries installed (yum install net-snmp) to issue snmpget and snmpset commands to various MIBs across the device and ensure that using the proper community string allows access and that if the string is incorrect the information is not returned nor changed on the device. Make sure that the ONT is properly adhering to permissions (ie the ro community can not successfully set any parameters). Example sets and gets are:&lt;br&gt;•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get HW Version - snmpget -Osf -c &lt;comm-string&gt; -v 2c &lt;ip&gt; .iso.org.dod.internet.mgmt.mib-2.system.sysDescr.0 &lt;br&gt;•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reload device -  snmpset -v 2c -r 3 -t 15 -c &lt;comm-string&gt; &lt;ip&gt; 1.3.6.1.4.1.10799.3.12.0 i 1&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change each of the community strings to a string of 32 characters and ensure that we can handle that length. Reexecute step 2. &lt;br&gt; &lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for test tools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;</summary>
+  <preconditions>631x, 23xx ,Linux PC
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="SNMP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+<testcase internalid="5918"
+          name="SNMP trap 4.x events trigger traps">
+  <node_order>3</node_order>
+  <externalid>5918</externalid>
+  <summary>Feature&lt;br&gt;SNMP&lt;br&gt;&lt;br&gt;SubFeature&lt;br&gt;ONT 4.x &lt;br&gt;&lt;br&gt;Summary &lt;br&gt;This test is to ensure that all of the traps supported on ONT4.x are seen by EMS.&lt;br&gt;&lt;br&gt;INITIALIZATION PHASE&lt;br&gt;&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify BLC software version&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify blacklist alarm state is clear&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check memory available&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check network connectivity&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify system logging is configured (SNMP/syslog)&lt;br&gt;&lt;br&gt;&lt;br&gt;TESTING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use a 4.x ONT that has a tftp config file using an EMS server as a trap host.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Using the appropriate actions verify that the following events send traps to the EMS Server:&lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Factory Reset&lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Reboot Reset &lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Battery not installed &lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Battery installed&lt;br&gt;       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Battery voltage Low&lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Battery voltage Normal&lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Software download in progress&lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Software download failed&lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Software download succeeded     &lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Software upgrade corrupted&lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Software upgrade failed&lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Software upgrade same version   &lt;br&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Set slot ID         &lt;br&gt;                - Booter Damaged&lt;br&gt;                - NSP clock out of range&lt;br&gt;3. After testing that each of these send the appropriate task ensure that the alarm traps are sent at boot by leaving the ONT in the alarm state then rebooting the ONT. This is especially critical for the battery alarms.&lt;br&gt;&lt;br&gt;CLOSING PHASE&lt;br&gt;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tear down connections for testtools and stop the running traffic or calls.&lt;br&gt;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record statistics from the test run.&lt;br&gt;3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record any logged errors or anomalies&lt;br&gt;4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Verify clean teardown of traffic and calls&lt;br&gt;5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check alarms&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</summary>
+  <preconditions>Active ON234x, 631X Subscriber blade
+  </preconditions>
+  <executiontype>1</executiontype>
+  <importance>2</importance>
+  <keywords>
+    <keyword name="SNMP">
+      <notes>&lt;![CDATA[]]&gt;</notes>
+    </keyword>
+  </keywords>
+</testcase>
+</testcases>

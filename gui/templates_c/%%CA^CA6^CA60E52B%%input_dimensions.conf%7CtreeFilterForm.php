@@ -1,0 +1,18 @@
+<?php $_config_vars = array (
+  'REQ_DOCID_SIZE' => '20',
+  'REQ_DOCID_MAXLEN' => '30',
+  'REQSPEC_DOCID_SIZE' => '35',
+  'REQSPEC_DOCID_MAXLEN' => '64',
+  'TC_ID_SIZE' => '12',
+  'TC_ID_MAXLEN' => '30',
+  'STEP_NUMBER_SIZE' => '1',
+  'STEP_NUMBER_MAXLEN' => '2',
+  'SCOPE_TRUNCATE' => '100',
+  'SCOPE_SHORT_TRUNCATE' => '30',
+  'TC_TITLE_SIZE' => '32',
+  'TC_TITLE_MAXLEN' => '32',
+  'REQ_NAME_SIZE' => '35',
+  'REQ_NAME_MAXLEN' => '50',
+  'COVERAGE_SIZE' => '3',
+  'COVERAGE_MAXLEN' => '3',
+); ?>

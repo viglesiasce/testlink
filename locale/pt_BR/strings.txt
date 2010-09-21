@@ -1,0 +1,2857 @@
+<?php
+/**
+ * ♔ TestLink Open Source Project - http://testlink.sourceforge.net/
+ * This script is distributed under the GNU General Public License 2 or later.
+ *
+ * Filename $RCSfile: strings.txt,v $
+ * @version $Revision: 1.27 $
+ * @modified $Date: 2010/06/24 17:25:56 $ by $Author: asimon83 $
+ *
+ * @copyright Copyright (c) 2003-9, TestLink community
+ * @author Milton Campos
+ *
+ * Translation file to portuguese
+ *
+ * Revision: 
+ *  20100404 - eliasn - BUGID 3360
+ * 	20091603 - Milton Campos - 1.8 RC5
+ * 	20092505 - Julio Rodrigues - 1.8.1
+ *	20092206 - eliasn - BUGID 0002643: Description about Summary in pt-br is wrong 
+ *
+ * Scripted update according en_GB string file (version: 1.408)
+ * Scripted update according en_GB string file (version: 1.413) 
+ * ---------------------------------------------------------------------------------- */
+
+// Define character set of strings (UTF-8 is common value)
+$TLS_STRINGFILE_CHARSET = "UTF-8";
+
+// ----- General terms (used wide) ----------------------------
+$TLS_type_not_configured = "mensagem do sistema: tipo não configurado";
+$TLS_undefined = "não definido";
+$TLS_active = "Ativo";
+$TLS_actions = "Ações";
+$TLS_asc = "Crescente";
+$TLS_any = "qualquer";
+$TLS_author = "Autor";
+$TLS_automated = "Automatizado";
+$TLS_automatic = "Automático";
+$TLS_availability = "Disponibilidade";
+$TLS_build = "Baseline";
+$TLS_check_uncheck_all = "Marcar/Desmarcar todos";
+$TLS_check_uncheck_all_for_remove = "marcar/desmarcar todos para remover";
+$TLS_confirm = "Confirmar";
+$TLS_days = "dias";
+$TLS_desc = "Decrescente";
+$TLS_description = "Descrição";
+$TLS_delete_confirm_question = "Tem certeza que deseja apagar?";
+$TLS_doc_id = "ID do Documento";
+$TLS_doc_id_short = "ID Doc";
+$TLS_destination_top = "Destino para cima";
+$TLS_destination_bottom = "Destino para baixo";
+$TLS_error = "Erro";
+$TLS_export = "Exportar";
+$TLS_file_type	= 'Formato do Arquivo:';
+$TLS_filter_mode_and = 'Atenção: Os Filtros de campos funcionam com o modo AND';
+$TLS_help = "Ajuda";
+$TLS_hour = "Hora";
+$TLS_importance= "Prioridade";
+$TLS_imported = "Importado";
+$TLS_important_notice = "Notícia Importante";
+$TLS_keyword = "Palavra-chave";
+$TLS_mandatory = "Campos obrigatórios";
+$TLS_manual = "Manual";
+$TLS_Milestone 	= "Marco";
+$TLS_months	= "mês";
+$TLS_name = "Nome";
+$TLS_needed = "Necessário";
+$TLS_not_aplicable = "N/D";
+$TLS_nobody = "Ninguém";
+$TLS_not_imported = "Não importado";
+$TLS_none = "Nenhum";
+$TLS_ok = "OK";
+$TLS_priority= "Prioridade";
+$TLS_project = "Projeto";
+$TLS_public = "Público";
+$TLS_requirement = "Requisito";
+$TLS_req_short = "Req.";
+$TLS_reqs = "Requisitos";
+$TLS_req_spec = "Documento de Especificação de Requisitos";
+$TLS_req_spec_short = "Req. Espec.";
+$TLS_requirements_spec = "Espec. de Requisitos";
+$TLS_req_specification = "Especificação de Req.";
+$TLS_srs = "SRS";
+$TLS_Role = "Perfil";
+$TLS_sort_table_by_column = "Clique para alterar a ordem";
+$TLS_scope = "Escopo";
+$TLS_status = "Status";
+$TLS_test_case = "Caso de Teste";
+$TLS_testcase = $TLS_test_case; // obsolete
+$TLS_testcaseversion = 'Versão do CT';
+$TLS_tester = "Testador";
+$TLS_test_plan = "Plano de Teste";
+$TLS_testplan = $TLS_test_plan; // obsolete
+$TLS_testproject = "Projeto de Teste";
+$TLS_test_report = "Relatório de Teste";
+$TLS_test_suite = "Suite de Teste";
+$TLS_testsuite_created = "Criar Suite de Teste";
+$TLS_type = "Tipo";
+$TLS_title = "Título";
+$TLS_title_admin = "Administração";
+$TLS_warning = "Atenção";
+$TLS_max_size_file_msg = "Tamanho máximo permitido:  %s KB";
+$TLS_due_since = "Caso de Teste atribuido desde (dias)";
+$TLS_parent_child='é Pai oi é Filho';
+$TLS_blocks_depends = 'Bloco ou Dependência';
+$TLS_related_to='é relacionado a';
+
+
+$TLS_total = "Total";
+$TLS_Unknown = "Desconhecido";
+$TLS_urgency = "Urgência";
+$TLS_weeks= "semanas";
+$TLS_container = "container"; // other translation to this would be 'recipiente', but brazilian people understanding this
+$TLS_platform = "Platforma";
+
+// Actions (used wide) 
+$TLS_add = "Adicionar";
+$TLS_assigned = "atribuir";
+$TLS_create = "Criar";
+$TLS_copy = "copiar";
+$TLS_delete = "Deletar";
+$TLS_disable = "desabilitado";
+
+$TLS_executed = "Executar";
+$TLS_move = "Mover";
+$TLS_remove = "Remover";
+$TLS_unassigned = "desatribuir";
+
+// Buttons (used wide)
+$TLS_btn_apply = "Aplicar";
+$TLS_btn_add = "Adicionar";
+$TLS_btn_add_to_testplans = "Adicionar aos Planos de Teste";
+$TLS_btn_assign = "Atribuir";
+$TLS_btn_cancel = "Cancelar";
+$TLS_btn_check = "Marcar";
+$TLS_btn_close = "Fechar";
+$TLS_btn_cp = "Copiar";
+$TLS_btn_copy_step = "Copiar passo";
+$TLS_btn_create = "Criar";
+$TLS_btn_create_step = "Criar um passo";
+$TLS_btn_delete = "Deletar";
+$TLS_btn_edit = "Editar";
+$TLS_btn_export = "Exportar";
+$TLS_btn_find = "Buscar";
+$TLS_btn_goback = "Voltar";
+$TLS_btn_generate_doc = "Gerar documento";
+$TLS_btn_import = "Importar";
+$TLS_btn_move = "Mover";
+$TLS_btn_no = "Não";
+$TLS_btn_ok = "Ok";
+$TLS_btn_print = "Imprimir";
+$TLS_btn_save = "Salvar";
+$TLS_btn_unassign = "Não atribuir";
+$TLS_btn_uncheck = "Desmarcar";
+$TLS_btn_update = "Atualizar";
+$TLS_btn_upd = $TLS_btn_update; //obsolete
+$TLS_btn_upload = "Upload";
+$TLS_btn_advanced_filters = "Filtro Avançado";
+$TLS_btn_simple_filters = "Filtro Simples"; 
+$TLS_btn_reorder_steps = "Reordenar Passos";
+
+// Status (used wide)
+$TLS_test_status_all = "Todos";
+$TLS_test_status_any = "Qualquer";
+$TLS_test_status_not_run = "Não Executado";
+$TLS_test_status_blocked = "Bloqueado";
+$TLS_test_status_failed = "Com Falha";
+$TLS_test_status_passed = "Passou";
+$TLS_test_status_not_available = "Não disponível";
+$TLS_test_status_unknown = "desconhecido";
+
+$TLS_review_status_valid = "Válido";
+$TLS_review_status_draft = 'Rascunho';
+$TLS_review_status_future = 'Futuro';
+$TLS_review_status_obsolete = 'Obsoleto';
+$TLS_review_status_todo = 'A Fazer';
+
+$TLS_req_type_info = "Informacional";
+$TLS_req_type_feature = 'Característica';
+$TLS_req_type_use_case = 'Caso de Uso';
+$TLS_req_type_interface = 'Interface';
+$TLS_req_type_non_functional = 'Não Funcional';
+$TLS_req_type_constrain = 'Constrain';
+
+$TLS_req_spec_type_section = "Seção";
+$TLS_req_spec_type_user_req_spec = "Especificação de Requisitos do Usuário";
+$TLS_req_spec_type_system_req_spec = "Especificação de Requisitos do Sistema";
+
+
+$TLS_exec_not_run_result_note = "Informação importante: Uma vez que o resultado é atualizado de 'Não executado' para outro valor, " .
+                                "você não pode voltar mais para 'Não executado'. <br />Você precisa definir o Resultado para qualquer outro valor.";
+								
+$TLS_req_status_not_testable = "Não testado";
+
+$TLS_reserved_system_role_1 = 'perfil do sistema reservado 1';
+$TLS_reserved_system_role_2 = 'perfil do sistema reservado 2';
+
+
+// ----- unsorted (TODO move) -------------------------------------
+$TLS_problems_loading_xml_content = "Não foi possível carregar dados do XML. Verifique o arquivo"; 
+$TLS_search_type_like = "Busca com este valor terminará no modo LIKE"; //verified
+$TLS_exec_assign_no_testcase = "Selecione pelo menos um Caso de Teste.";
+$TLS_select_at_least_one_testcase = "Por favor selecione pelo menos um Caso de Teste e um destino!";
+$TLS_no_testcases_available = "Nenhum Caso de Teste ou Suite de Teste disponíveis!";
+$TLS_warning_must_be_number = "O valor deve ser numérico";
+$TLS_select_at_least_one_req = "Por favor selecione, pelo menos, um Requisito";
+
+
+$TLS_estimated_time_hours = "Estimativa de tempo(hours):";
+$TLS_estimated_time_min = "Estimativa de tempo(min):";
+$TLS_real_time_hours = "Tempo usado para execução de %s Casos de Teste (horas):";
+$TLS_real_time_min = "Tempo usado para execução de %s Casos de Teste (min):";
+
+$TLS_th_active 		= $TLS_active; //obsolete
+$TLS_th_name 		= $TLS_name; //obsolete
+$TLS_th_notes 		= $TLS_description; //obsolete
+$TLS_th_testcase 	= $TLS_test_case; // obsolete
+$TLS_th_delete 		= $TLS_delete; // obsolete
+$TLS_th_requirement_feature = "Requisitos";
+
+$TLS_import_file_type = "Importar arquivo tipo";
+$TLS_max_file_size_is = "Tamanho Max. arquivo ";
+$TLS_supported_file_formats = "Suportado arquivo de formatos";
+$TLS_no_permissions_for_action = "Você não tem permissão para executar essa operação!" .
+                                 " Por favor contate seu administrador.";
+
+$TLS_name_already_exists = "Nome:%s já existe";
+$TLS_created_with_new_name = "Criado com nome:%s, porque nome:%s já existe";
+
+
+$TLS_click_to_open='Clique para abrir';
+$TLS_testplan_usage="Utilização do Plano de Teste";
+
+$TLS_add_tcversion_to_plans = "Adiciona uma Versão do Caso de Teste ao Plano de Teste";
+$TLS_please_select_one_testplan = "Por favor seleciona, pelo menos, um Plano de Teste.";
+
+$TLS_deleted_user = "[usuario removido - id=%s]";
+$TLS_tag_for_inactive_users = "*";
+
+$TLS_design = "Arquitetura da Especificação de Teste";
+$TLS_execution = "Execução de Teste";
+$TLS_testplan_design = "Arquitetura do Plano de Teste";
+$TLS_enable_on = "Habilitado em";
+$TLS_closed_on_date="Fechado em ";
+
+
+// ----- JAVASCRIPT -----
+// Used on javascript logic to validate Custom Field values
+$TLS_warning_numeric_cf = "Campo Personalizado %s só aceita valores numéricos";
+$TLS_warning_float_cf = "Campo Personalizado %s só aceita valores numéricos ou float";
+$TLS_warning_email_cf = "Campo Personalizado %s só aceita endereço de e-mail";
+$TLS_warning_text_area_cf = "Campo Personalizado %s aceita somente 255 caracteres";
+$TLS_warning_countreq_numeric = "A contagem dos Requisitos deve ser numérica!";
+$TLS_warn_session_timeout = "Sua sessão do Testlink expirou.";
+$TLS_warn_demo = "Pedimos desculpas. Este recurso está desabilitado na versão Demo.";
+
+
+// Installation/Migration (TODO remove - migration is English only)
+$TLS_start_warning = '---- Advertências ----';
+$TLS_testlink_warning = 'TestLink Advertências';
+$TLS_testcase_name_too_long = 'nome do Caso de Teste é muito longo (%s caracteres) > %s => foi truncado';
+$TLS_original_name = 'Nome original';
+$TLS_end_warning = '---- *** ----';
+
+
+// --------------------------------------------------------------------------------------
+// ----- firstLogin.php -----
+$TLS_cant_create_user = "Seu login não pode ser criado. Favor entrar em contato com o administrador.";
+$TLS_empty_email_address = " Você não pode deixar o endereço de e-mail vazio!";
+$TLS_empty_first_name = " Você não pode deixar o Nome vazio!";
+$TLS_empty_last_name = " Você não pode deixar o Sobrenome vazio!";
+$TLS_fatal_page_title = "TestLink ::: Erro Fatal!";
+$TLS_invalid_user_name = "Login inválido. Favor escolher outro.";
+$TLS_no_good_email_address = "Formato do endereço de e-mail parece incorreto";
+$TLS_passwd_dont_match = "As senhas não conferem. Observe que a senha diferencia maiúsculas de minúsculas.".
+                        " Tente novamente.";
+$TLS_user_cant_be_created_because = "Sua conta não pode ser criada porque:";
+$TLS_user_name_exists = "Este login já existe, favor escolher outro.";
+$TLS_valid_user_name_format = "Nomes de usuários podem conter apenas letras,números, espaços, hífens e travessão.";
+$TLS_warning_empty_pwd = "Você não pode deixar a senha em branco!";
+$TLS_your_info_please = "Entre com as informações do usuário.";
+$TLS_new_account = "TestLink - Nova conta criada";
+
+
+
+// ----- archiveData.php -----
+$TLS_container_title_testcase = $TLS_test_case;
+$TLS_high_priority = "Alto";
+$TLS_medium_priority = "Médio";
+$TLS_low_priority = "Baixo";
+$TLS_high_importance = $TLS_high_priority;
+$TLS_medium_importance = $TLS_medium_priority;
+$TLS_low_importance = $TLS_low_priority;
+$TLS_urgency_high = "Alto";
+$TLS_urgency_medium 	= "Médio";
+$TLS_urgency_low = "Baixo";
+$TLS_test_importance = "Prioridade do Teste";
+$TLS_testcases_assigned_to_user = 'Projeto de Teste: %s - Caso de Testes atribuidos aos usuários: %s';
+$TLS_assigned_on = 'Data da atribuição';
+
+
+// ----- index.php -----
+$TLS_main_page_title = "TestLink ::: Página Principal";
+$TLS_config_check_warnings = "Há problemas de configuração do TestLink " .
+                             "Veja detalhes no arquivo: %s. " .
+                             "Para desabilitar esta chegagem, sete \$tlCfg->config_check_warning_mode = SILENT;";
+
+// ----- lib/inventory/inventoryView.php & tpl -----
+$TLS_inventory_title = 'Inventário';
+$TLS_inventory_create_title = 'Definir os dados do dispositivo';
+$TLS_inventory_empty = 'Sem dispositivos definidos.';
+$TLS_inventory_name = 'nome do Host';
+$TLS_inventory_ipaddress = 'Endereço IP';
+$TLS_inventory_notes = 'Notas';
+$TLS_inventory_purpose = 'Propósito';
+$TLS_inventory_hw = 'Hardware';
+$TLS_inventory_delete = 'Remover';
+$TLS_inventory_owner = 'Dono';
+$TLS_inventory_alt_delete = 'Remover os dados do dispositivo selecionado';
+$TLS_inventory_alt_edit = 'Editar os dados do dispositivo selecionado';
+$TLS_inventory_dlg_delete_txt = 'Você tem certeza que deseja remover o dispositivo?';
+$TLS_inventory_dlg_select_txt = 'Primeiro selecione uma linha.';
+$TLS_inventory_msg_no_rights = 'Você não tem os privilégios necessários para modificar o inventário.';
+$TLS_inventory_msg_no_action = 'Dado de entrada inválido - nenhuma ação foi solicitada.';
+
+// ----- lib/functions/inventory.class.php -----
+$TLS_audit_inventory_created = 'Um novo dispositivo {%1} foi criado - Projeto de Teste {%2}.';
+$TLS_audit_inventory_deleted = 'O dispositivo {%1} foi removido - Projeto de Teste {%2}.';
+$TLS_inventory_create_success = 'Um novo dispositivo %s foi criado com sucesso.';
+$TLS_inventory_create_fails = 'Falha: Um novo dispositivo %s não foi criado.';
+$TLS_inventory_update_success = 'O dispositivo %s foi atualizado com sucesso.';
+$TLS_inventory_update_fails = 'Falha: O dispositivo %s não foi atualizado.';
+$TLS_inventory_delete_success = 'O dispositivo %s foi removido com sucesso.';
+$TLS_inventory_delete_fails = 'Falha: O dispositivo %s não foi removido.';
+$TLS_inventory_name_exists = 'O dispositivo %s já existe no projeto.';
+$TLS_inventory_name_empty = 'O dispositivo não pode ter o nome vazio.';
+$TLS_inventory_ip_exists = 'O endereço IP do dispositivo %s já existe no projeto.';
+$TLS_inventory_no_device = 'Falha: Nenhum dispositivo foi encontrado para estes dados:';
+
+
+// ----- keywordsimport.php -----
+$TLS_please_choose_keywords_file = "Por favor escolha o arquivo para enviar";
+$TLS_keywords_file = "Arquivo de palavras-chave";
+$TLS_wrong_keywords_file = "Arquivos de palavra-chave incorreto (formato incorreto)";
+
+
+// ----- lostPassword.php -----
+$TLS_bad_user = "Usuário não encontrado, por favor tente de novo";
+$TLS_contact_admin = "Qualquer dúvida contate o Administrador do sistema.";
+$TLS_mail_empty_address = "Você não tem um e-mail especificado no seu perfil!".
+                          "Por favor entre em contato com o administrador para recuperar sua senha!";
+$TLS_mail_passwd_subject = "Sua nova senha de acesso ao TestLink.";
+$TLS_mail_problems = "Erro na configuração do e-mail, entre em contato com o Administrador.";
+$TLS_page_title_lost_passwd = "TestLink - Senha Perdida";
+$TLS_your_info_for_passwd = "Entre com seu Usuário e sua nova senha será enviada por e-mail.";
+$TLS_your_password_is = "Sua nova senha de acesso ao TestLink é:";
+
+
+
+// ----- login.php -----
+$TLS_bad_user_passwd = "  Tente de novo! Login ou Senha errada!";
+$TLS_login_msg_session_exists1 = "  Já existe um login válido na sessão atual do seu navegador. Favor utilizá-la ";
+$TLS_login_msg_session_exists2 = " primeiramente você poderia renovar sua sessão.";
+$TLS_logout_link = "Sair";
+$TLS_passwd_lost = "A senha foi enviada para o email informado no seu cadastro. " .
+                  "Favor verificar sua caixa postal. " .
+                  "Caso tenha algum problema contate o Administrador.";
+$TLS_password_reseted = "Uma nova senha foi enviada por e-mail";
+$TLS_please_login = "Por favor faça o login ...";
+$TLS_session_expired = "Sua sessão expirou! Favor fazer o login novamente.";
+$TLS_your_first_login = "Bem-Vindo ao TestLink! Sua permissão será de Visitante. Por favor faça login ...";
+
+
+// ----- newest_tcversions.php -----
+$TLS_no_linked_tcversions = "Não há versões do Caso de Teste associadas";
+$TLS_testplan_seems_empty = "O Plano de Teste parece estar vazio - Nada foi feito";
+
+// resultsGeneral.php
+$TLS_report_tspec_has_no_tsuites = "Não há Suítes de Testes definidas para o Projeto de Teste, <br />".
+                                 "então não existe histórico de execução => nenhum relatório pode ser criado";
+
+$TLS_report_tcase_platorm_relationship = "Uma Plataforma foi definida para este Plano de Teste.<br />" .
+                                         "A utilização de Plataformas tem impacto sobre as Métricas, porque <br />" .
+                                         "um Caso de Teste que pode ser executado em N Plataformas " .
+                                         "é considerado como N Casos de Teste nas Métricas<br />" .
+                                         "Exemplo: se o usuário U1 teve a atribuição de execução do Caso de Teste TC1 <br />" .
+                                         "na plataforma X e Y, então o usuário U1 têm DOIS Casos de Teste para executar, NÃO UM ";  								 
+								 
+// ----- resultsNavigator.php -----
+$TLS_title_nav_results = "Relatórios e Metricas";
+$TLS_report_tplan_has_no_build = "O Plano de Teste não tem build definida, <br />".
+                               "então nenhum dado de execução pode existir => nenhum relatório pode ser criado";
+$TLS_report_tplan_has_no_tcases = "O Plano de Teste não tem Casos de Teste associados, <br />".
+                               "então nenhum dado de execução pode existir => nenhum relatório pode ser criado";
+
+// ----- tcEdit.php -----
+$TLS_copy_keyword_assignments = "Copiar atribuições de Palavras-Chave";
+$TLS_copy_requirement_assignments = "Copiar atribuições de Requisitos";
+$TLS_tc_copied = "Caso de Teste %s foi copiado com sucesso para Suite de Teste %s";
+$TLS_tc_created = "Caso de Teste %s foi criado sucesso";
+$TLS_tc_deleted = "Caso de Teste %s foi excluido com sucesso";
+$TLS_tc_new_version = "Versão do Caso de Teste %s foi criada com sucesso";
+$TLS_tc_updated = "Caso de Teste %s foi atualizado com sucesso";
+$TLS_tc_update_failed = "Atualização do caso de Teste %s falhou!";
+$TLS_tc_version_deleted = "Versão do Caso de Teste %s %d foi excluida com sucesso";
+$TLS_assign_requirements = "Atribuir Requisitos";
+
+
+// ----- tcexecute.php -----
+$TLS_check_test_automation_server = "Por favor, verifique as configurações do servidor";
+$TLS_result_after_exec = "Resultados após execução: ";
+$TLS_service_not_supported = "Esse serviço não é suportado";
+$TLS_tcexec_notes = "Detalhes do Teste (notas):";	// changed to original translation with old translation in '()'
+$TLS_tcexec_result = "Resultados:";
+$TLS_tcexec_results_for = "Resultados para:";
+
+
+// ----- gui/templates/attachment404.tpl -----
+$TLS_error_attachment_not_found = "Erro: Anexo não encontrado!";
+$TLS_title_downloading_attachment = "Baixando anexo";
+
+
+// ----- gui/templates/attachmentdelete.tpl -----
+$TLS_deleting_was_ok = "Anexo foi excluido!";
+$TLS_error_attachment_delete = "Erro ao excluir o anexo!";
+$TLS_title_delete_attachment = "Excluir anexo";
+
+
+
+// ----- gui/templates/containerDelete.tpl -----
+$TLS_btn_yes_del_comp = "Sim, excluir Suite de Teste";
+$TLS_container_title_testsuite = $TLS_test_suite;
+$TLS_linked_but_not_executed = "Linked to one or more Test Plan, but not executed";
+$TLS_question_del = "Confirma exclusão?";
+$TLS_th_link_exec_status = "Status de execução";
+$TLS_testsuite_successfully_deleted = "A Suite de Teste foi removida com sucesso!";
+$TLS_no_links = "Sem dados dependentes.";
+$TLS_linked_and_executed = "Um Caso de Teste foi adicionado ao Plano de Teste e possui resultados.";
+
+
+// ----- gui/templates/containerNew.tpl -----
+$TLS_btn_create_testsuite = "Criar Suite de Teste";
+$TLS_tc_keywords = "Palavras-chave";
+$TLS_title_create = "Criar";
+$TLS_warning_empty_testsuite_name = "Por favor dê um nome para a Suite de Teste";
+
+
+
+// ----- gui/templates/bug_add.tpl -----
+$TLS_btn_add_bug = "Adicionar bug"; // change 'caso' to 'bug'
+$TLS_bug_id = "ID do bug"; // change 'caso' to 'bug'
+$TLS_button_enter_bug = "Criar novo bug"; // change 'caso' to 'bug'
+$TLS_link_bts_create_bug = "Acesso ao Bugtracker ";
+$TLS_title_bug_add = "Adicionar um bug"; // change 'caso' to 'bug'
+
+
+// ----- gui/templates/bug_delete.tpl -----
+$TLS_title_delete_bug = "Excluir bug";
+
+
+
+// ----- gui/templates/containerMove.tpl -----
+$TLS_as_first_testsuite = "Posicionar no destino em cima";
+$TLS_as_last_testsuite = "Posicionar no destino embaixo";
+$TLS_choose_target = "Escolha um destino";
+$TLS_cont_copy_first = "Copiar";
+$TLS_cont_copy_second = "para qualquer";
+$TLS_cont_move_first = "Mover esse";
+$TLS_cont_move_second = "para um diferente";
+$TLS_copy_keywords = "Copiar palavras-chave";
+$TLS_defined_exclam = "definido !";
+$TLS_include_nested = "Incluindo dados aninhados (apenas copiar).";
+$TLS_sorry_further = "Lamento que não haja além disso ";
+$TLS_title_move_cp = "Mover/Copiar";
+$TLS_title_move_cp_testcases = "Mover/Copiar Caso de Teste";
+
+// ----- gui/templates/reqCreate.tpl -----
+$TLS_req_create = "Criar requisito";
+$TLS_req_doc_id = "ID do Documento";
+$TLS_warning_empty_req_title = "Título do requisito não pode ser vazio!";
+$TLS_warning_empty_reqdoc_id = "ID do documento de requisito não pode ser vazio!";
+$TLS_create_testcase_from_req = "Create Test Cases from Requirements";
+
+// ----- gui/templates/reqCopy.tpl -----
+$TLS_copy_one_req = "Copiar requisito";
+$TLS_copy_several_reqs = "Copiar requisitos";
+$TLS_copy_testcase_assignments = "Copiar atribuições do Caso de Teste";
+
+
+// gui/templates/containerOrder.tpl
+$TLS_no_nodes_to_reorder = "Desculpe, não existe nada para ordenar!";
+$TLS_node = $TLS_name;
+$TLS_th_id = "ID";
+$TLS_th_node_type = "Caso de Teste / Suite de Teste";
+$TLS_th_order = "Ordenar";
+$TLS_title_change_node_order = "Mudar ordem do dir. filho";
+$TLS_node_type_dbtable_testsuites = $TLS_test_suite;
+$TLS_node_type_dbtable_testcases = $TLS_testcase;
+
+
+// ----- gui/templates/containerView.tpl -----
+$TLS_alt_del_testsuite = "Excluir esta Suite de Teste com todos os filhos (Suites e Casos de Teste)";
+$TLS_alt_edit_testsuite = "Modifique esse dados e título da Suite de Testes";
+$TLS_alt_move_cp_testsuite = "Mover ou copiar esta Suite de Testes para outro Projeto";
+$TLS_alt_move_cp_testcases = "Mover/Copiar Caso de Teste";
+$TLS_btn_del_testsuite = "Deletar Suite de Teste";
+$TLS_btn_del_testsuites_bulk = "Remover Suites de Teste me lote";
+$TLS_btn_edit_testsuite = $TLS_btn_edit;
+$TLS_btn_execute_automatic_testcases = "Executar todos Casos de Teste automático";
+$TLS_btn_export_all_testsuites = "Exportar todas as Suite de Testes";
+$TLS_btn_export_tc = "Exportar Caso(s) de Teste";
+$TLS_btn_export_testsuite = "Exportar Suite de Teste";
+$TLS_btn_import_tc = "Importar Caso(s) de Teste";
+$TLS_btn_import_testsuite = "Importar Suite de Teste";
+$TLS_btn_move_cp_testsuite = "Mover/Copiar";
+$TLS_btn_move_cp_testcases = "Mover/Copiar Caso de Teste";
+$TLS_btn_new_testsuite = "Nova Suite de Teste";
+$TLS_btn_new_tc = "Criar Caso(s) de Teste";
+$TLS_btn_reorder = "Reordenar Filhos";
+$TLS_container_title_testproject = $TLS_testproject;
+$TLS_container_title_testplan = $TLS_testplan;
+$TLS_edit_testproject_basic_data = "Editar informações básicas do projeto de teste";
+$TLS_th_product_name = "Nome do Projeto de Teste";
+$TLS_th_testplan_name = "Nome do Plano de Teste";
+
+
+// ----- gui/templates/cfields/cfieldsEdit.tpl -----
+$TLS_assigned_to_testprojects = "Atribuir para os Projetos de Teste";
+$TLS_available_on = "Disponivel para";
+$TLS_custom_field = "Campo Personalizado";
+$TLS_enable_on_design = "Ativar na Especificação do Teste";
+$TLS_enable_on_exec = "Ativar na Execução do Teste";
+$TLS_enable_on_testplan_design = "Ativar na <br />criação do Plano de Teste";
+$TLS_label = "Rótulo";
+$TLS_popup_delete_custom_field = "Você tem certeza que deseja excluir o campo personalizado?";
+$TLS_possible_values = "Valores Possiveis";
+$TLS_show_on_design = "Mostrar na Especificação de Teste";
+$TLS_show_on_exec = "Mostrar na Execução do Teste";
+$TLS_show_on_testplan_design = "Mostrar na criação do Plano de Teste";
+$TLS_testcase 			= $TLS_test_case; // obsolete
+$TLS_title_cfields_mgmt = "Campos Personalizados";
+$TLS_title_cfield_edit = "Editar ";
+$TLS_type = "Tipo";
+$TLS_warning_empty_cfield_label = "Por favor entrar com o rótulo do campo personalizado.";
+$TLS_warning_empty_cfield_name = "Por favor entrar com o nome desse campo personalizado.";
+$TLS_warning_is_in_use = "Não é possível apagar, qualquer alteração de tipo <br /> " .
+                         "porque um valor foi atribuido a este campo personalizado <br />" .
+                         "está sendo usado na Especificação ou Execução de teste";
+
+$TLS_warning_no_type_change = "Você NÃO PODE mudar o tipo do campo personalizado <br /> " .
+                              "porque um valor já foi atribuido para este campo personalizado <br />" .
+                              "por um usuário em uma Especificação de Teste ou Execução de Teste ";
+
+							  
+// ----- gui/templates/inc_update.tpl -----
+$TLS_info_failed_db_upd = "Falha para atualizar o banco de dados!";
+$TLS_info_failed_db_upd_details = "Falha para atualizar o banco de dados! - detalhes:";
+$TLS_invalid_query = "Erro:";
+$TLS_warning = "Cuidado!";
+$TLS_was_success = " foi corretamente ";
+
+
+// ----- gui/templates/execNavigator.tpl -----
+$TLS_TestPlan = $TLS_testplan;
+$TLS_btn_apply_filter = "Aplicar Filtro";
+$TLS_btn_update_menu = "Atualizar Menu";
+$TLS_caption_nav_filter_settings = "Filtro de Navegação & Configurações";
+$TLS_caption_nav_filters = "Filtros";
+$TLS_caption_nav_settings = "Configurações";
+$TLS_current_build = "Baseline Atual";
+$TLS_filter_owner = "Atribuido à";
+$TLS_filter_result = "Status atual";
+$TLS_filter_on = "on";
+$TLS_filter_tcID = "ID do CT";
+$TLS_include_unassigned_testcases = "Incluir CT's não atribuidos";
+$TLS_test_status_all_status = $TLS_test_status_all;
+$TLS_filter_result_all_builds = "TODAS as Builds (Baseline)";
+$TLS_filter_result_any_build = "QUALQUER Build (Baseline)";
+$TLS_filter_result_specific_build = "Build (Baseline) específica";
+$TLS_filter_result_latest_execution = "última execução";
+$TLS_filter_result_current_build = "Build (Baseline) escolhida para execução";
+$TLS_filter_somebody = "Alguém";
+$TLS_exec_build = "Build (Baseline) para execução";
+$TLS_filter_result_all_prev_builds = "Resultados de TODAS as Builds (Baselines) anteriores";
+$TLS_filter_result_any_prev_build = "REsultados de Qualquer Build (Baseline) anterior";
+
+
+// ----- gui/templates/mainPage.tpl -----
+$TLS_th_my_perc_completed = "Completei [%]";
+$TLS_th_perc_completed = "Completado [%]";
+$TLS_title_your_tp_metrics = "Suas métricas de plano de teste";
+$TLS_error_no_testprojects_present = "Não há Projeto de Teste definido!";
+
+
+// ----- gui/templates/metrics_dashbord.tpl -----
+$TLS_th_total_tc = "Número do Caso de Teste";
+$TLS_th_active_tc = "Casos de Teste Ativos";
+$TLS_th_executed_tc = "Casos de Teste Executados";
+$TLS_th_executed_vs_active = "Executados/Ativos [%]";
+$TLS_th_executed_vs_total = "Executados/Total [%]";
+
+
+// ----- gui/templates/newest_tcversions.tpl -----
+$TLS_linked_version = "Versão associada";
+$TLS_newest_version = "Mais nova versão ativa disponivel";
+$TLS_title_newest_tcversions = "Mais novas versões de Casos de Teste associados";
+$TLS_no_newest_version_of_linked_tcversions = "Todas as versões dos Casos de Teste são atuais!";
+
+
+// ----- gui/templates/emailSent.tpl -----
+$TLS_send_test_report = "- Enviar Relatório de Teste";
+
+
+// ----- gui/templates/reqImport.tpl -----
+$TLS_Result = "Resultado";
+$TLS_btn_back2srs = "Voltar para a Especificação de Requisitos";
+$TLS_btn_upload_file = "Enviar arquivo";
+$TLS_check_req_file_structure = "Favor verificar o formato do arquivo, não é possivel ler qualquer requisito";
+$TLS_local_file = "Arquivo:";
+$TLS_max_size_cvs_file1 = "Tam. máximo do arquivo é";
+$TLS_max_size_cvs_file2 = "KB";
+$TLS_req_import_check_note = "Favor verificar possíveis conflitos, providenciar uma solução e começar o processo de importação.";
+$TLS_req_import_dont_empty = "Não importe itens com escopo vazio";
+$TLS_req_import_option_double = "Adicionar novo com o mesmo título";
+$TLS_req_import_option_header = "Aplicar solução do conflito";
+$TLS_req_import_option_overwrite = "Atualizar um existente";
+$TLS_req_import_option_skip = "Ignorar requisitos duplicados na importação";
+$TLS_req_import_type = "Tipo:";
+$TLS_req_msg_norequirement = "Sem requisito";
+$TLS_required_cvs_format = "Formato de arquivo requerido:";
+$TLS_title_choose_file_type = "Escolha o formato de arquivo";
+$TLS_title_choose_local_file = "Escolha o local do arquivo para anexar";
+$TLS_title_req_import = "Requisitos para importação";
+$TLS_title_req_import_check_input = "Conferir dados importados";
+$TLS_title_req_spec_import = "Importar Espec. Req.";
+
+
+
+// gui/templates/inc_attachments.tpl
+$TLS_alt_delete_build = "Clique aqui para excluir essa Baseline";
+$TLS_alt_delete_attachment = "Clique aqui para excluir este anexo";
+$TLS_attached_files = "Arquivos anexados";
+$TLS_attachment_feature_disabled = "Anexo desabilitado";
+$TLS_button_upload = "Enviar";
+$TLS_upload_file_new_file = "Carregar novo arquivo";
+$TLS_warning_delete_attachment = "Realmente excluir esse anexo?";
+
+
+
+// gui/templates/resultsNavigator.tpl
+$TLS_note_email_sent_t = "nota: formato do email enviado ao email do usuário";
+$TLS_show_inactive_tplans = "Exibir Planos de Teste inativos";
+$TLS_send_results = "Enviar resultados";
+$TLS_send_to = "Para:";
+$TLS_subject = "Assunto:";
+$TLS_title_active_build = "Build (Baseline) Ativa";
+$TLS_title_report_type = "Relatório Formato";
+$TLS_via_email = "por email";
+$TLS_link_results_import = "Importar Resultados";
+
+
+// gui/templates/inc_attachments_upload.tpl
+
+
+
+// gui/templates/cfields/cfieldsView.tpl
+$TLS_btn_cfields_create = $TLS_btn_create;
+$TLS_manage_cfield = "Gerenciar Campo Personalizado";
+
+
+// cfieldsExport.php
+$TLS_export_cfields = "Exportar Campos personalizados";
+
+// cfieldsImport.php
+$TLS_import_cfields = "Importar Campos personalizados";
+$TLS_custom_field_already_exists="Campo Personalizado %s já existe.";
+$TLS_custom_field_imported="Campo Personalizado %s importado.";
+
+// gui/templates/inc_cat_viewer_ro_m0.tpl
+$TLS_cat_scope = "Escopo e Objetivo";
+$TLS_category = "Suite de Teste";
+$TLS_configuration = "Configuração";
+$TLS_data = "Data";
+$TLS_not_defined = "Não definido.";
+$TLS_tools = "Ferramentas";
+
+
+
+// gui/templates/inc_cat_viewer_rw.tpl
+$TLS_cat_alt_name = "Informe o nome da Suite de Teste. Campo obrigatório.";
+$TLS_cat_config = "Configuração";
+$TLS_cat_data = "Data";
+$TLS_cat_name = "Nome da Suite de Teste";
+$TLS_cat_tools = $TLS_tools; //obsolete
+
+
+
+// gui/templates/reqEdit.tpl
+$TLS_by = "por";
+$TLS_coverage = "Cobertura";
+$TLS_popup_delete_req = "Tem certeza que quer excluir esse requisito?";
+$TLS_req_edit = "Editar Requisito";
+$TLS_req_msg_notestcase = "Caso de teste não conectado";
+$TLS_requirement_spec = "Especificação de Requisitos";
+$TLS_test_case_id = "ID";
+$TLS_title_created = "Criado em ";
+$TLS_title_last_mod = "Última modificação em ";
+$TLS_expected_coverage = "Número de Casos de Teste necessários";
+$TLS_warning_expected_coverage = $TLS_expected_coverage . " precisa ser um número ";
+$TLS_warning_expected_coverage_range = $TLS_expected_coverage . " precisa ser > 0 ";
+
+$TLS_current_coverage = "Conectado";
+$TLS_coverage_number = "Criado";
+$TLS_testsuite_title_addition = "gerado automaticamente da especificação de requisitos.";
+$TLS_testcase_title_addition = "gerado automaticamento do requisito";
+
+// gui/templates/buildEdit.tpl
+$TLS_enter_build = "Título";
+$TLS_enter_build_notes = "Descrição";
+//$TLS_msg_build = "Notas: Cada Build está associada a um Plano de Teste ativo. " .
+//                 "Descrição deverá incluir: lista de pacotes entregues,aprovações, status,etc.";
+$TLS_open = "Aberto";
+$TLS_title_build_2 = "Gerenciar Baseline";
+$TLS_title_build_create = "Criar nova Baseline";
+$TLS_title_build_update = "Atualizar Baseline";
+$TLS_title_build_edit = "Editar Baseline";
+$TLS_warning_empty_build_name = "Por favor informe um nome para Baseline!";
+$TLS_copy_to_all_tplans = "Copiar para todos Planos de Teste";
+$TLS_release_date = "Dado do Release";
+$TLS_closure_date = "Fechado em";
+
+
+
+// gui/templates/inc_comp_viewer_ro.tpl
+$TLS_component = "Suite de Teste";
+$TLS_introduction = "Introdução";
+$TLS_limitations = "Limitações";
+$TLS_methodology = "Metodologia";
+$TLS_references = "Referências";
+
+
+
+// gui/templates/inc_comp_viewer_rw.tpl
+$TLS_comp_alt_name = "Adicionar nome da Suite de Teste. O campo é obrigatório!.";
+$TLS_comp_intro = "Introdução";
+$TLS_comp_lim = "Limitações";
+$TLS_comp_method = "Metodologia";
+$TLS_comp_name = "Nome da Suite de Teste";
+$TLS_comp_ref = "Referências";
+$TLS_comp_scope = "Escopo";
+
+
+
+// gui/templates/reqSpecView.tpl
+$TLS_btn_analyse = "Analisar";
+$TLS_btn_check_all = "Marcar todos";
+$TLS_btn_copy_requirements = "Copiar Requisitos";
+$TLS_btn_copy_req_spec = "Copiar";
+$TLS_btn_delete_spec = "Excluir especificação";
+$TLS_btn_edit_spec = "Editar especificação";
+$TLS_btn_export_reqs = "Exportar Requisitos";
+$TLS_btn_export_req_spec = "Exportar Espec. Req.";
+$TLS_btn_import_reqs = "Importar Requisitos";
+$TLS_btn_import_req_spec = "Improtar Espec. Req.";
+$TLS_btn_req_create = "Criar novo Requisito";
+$TLS_btn_spec_list = "Lista de espec.";
+$TLS_btn_uncheck_all = "Desmarcar todos";
+$TLS_cant_delete_req_nothing_sel = "Favor selecionar um requisito!";
+$TLS_popup_sure_delete = "Tem certeza que quer excluir a especificação do requisito?";
+$TLS_req_select_create_tc = "Criar Caso de Teste";
+$TLS_req_select_delete = "Excluir requisitos";
+$TLS_req_title_list = "Lista de requisitos";
+$TLS_req_total = "Total req.";
+$TLS_req_reorder = "Reordenar requisitos";
+$TLS_select_at_least_one_req = "Por favor selecione um requesito!";
+$TLS_warning_delete_requirements = "Tem certeza que quer excluir os requisitos selecionados?";
+$TLS_warning_delete_req_spec = "Você está deletando um requisito: %s <br /><br /> Tem certeza?";
+$TLS_title_change_req_order = "Mudar ordem dos requisitos";
+$TLS_req_spec_copy_done = "A cópia da Especificação de Req. (DOCID:%s - %s) foi executada (DOCID:%s)";
+
+// ----- gui/templates/inc_copyrightnotice.tpl -----
+$TLS_gnu_gpl = "GNU GPL";
+$TLS_lic_home = "site";
+$TLS_lic_product = "Projeto TestLink";
+$TLS_licensed_under = "TestLink está licenciado sob a";
+
+
+
+// ----- gui/templates/containerEdit.tpl -----
+$TLS_btn_update_testsuite = "Atualizar Suite de Teste";
+$TLS_title_edit_level = "Editar";
+
+
+
+// ----- gui/templates/reqSpecAnalyse.tpl -----
+$TLS_edit = $TLS_btn_edit;
+$TLS_req = $TLS_requirement;
+$TLS_req_spec_change = "Mudar especificações dos requisitos para";
+$TLS_req_title_analyse = "Analisar especificações dos requisitos ";
+$TLS_req_title_covered = "Requisitos cobertos pelo Caso de Teste";
+$TLS_req_title_in_tl = "Requisitos do TestLink";
+$TLS_req_title_nottestable = "Requisitos sem testes aplicáveis";
+$TLS_req_title_uncovered = "Requisitos presentes sem Caso de Teste";
+$TLS_req_title_not_in_tl = "Requisitos ausentes no TestLink";
+$TLS_req_total_count = "Total de requisitos";
+
+
+
+// ----- gui/templates/reqSpecCreate.tpl -----
+$TLS_action_create_srs = "Criar Especificação de Requisito";
+
+
+
+// ----- gui/templates/inc_reqView.tpl -----
+$TLS_last_edit = "Editado última vez por";
+$TLS_warning_delete_requirement = "Você está deletando um requisito: %s <br /><br /> Tem certeza?";
+$TLS_btn_freeze_this_version = "Congelar esta versão";
+$TLS_warning_freeze_requirement = "Você está prestes a congelar: %s <br /><br /> Você tem certeza?";
+$TLS_freeze = "Congelado";
+$TLS_can_not_edit_req = "Você não pode editar esta versão porque ela foi congelada.";
+$TLS_req_version_frozen = "A versão do requisito foi congelada.";
+$TLS_freeze_req = "Congelar requisitos";
+
+
+// gui/templates/inc_res_by_comp.tpl
+$TLS_title_res_by_top_level_suites = "Resultado pela Suite de Teste de Nivel Top";
+$TLS_trep_blocked = $TLS_test_status_blocked;
+$TLS_trep_comp = $TLS_test_suite;
+$TLS_trep_comp_perc = "[%] Completado";
+$TLS_trep_failed = $TLS_test_status_failed;
+$TLS_trep_not_run = $TLS_test_status_not_run;
+$TLS_trep_passed = $TLS_test_status_passed;
+$TLS_trep_total = "Total";
+
+
+
+// ----- gui/templates/inc_res_by_keyw.tpl -----
+$TLS_title_res_by_kw = "Resultados por Palavra-chave";
+$TLS_trep_kw = $TLS_keyword;
+
+$TLS_title_res_by_owner = "Resultados por Testador Atribuido";
+$TLS_trep_owner = "Testador";
+$TLS_title_res_by_tester = "Resultados por Testador";
+$TLS_trep_tester = "Testador";
+
+// gui/templates/inc_res_by_prio.tpl
+$TLS_tit_end_date = "Data final";
+$TLS_tit_milestone = $TLS_Milestone;
+$TLS_title_res_by_prio = "Resultados por prioridade";
+$TLS_trep_milestone_goal = "[%] da Marco concluida";
+$TLS_trep_prio = $TLS_priority;
+$TLS_trep_status = $TLS_status;
+
+
+
+// gui/templates/inc_res_by_ts.tpl
+$TLS_title_res_by_ts = "Resultados por Suite de Teste";
+$TLS_trep_imp = $TLS_importance;
+$TLS_trep_risk = "Risco";
+$TLS_trep_ts = $TLS_test_suite;
+
+
+
+// gui/templates/reqSpecEdit.tpl
+$TLS_req_total_description = "Use este parâmetro para sobrescrever a contagem real de requisitos no documento. Deixe '0' para não usar.";
+
+$TLS_copy_req_spec = "Copiar Espec. Req.";
+
+
+
+// gui/templates/inc_show_bug_table.tpl
+$TLS_caption_bugtable = "Casos relevantes";
+$TLS_delete_bug ="delete bug";
+$TLS_del_bug_warning_msg = "Confirma exclusão deste caso?";
+
+
+
+// gui/templates/reqSpecList.tpl
+$TLS_btn_assign_tc = "Atribuir Caso de Teste";
+$TLS_no_docs = "Sem documentos disponiveis.";
+$TLS_req_list_docs = "Especificações de requisitos";
+
+
+
+// ----- gui/templates/tcEdit_New_viewer.tpl -----
+$TLS_alt_add_tc_name = "Informe nome do Caso de Teste. Esse campo é obrigatório.";
+$TLS_expected_results = "Resultados Esperados:";
+$TLS_preconditions = "Pré-condições";
+$TLS_steps = "Passos:";
+$TLS_summary = "Sumário:";
+$TLS_tc_title = "Título do Caso de Teste";
+
+
+
+// ----- gui/templates/show_exec_notes.tpl -----
+$TLS_title_execution_notes = "Comentários";
+
+
+
+// ----- gui/templates/rolesedit.tpl -----
+$TLS_btn_create_role = "Criar";
+$TLS_btn_edit_role = "Salvar";
+$TLS_caption_define_role = "Definir Perfil";
+$TLS_caption_possible_affected_users = "Usuários possivelmente afetados";
+$TLS_enter_role_notes = "Descrição do perfil";
+$TLS_menu_assign_product_roles = "Atribuir papéis do Projeto de Teste";
+$TLS_menu_assign_testplan_roles = "Atribuir papéis do Plano de Teste";
+$TLS_menu_define_roles = "Definir Perfis";
+$TLS_menu_mod_user = "Modificar Usuário";
+$TLS_menu_new_user = "Novo Usuário";
+$TLS_menu_edit_user = "Editar Usuário";
+$TLS_menu_edit_role = "Editar Perfis";
+$TLS_menu_view_users = "Ver Usuários";
+$TLS_menu_view_roles = "Ver Perfis";
+$TLS_th_cf_rights = "Permissões dos campos personalizados";
+$TLS_th_kw_rights = "Permissões de palavras-chave";
+$TLS_th_mgttc_rights = "Permissões de gerenciamento dos CTs";
+$TLS_th_platform_rights = $TLS_platform;
+$TLS_th_product_rights = "Permissões do Projeto de Testes";
+$TLS_th_req_rights = "Permissões de Requisitos";
+$TLS_th_rights = "Permissões";
+$TLS_th_rolename = "Nome do Perfil";
+$TLS_th_system_rights = "Direitos do Sistema";
+$TLS_th_tp_rights = "Permissões do Plano de Teste";
+$TLS_th_user_rights = "Permissões de usuário";
+$TLS_title_user_mgmt = "Administração de Usuários";
+$TLS_warning_empty_role_name = "Favor informar nome do perfil";
+$TLS_warning_modify_role = "Confirma modificação do perfil?";
+
+
+
+// ----- gui/templates/tcSearchForm.tpl -----
+$TLS_caption_search_form = "Procurar Caso de Teste";
+$TLS_custom_field_value ="Custom Field Value";
+$TLS_not_applied = "Não aplicado";
+$TLS_th_tcid = "ID do CT:";
+$TLS_th_tcversion = "Versão:";
+$TLS_th_title = "Título:";
+$TLS_title_search_tcs = "Busca";
+$TLS_requirement_document_id = "Doc. Req. ID";
+
+
+// ----- gui/templates/testcases/searchData.tpl -----
+$TLS_too_wide_search_criteria = "Muitos resultados. Por favor, seja mais específico " .
+		"no critério da pesquisa.";
+
+
+// ----- gui/templates/infoWindow.tpl -----
+
+
+
+// ----- gui/templates/tcDelete.tpl -----
+$TLS_btn_yes_iw2del = "Sim, excluir Caso de Teste!";
+$TLS_question_del_tc = "Deseja realmente excluir esse Caso de Teste?";
+$TLS_th_executed = "Executado";
+$TLS_th_linked_to_tplan = "Associado ao Plano de Teste";
+$TLS_th_version = "Versão";
+
+
+
+// ----- gui/templates/tcNew.tpl -----
+$TLS_title_new_tc = "Criar Teste";
+$TLS_warning_empty_tc_title = "Por favor, dê um título ao Caso de Teste";
+
+
+
+// ----- gui/templates/tcImport.tpl -----
+$TLS_title_imp_tc_data = "Importar dados do Caso de Teste";
+$TLS_view_file_format_doc = "(Exibir formatos de arquivos de documentação)";
+
+
+
+// ----- gui/templates/keywordsimport.tpl -----
+$TLS_title_keyword_import_to = "Importar palavras-chave para";
+$TLS_title_keyword_import = "Importar palavras-chave";
+
+
+
+// ----- gui/templates/keywordsExport.tpl -----
+$TLS_export_keywords="Export keywords";
+$TLS_title_req_import_to = "Importar requisitos para o documento:";
+
+
+
+// ----- gui/templates/cfields_tproject_assign.tpl -----
+$TLS_btn_cfields_active_mgmt = "Atualizar status ativo";
+$TLS_btn_cfields_display_order = "Gravar order de visualização";
+$TLS_btn_cfields_display_attr = "Salve a ordem de exibição e localização";
+$TLS_cfields_active = "Ativo";
+$TLS_cfields_tproject_assign = "Atribuir campos personalizados";
+$TLS_display_order = "Ordem de exibição";
+$TLS_title_assigned_cfields = "Campos personalizados atribuidos";
+$TLS_title_available_cfields = "Campos personalizados disponiveis";
+$TLS_location = "Localização";
+$TLS_standard_location = "padrão";
+$TLS_before_steps_results = "Antes dos passos";
+
+
+
+
+
+// ----- gui/templates/usersview.tpl -----
+$TLS_No = "Não";
+$TLS_Yes = "Sim";
+$TLS_alt_delete_user = "Realmente excluir o usuário selecionado?";
+$TLS_alt_disable_user = "Colocar o usuário como Inativo";
+$TLS_alt_edit_user = "Editar usuário";
+$TLS_order_by_login = "Classificar pelo Login";
+$TLS_order_by_role_descr = "Classificar pela descrição do perfil";
+$TLS_th_email = "E-mail";
+$TLS_th_first_name = "Nome";
+$TLS_th_last_name = "Sobrenome";
+$TLS_th_locale = "Local";
+$TLS_th_login = "Login";
+$TLS_th_role = "Perfil";
+$TLS_th_api = "Chave API";
+//$TLS_api_gen_key_action = "generate";
+$TLS_warning_delete_user = "Vocï¿½ está deletando: %s <br /><br /> Tem certeza?";
+$TLS_warning_disable_user = "Você está desabilitando: %s <br /><br /> Tem certeza?";
+$TLS_order_by_login_dir = "Ordernar pelo login";
+$TLS_order_by_role_dir = "Order pelo perfil";
+$TLS_alt_active_user = "Ativar usuário";
+$TLS_show_inactive_users = "Exibir usuários inativos";
+$TLS_hide_inactive_users = "Esconder usuários inativos";
+
+// ----- gui/templates/login.tpl -----
+$TLS_btn_login = "Login";
+$TLS_login_name = "   Login:";
+$TLS_lost_password_q = "  Esqueceu a senha?";
+$TLS_new_user_q = "   Novo Usuário?";
+$TLS_password = "   Senha:";
+
+
+
+// ----- gui/templates/loginFirst.tpl -----
+$TLS_btn_add_user_data = "Adicionar dados do usuário";
+$TLS_e_mail = "Endereço de email (necessário para enviar a nova senha):";
+$TLS_first_name = "Nome:";
+$TLS_last_name = "Sobrenome:";
+$TLS_link_back_to_login = "Voltar para o Login";
+$TLS_password_again = "Repetir Senha:";
+$TLS_password_mgmt_is_external = "Gerenciamento da senha é externo.";
+$TLS_user_login_valid_regex = "O login contém caracteres inválido!";
+
+
+// ----- gui/templates/tcMove.tpl -----
+$TLS_as_first_testcase = "Posicionar no destino em cima";
+$TLS_as_last_testcase = "Posicionar no destino embaixo";
+$TLS_btn_mv = "Mover";
+$TLS_choose_container = "Escolha a Suite de Teste";
+$TLS_inst_copy = "Copiar Caso de Teste para outra Suite de Teste.";
+$TLS_inst_move = "Mover Caso de Teste para outra Suite de Teste.";
+$TLS_inst_copy_move_warning = "Importante: Você pode escolher apenas Suites que pertençam a este Projeto de Teste.";
+$TLS_title_mv_cp_tc = "Mover/Copiar Caso de Teste";
+
+
+
+// ----- gui/templates/loginLost.tpl -----
+$TLS_btn_send = "Enviar";
+$TLS_password_reset = "Redefinir senha";
+
+
+
+// ----- gui/templates/tcView.tpl -----
+$TLS_no_records_found = "Busca sem resultados!";
+$TLS_other_versions = 'Outra versão';
+$TLS_match_count = "Number of matches"; //verified
+
+// ----- gui/templates/execSetResults.tpl -----
+$TLS_alt_attachment_mgmt = "Anexos";
+$TLS_alt_notes = "Comentários";
+$TLS_assigned_to = "Atribuido à";
+$TLS_attachment_mgmt = "Anexos";
+$TLS_btn_history_off = "Mostrar apenas a última execução";
+$TLS_btn_history_off_any_build = "Mostrar apenas última execução (qualquer Baseline)";
+$TLS_btn_history_on = "Mostrar o histórico completo";
+$TLS_btn_save_all_tests_results = "Salvar todas as execuções";
+$TLS_btn_save_tc_exec_results = "Salvar execução";
+$TLS_btn_save_exec_and_movetonext = "Salvar e ir para o próximo";
+$TLS_bug_mgmt = "Gerenciamento de casos";
+$TLS_build_is_closed = "Baseline está fechada";
+$TLS_builds_notes = "Descrição da Baseline";
+$TLS_bulk_tc_status_management = "Bulk TC status management";      //verified
+$TLS_closed_build = "Baseline fechada. Operação não pode ser realizada";
+$TLS_date_time_run = "Data";
+$TLS_details = "Detalhes";
+$TLS_edit_notes = "Editar comentário";
+$TLS_execute_and_save_results ="Executar e Salvar Resultados";
+$TLS_exec_any_build = "(baseline qualquer)";
+$TLS_exec_current_build = "(baseline atual)";
+$TLS_exec_notes = "Notas";
+$TLS_exec_status = "Status";
+$TLS_execution_history = "Histórico da Execução";
+$TLS_execution_type_manual = "Manual";
+$TLS_execution_type_auto = "Automático";
+$TLS_has_no_assignment = "Atribuido a ninguém";
+$TLS_img_title_bug_mgmt = "Gerenciar Bug";
+$TLS_img_title_delete_execution = "Deletar execução";
+$TLS_import_xml_results = "Importar XML com Resultados";
+$TLS_just_last_execution_for_this_build = "Última execução para essa baseline";
+$TLS_last_execution = "Última execução";
+$TLS_no_data_available = "Dados não disponiveis";
+$TLS_only_test_cases_assigned_to = "Apenas casos de teste assinalados para: ";
+$TLS_or_unassigned_test_cases = " ou não atribuido à testador";
+$TLS_run_mode = "Exec.";
+$TLS_set_all_tc_to = "Colocar todos para status ";
+$TLS_show_hide = "Mostrar / Esconder";
+$TLS_show_hide_reorder = "Exibir / Esconder reordenar ";
+$TLS_tc_not_tested_yet = "Não testado ainda";
+$TLS_test_cases_cannot_be_executed = "Caso de Teste não pode ser executado";
+$TLS_testcase_version_is_inactive_on_exec = "Esta versão está inativa => Não pode ser executada";
+$TLS_test_exec_by = "Testador";
+$TLS_test_exec_expected_r = "<br>Resultados Esperados:";
+$TLS_test_exec_last_run_date = "Execução mais recente";
+$TLS_test_exec_notes = "Notas / Descrição";
+$TLS_test_exec_on_build = "sobre Baseline";
+$TLS_test_exec_result = "Resultados: ";
+$TLS_test_exec_steps = "<br>Passos: ";
+$TLS_test_exec_summary = "Sumário: ";
+$TLS_test_plan_notes = "Notas do Plano de Teste";
+$TLS_th_test_case_id = "ID ";
+$TLS_th_testsuite = $TLS_test_suite;
+$TLS_title_t_r_on_build = "Resultado dos Testes na Baseline";
+$TLS_title_t_r_owner = " Atribuido para";
+$TLS_title_test_case = "Caso de Teste";
+$TLS_version = "Versão";
+$TLS_warning_delete_execution = "Você está deletando esta execução. Deseja continuar?";
+$TLS_warning_nothing_will_be_saved = "Para o resultado da execução selecionado nada será salvo no banco de dados";
+$TLS_edit_execution = "editar execução";
+$TLS_platform_description = "Descrição da Platforma";
+
+
+// ----- gui/templates/inc_testsuite_viewer_ro.tpl -----
+$TLS_keywords = "Palavras-chave";
+
+
+
+// ----- gui/templates/navBar.tpl -----
+$TLS_access_doc = "documentação";
+$TLS_home = "Início";
+$TLS_link_logout = "Sair";
+$TLS_navbar_user_management = "Usuários";
+$TLS_product = "Projeto de Teste";
+$TLS_product_role = "Perfil do Projeto";
+$TLS_search_testcase = "Busca";
+$TLS_title_edit_personal_data = "Pessoal";
+$TLS_title_events = "Eventos";
+$TLS_title_execute = "Executar Testes";
+$TLS_title_results = "Resultados";
+$TLS_title_specification = "Especificação";
+$TLS_session_inactivity_timeout_at = "Session idle timeout at"; //verified
+
+
+
+// ----- gui/templates/inc_testsuite_viewer_rw.tpl -----
+
+
+
+// ----- gui/templates/planAddTC_m1.tpl -----
+$TLS_add_tc = "Adicionar";
+$TLS_added_on_date = "Adicionado na data";
+$TLS_info_added_on_date = "Data quando o Caso de Teste foi adicionado ao Plano de Teste";
+
+$TLS_add_remove_selected_tc_hint = "Operação será aplicada a TODAS as Suites de Teste"; //verified
+$TLS_btn_add_remove_selected_tc = "Adicionar/Remover selecionado";
+$TLS_btn_add_selected_tc = "Adicionar selecionados";
+$TLS_btn_save_exec_order = "Salvar ordem";
+$TLS_btn_save_custom_fields ="Salvar Campos Personalizados";
+$TLS_btn_save_platform ="Salvar plataforma";
+$TLS_check_uncheck_tc = "Todos os casos de testes da Suite de Teste.";
+$TLS_check_uncheck_all_checkboxes = "Marcar/Desmarcar Todos";
+$TLS_check_uncheck_all_checkboxes_for_add = "Marcar/Desmarcar Todos (para Adicionar)";
+$TLS_check_uncheck_all_checkboxes_for_rm = "Marcar/Desmarcar Todos (para Remover)";
+$TLS_executed_can_not_be_removed = "Os Casos de Testes executados não podem ser removidos";
+$TLS_execution_order = "Ordem de execução";
+$TLS_select_all_to_add = "Selecionar/desmarcar todos os Casos de Teste para adicionar";
+$TLS_select_all_to_remove = "Selecionar/desmarcar todos os Casos de Teste para remover";
+$TLS_tester_assignment_on_add="Atribuir para o usuário em adicionar";
+
+$TLS_has_been_executed = "foi executado";
+$TLS_inactive_testcase = "inativo";
+$TLS_no_testcase_available = "Nenhum Caso de Teste disponivel";
+$TLS_note_keyword_filter = "Casos de Testes filtrados por palavra-chave";
+$TLS_remove_tc = "Remover";
+$TLS_show_tcase_spec = "Mostrar especificação do Caso de Teste";
+$TLS_th_test_case = "Caso de teste";
+$TLS_title_add_remove_test_to_plan = "Adicionar/Remover Caso(s) de Teste do Plano de Teste";
+$TLS_title_add_test_to_plan = "Adicionar Casos de Teste no Plano de Teste";
+$TLS_warning_add_remove_selected_tc = "Aviso! Você tem certeza que deseja remover os Caso(s) de Teste do Plano de Teste?";
+
+
+// ----- gui/templates/planAddTCNavigator.tpl -----
+$TLS_title_navigator = "Navegador";
+$TLS_keywords_filter_help = "Você pode usar OU/AND no filtro";
+
+
+// ----- gui/templates/planTCNavigator.tpl -----
+$TLS_btn_update_all_testcases_to_latest_version = "Atualizar versão de todos CTs";
+$TLS_btn_bulk_update_to_latest_version = "Atualização em lote para a última versão";
+$TLS_caption_nav_filters = "Filtros";
+
+
+// ----- gui/templates/planPriority.tpl -----
+$TLS_btn_upd_prio = "Atualizar";
+$TLS_title_priority = "Definir regras de prioridade para o Plano de Teste";
+$TLS_tr_th_importance = "Importância";
+$TLS_tr_th_prio_cba = "Prioridade (C/B/A)";
+$TLS_tr_th_risk = "Risco/Prioridade";
+
+// ----- gui/templates/planUpdateTC.tpl -----
+$TLS_btn_update_testplan_tcversions = "Atualizar Plano de Teste";
+$TLS_update_to_version = "Atualizar para Versão";
+$TLS_update_all_testcase_versions = "Atualizar TODAS versões dos Casos de Testes relacionados";
+$TLS_update_testcase_versions = "Atualizar versão dos Casos de Testes relacionados";
+$TLS_no_testcase_checked = "Não existem Casos de Testes selecionados. Nada será feito";
+$TLS_tplan_updated = "Plano de Teste está atualizado";
+$TLS_update2latest = "<p>Este conjunto apresenta os Casos de Teste associados para uma nova versão ativa e disponível " . 
+                     "Selecione aqueles que você deseja atualizar para a versão ativa disponível mais recente.</p>";
+$TLS_noupdateneeded="Todos os Casos de Teste estão atualizados para a última versão";
+
+
+// ----- gui/templates/planEdit.tpl -----
+$TLS_btn_testplan_create = "Criar";
+$TLS_cancel = "Cancelar";
+$TLS_opt_no = "Não";
+$TLS_testplan_question_create_tp_from = "Criar a partir de um Plano de Teste existente?";
+$TLS_testplan_th_active = "Ativo";
+$TLS_testplan_th_name = "Nome";
+$TLS_testplan_th_notes = "Descrição";
+$TLS_testplan_title_create = "Criar um novo Plano de Teste";
+$TLS_testplan_title_edit = "Editar o Plano de Teste";
+$TLS_testplan_title_for_project = "para o Projeto de Teste: ";
+$TLS_testplan_title_tp_management = "Gerência do Plano de Teste";
+$TLS_testplan_txt_notes =   "Planos de Testes devem ser tarefas claramente definidas dentro de um período de tempo e de um conteudo. " .
+                            "Pode conter uma atividade de teste para uma nova versão de um produto " .
+                            "(incluindo atualizações) ou também um simples pedido de mudança para um cliente. " .
+                            "<br />Campo de descrição serve como links para o plano do Projeto e para a documentação " .
+                            "relacionada, lista de recursos a serem testados, riscos, etc.<br />" .
+                            "Você pode criar um novo Plano de Teste a partir de um existente. " .
+                            "Os seguintes itens são copiados: baselines, Casos de Testes, Prioridades, Marcos " .
+                            "e perfis de usuário.<br />Um plano de Teste pode ser desativado, " .
+                            "impedindo edição ou mudança no resultado. " .
+                            "Planos assim são visíveis apenas nesta e na página 'Relatar'. ";
+$TLS_warning_empty_tp_name = "Você não pode deixar o Plano de Teste sem nome!";
+
+$TLS_testplan_copy_tcases = "Copiar Casos de Teste";
+$TLS_testplan_copy_tcases_latest = "Última versão disponível";
+$TLS_testplan_copy_tcases_current = "Versão atual relacionado";
+$TLS_testplan_copy_builds = "Copiar Baselines";
+$TLS_testplan_copy_priorities = "Copiar Prioridades";
+$TLS_testplan_copy_milestones = "Copiar Marcos";
+$TLS_testplan_copy_user_roles = "Copiar Perfil de Usuário";
+$TLS_testplan_copy_platforms_links = "Copiar os links das Plataformas";
+$TLS_testplan_copy_assigned_to = "Copiar Atribuido para";
+
+
+// ----- gui/templates/planNew.tpl -----
+$TLS_testplan_btn_edit = "Atualizar";
+$TLS_testplan_btn_new = "Criar";
+$TLS_testplan_menu_create = "Criar";
+$TLS_testplan_menu_edit = "Editar";
+$TLS_testplan_menu_list = "Listar";
+
+
+
+// ----- gui/templates/planMilestones*.tpl -----
+$TLS_alt_delete_milestone = "Excluir esta Marco?";
+$TLS_btn_edit_milestone = "Editar";
+$TLS_btn_new_milestone = "Criar";
+$TLS_info_milestones_date = "A Marco deve ser criada na data atual ou posterior";
+$TLS_info_milestones_start_date='';
+$TLS_no_milestones = "Não há Marcos neste Plano de Teste!";
+$TLS_popup_delete_milestones = "Tem certeza que quer excluir a Marco %NAME% ?";
+$TLS_warning_delete_milestone = "Você está deletando: %s <br /> <br /> Deseja Continuar?";
+$TLS_warning_empty_milestone_name = "Nome da Marco não pode ficar vazio!";
+
+
+$TLS_th_date_format = "Data Alvo";
+$TLS_th_perc_a_prio = "% A prioridade";
+$TLS_th_perc_b_prio = "% B prioridade";
+$TLS_th_perc_c_prio = "% C prioridade";
+$TLS_th_perc_testcases = "Testes Completado [0-100%]";
+$TLS_title_existing_milestones = "Marcos Existentes";
+$TLS_title_milestones = "Marcos para Plano de Teste";
+$TLS_title_new_milestone = "Definir uma nova Marco";
+$TLS_title_edit_milestone = "Editar Marco";
+$TLS_delete_milestone = "Deletar Marco";
+$TLS_milestone_deleted = "Marco %s foi deletada com sucesso";
+$TLS_create_milestone = "Criar Marco";
+$TLS_edit_milestone = "Editar Marco %s";
+$TLS_warning_empty_low_priority_tcases = "Valor não pode ser vazio";
+$TLS_warning_empty_medium_priority_tcases = "Valor não pode ser vazio";
+$TLS_warning_empty_high_priority_tcases = "Valor não pode ser vazio";
+$TLS_milestone_created = "Marco Criada";
+$TLS_start_date = 'Data de início';
+
+
+// ----- gui/templates/projectEdit.tpl -----
+$TLS_caption_edit_tproject = 'Editar %s';
+$TLS_caption_new_tproject = 'Criar um novo projeto';
+$TLS_create_from_existent_tproject = 'Criar de um Projeto de Teste existente?';
+$TLS_testproject_color = 'Cor de fundo';
+$TLS_testproject_enable_automation = 'Habilitar a Automação de Teste (API keys)';
+$TLS_testproject_enable_inventory = 'Habilitar Inventário';
+$TLS_testproject_enable_priority = 'Habilitar as Prioridades de Teste';
+$TLS_testproject_enable_requirements = 'Habilitar a funcionalidade de Requisitos';
+$TLS_info_failed_loc_prod = 'Falha ao localizar o Projeto de Teste.';
+$TLS_testproject_description = 'Descrição do projeto';
+$TLS_testproject_features = 'Funcionalidades';
+$TLS_testproject_alt_color = 'Clique aqui para escolher a cor de fundo do projeto';
+$TLS_testproject_alt_active = 'Ativar';
+$TLS_testproject_alt_requirement_feature = "Requisitos ativado";
+$TLS_testproject_alt_edit = "Editar Projeto de Teste";
+$TLS_testproject_txt_empty_list = "Não há Projeto de Teste definido!";
+$TLS_testproject_prefix = 'Prefixo (usado para o ID do Caso de Teste)';
+$TLS_warning_empty_tcase_prefix = 'O prefixo (ID) do Caso de Teste não pode estar em branco!';
+$TLS_warning_empty_tproject_name = 'O Nome do Projeto Project não pode ser vazio!';
+
+
+// ----- gui/templates/projectView.tpl -----
+$TLS_title_testproject_management = "Gerenciar Projeto de Teste";
+$TLS_tcase_id_prefix = "Prefixo ID";
+$TLS_testproject_alt_delete = 'Remove o Projeto de Teste e todos os dados relacionados.';
+// Warning!!! - if JS string you must use \\n to get \n
+$TLS_popup_product_delete = "ATENÇÃO! Esta ação exclui definitivamente todos os dados relacionados ao Projeto de Teste, " .
+                            "incluindo resultados, planos, etc... " .
+                            "Você também pode desativar em vez de excluir.\\n" .
+                            "Recomendação: Faça um backup do banco primeiro.\\n" .
+                            "Você tem certeza que quer excluir o Projeto?";
+
+							
+// ----- gui/templates/reqAssign.tpl -----
+$TLS_please_select_a_req = "Favor selecionar um requisisto";
+$TLS_req_msg_norequirement66 = "Sem requisitos";
+$TLS_req_title_assign = "Atribuir requisitos ao Caso de Teste";
+$TLS_req_title_assigned = "Requisitos atribuidos";
+$TLS_req_title_unassigned = "Requisitos Disponiveis";
+$TLS_warning_req_tc_assignment_impossible = "Você <b>não pode</b> atribuir devido a uma destas causas:" .
+                                            "<br><ul><li>- Não há especificações de Requisitos definidos</li>" .
+                                            "<li>- As Especificações dos Requisitos estão vazias</ul></li></ul>";
+
+
+
+// ----- gui/templates/tcEdit.tpl -----
+$TLS_title_edit_tc = "Editar Test Case";
+$TLS_warning_editing_executed_tc = "ATENÇÃO!: Esta versão do Caso de Teste foi executada!";
+$TLS_warning_editing_executed_tc = "Atenção! Esta versão do Caso de Teste já foi executada.";
+$TLS_warning_unsaved = "Você perderá todos as mudanças não salvas!";
+
+
+
+// ----- gui/templates/planOwner.tpl -----
+$TLS_assign_ownership = "Atribuir propriedade";
+$TLS_def_prio_rules = "Definir prioridade perfil";
+$TLS_opt_label_none = "nenhum";
+$TLS_th_imp = "Importancia";
+$TLS_th_owner = "Testador";
+$TLS_th_risk = "Risco";
+$TLS_th_test_suite = "Suite de Teste";
+$TLS_title_plan_ownership = "Propriedade do Plano de Teste";
+
+
+
+// ----- gui/templates/tcView_viewer.tpl -----
+$TLS_activate_this_tcversion = "Ativar esta versão";
+$TLS_Requirements = "Requisitos";
+$TLS_btn_del_this_version = "Deletar esta versão";
+$TLS_btn_execute_automatic_testcase = "Executar Caso de Teste Automático";
+$TLS_btn_mv_cp = "Mover / Copiar";
+$TLS_btn_new_version = "Criar uma nova versão";
+$TLS_can_not_edit_tc = "Você não pode editar esta versão porque ela foi executada";
+$TLS_deactivate_this_tcversion = "Desativar esta versão";
+$TLS_execution_type= '<br />Tipo de Execução';
+$TLS_execution_type_short_descr = 'Execução';
+$TLS_tcversion_is_inactive_msg = "Esta versão está INATIVA => não estará disponivel para incluir no Plano de Teste";
+
+
+
+// ----- gui/templates/planRemoveTC_m1.tpl -----
+$TLS_btn_remove_selected_tc = "Remover CTs selecionados";
+$TLS_remove_ok = "Remover OK";
+$TLS_title_remove_test_from_plan = "Remover CT do Plano de Teste";
+
+
+// ----- gui/templates/keywordsAssign.tpl -----
+$TLS_keyword_assignment_empty_tsuite = "Não há Casos de Testes nesta Suite de Teste => associação de palavra-chave não é possivel";
+$TLS_menu_assign_kw_to_tc = "Atribuir para Casos de Testes";
+$TLS_menu_manage_keywords = "Gerenciamento de Palavra-chave";
+$TLS_title_keywords = "Palavras-chave";
+
+
+
+// ----- gui/templates/planTestersNavigator.tpl -----
+$TLS_label_list_of = "Lista de";
+$TLS_opt_test_plans = "Planos de Teste";
+$TLS_opt_users = "Usuários";
+
+
+
+// ----- gui/templates/planUpdateTC.tpl -----
+$TLS_btn_upd_ck_tc = "Atualizar Casos de Testes selecionados";
+$TLS_info_all_tc_uptodate = "Todos os Casos de Testes estão atualizados.";
+$TLS_th_category = "Suite de Teste";
+$TLS_th_component = "Suite de Teste";
+$TLS_th_id_tc = "Caso de Teste [ID]";
+$TLS_th_reason = "Motivo para atualizar";
+$TLS_th_spec_version = "Espec. da versão";
+$TLS_th_status = "Status";
+$TLS_th_suite_version = "Versão da Suite";
+$TLS_th_update = "Atualizar";
+$TLS_title_upd_mod_tc = "Atualizar Caso(s) de Teste Modificados em ";
+
+
+
+// ----- gui/templates/keywordsView.tpl -----
+$TLS_alt_delete_keyword = "Excluir a palavra-chave?";
+$TLS_btn_create_keyword = "Criar palavra-chave";
+$TLS_btn_edit_keyword = "Editar";
+$TLS_btn_export_keywords = "Exportar";
+$TLS_btn_import_keywords = "Importar";
+$TLS_th_keyword = "Palavra-chave";
+$TLS_warning_delete_keyword = "Você tem certeza que quer excluir a palavra-chave?";
+$TLS_warning_enter_at_least1 = "Por favor entre com pelo menos ";
+$TLS_warning_enter_at_least2 = " caracteres.";
+$TLS_warning_enter_less1 = "Por favor entre com menos de ";
+$TLS_warning_enter_less2 = " caracteres.";
+
+// ----- gui/templates/platformsView.tpl -----
+$TLS_alt_delete_platform = "Remover plataforma?";
+$TLS_btn_create_platform = "Criar plataforma";
+$TLS_btn_edit_platform = "Editar";
+$TLS_th_platform = "Plataforma";
+$TLS_menu_manage_platforms = "Gerenciamento de Plataformas";
+$TLS_warning_delete_platform = "Você está prestes a remover: %s <br /> Isso irá remover <b>TODA</b> os dados de execução dos Planos de Teste<br />Você não poderá desfazer esta operação<br/>Você tem certeza?";
+$TLS_warning_cannot_delete_platform = "<b>%s</b> foi adicionado!<br/>Agora você não pode removê-lo. Você precisa primeiro remover o Plano de Teste que utiliza esta plataforma";
+$TLS_warning_enter_at_least1 = "Por favor, insira pelo menos ";
+$TLS_warning_enter_at_least2 = " caracteres.";
+$TLS_warning_enter_less1 = "Por favor, indique menos";
+$TLS_warning_enter_less2 = " catacteres.";
+$TLS_export_platforms = "Exportar plataformas";
+$TLS_import_platforms = "Importar plataformas";
+$TLS_platform_updated = "Plataformas %s atualizadas";
+$TLS_platform_imported = "Plataformas %s importadas";
+
+
+// ----- gui/templates/platformsAssign.tpl -----
+$TLS_platform_assignment_no_testplan = "Não há Plano de Teste selecionado.";
+$TLS_menu_assign_platform_to_testplan = "Atribuir para o Plano de Teste";
+$TLS_title_platforms = "Plataformas";
+$TLS_available_platforms = "Plataformas disponíveis";
+$TLS_assigned_platforms = "Plataformas atribuidas";
+$TLS_add_remove_platforms = "Adicionar / Remover Plataformas do Plano de Teste: %s";
+$TLS_platform_linked_count = " (Utilizado em %s Casos de Teste)";
+$TLS_platform_unlink_warning_title = "Esta plataforma está em uso";
+$TLS_platform_unlink_warning_message = "A(s) plataforma(s) selecionada(s) está(ão) em uso.<br/>Se você continuar <b/>todos os dados de execução serão perdidos</b>.<br/>Você tem certeza que deseja remover a(s) plataforma(s) selecionada(s)?";
+
+// ----- gui/templates/reqexport.tpl -----
+$TLS_title_req_export = "Exportar requisito";
+$TLS_title_req_spec_export = "Exportar Espec. Req.";
+$TLS_all_reqspecs_in_tproject = "Todas as Especificações de Requistos no Projeto de Teste";
+
+
+
+// ----- gui/templates/resultsAllBuilds.tpl -----
+$TLS_th_build = "Baseline";
+$TLS_th_tc_total = "Total CT";
+$TLS_title_met_of_build = "Métricas da baseline";
+
+
+
+// ----- gui/templates/resultsBugs.tpl -----
+$TLS_bugs_open = "Aberto";
+$TLS_bugs_resolved = "Resolvido";
+$TLS_bugs_total = "total";
+$TLS_date = "Data";
+$TLS_printed_by = "Impresso por:";
+$TLS_tcs_with_bugs = "Casos de Teste com bugs";
+$TLS_title_test_case_bugs = "Bugs do Caso de Teste";
+$TLS_title_test_case_timestamp = "Hora exec. CT";
+$TLS_title_test_case_title = $TLS_test_case;
+$TLS_title_test_suite_name = $TLS_test_suite;
+
+
+
+// ----- gui/templates/resultsByStatus.tpl -----
+$TLS_info_test_results = "Apenas os resultados mais recentes são listados. " .
+                         "Por exemplo, o Caso de Teste não é mostrado se o resultado do teste " .
+                         " da baseline posterior tiver outro status (exceto não executado).";
+$TLS_th_bugs = "Bugs";
+$TLS_th_date = "Data";
+$TLS_th_run_by = "Executado por";
+$TLS_th_bugs_not_linked = "Número total de Casos de Teste sem bugs atribuidos:";
+$TLS_th_assigned_to = "Atribuir para";
+
+
+// ----- gui/templates/resultsGeneral.tpl -----
+$TLS_title_gen_test_rep = "Métricas do Plano de Teste";
+$TLS_title_report_tc_priorities = "Resultado dos Testes de acordo com a Prioridade";
+$TLS_title_report_milestones = "Status por Marco";
+$TLS_th_completed = "Concluido";
+$TLS_th_milestone = "Marco [data]";
+$TLS_th_not_run = "Não executado";
+$TLS_th_tc_priority_high = "Prioridade Alta";
+$TLS_th_tc_priority_medium = "Prioridade Média";
+$TLS_th_tc_priority_low = "Prioridade Baixa";
+$TLS_th_progress = "Teste Progresso [%]";
+$TLS_th_goal = "Meta execução [%]";
+$TLS_th_overall_priority = "Prioridade de Teste Global";
+$TLS_th_overall_platform = "Plataforma de Teste Global";
+$TLS_title_res_by_platform = "Resultados por Plataforma";
+$TLS_th_expected = "Esperado";
+$TLS_th_overall = "Total";
+
+
+
+// ----- gui/templates/resultsMoreBuilds_query_form.tpl -----
+$TLS_excel_format = "MS Excel";
+$TLS_html_format = "HTML";
+$TLS_results_latest = "Somente os últimos resultados";
+$TLS_results_all = "Todos os resultados";
+$TLS_display_results_tc = "Conjunto de Resultados";
+$TLS_last_status_any = "Qualquer";
+$TLS_last_status_blocked = $TLS_test_status_blocked;
+$TLS_last_status_failed = $TLS_test_status_failed;
+$TLS_last_status_not_run = $TLS_test_status_not_run;
+$TLS_last_status_passed = $TLS_test_status_passed;
+$TLS_select_builds_header = "Selecionar Builds";
+$TLS_select_components_header = "Suite de Teste de Maior Nivel";
+$TLS_select_keyword_header = "Selecionar palavra-chave";
+$TLS_select_last_result_header = "Exibir Status da Execução";
+$TLS_select_owner_header = "Atribuido para";
+$TLS_select_report_format_header = "Selecione o Formato do Relatório";
+$TLS_submit_query = "Submeter Query";
+$TLS_test_plan_header = $TLS_testplan;
+$TLS_query_metrics_report = "Relatório de Métricas de Queries";
+$TLS_enter_start_time = "Tempo Inicial";
+$TLS_enter_end_time = "Tempo Final";
+$TLS_year 		= "ano";
+$TLS_month 		= "mês";
+$TLS_day 		= "dia";
+$TLS_hour 			= "Hora";
+$TLS_search_in_notes = "procurar por texto nas notas";
+$TLS_executor = "executado por";
+
+
+// ----- gui/templates/resultsMoreBuilds_report.tpl -----
+$TLS_caption_show_collapse = "Exibir / Ocultar";
+$TLS_caption_user_selected_query_parameters = "Parâmetros da Consulta";
+$TLS_not_yet_executed = "Ainda não executado";
+$TLS_show_hide_all = "Exibir / Ocultar todos";
+$TLS_th_builds = "Baselines";
+$TLS_th_execution_ts = "Data/Hora";
+$TLS_th_last_result = "Último resultado";
+$TLS_th_report_format = "Tipo de relatório";
+$TLS_th_test_plan = $TLS_testplan;
+$TLS_th_test_suites = "Suite(s)";
+$TLS_th_tester_id = "Testador";
+$TLS_th_total_block = "#" . $TLS_test_status_blocked;
+$TLS_th_total_cases = "# Casos de Teste";
+$TLS_th_total_fail = "#" . $TLS_test_status_failed;
+$TLS_th_total_not_run = "#" . $TLS_test_status_not_run;
+$TLS_th_total_pass = "#" . $TLS_test_status_passed;
+$TLS_th_start_time = "Hora de início";
+$TLS_th_end_time = "Hora de término";
+$TLS_th_executor = "Executado por";
+$TLS_th_search_notes_string = "procurar texto nas notas";
+$TLS_true = "verdadeiro";
+$TLS_false = "falso";
+$TLS_display_suite_summaries = "Mostrar resumo das Suites";
+$TLS_display_query_params  = "Mostrar parâmetros das consultas";
+$TLS_display_totals = "Mostrar totais";
+$TLS_display_test_cases = "Casos de Teste";
+$TLS_report_display_options = "Opções de Exibição no Relatório";
+
+// ----- gui/templates/resultsReqs.tpl -----
+$TLS_no_srs_defined = "Nenhuma especificação de requisitos disponível para este projeto de teste";
+$TLS_req_without_tcase = "Requisitos não cobertos por Casos de Teste";
+
+
+// IMPORTANT for dynamic generation labels
+// $TLS_req_title_<test case status> 
+// If user add a new test case status he/she MUST add a new label
+$TLS_req_title_blocked = "Requisitos bloqueados";
+$TLS_req_title_failed = "Requisitos falhos";
+$TLS_req_title_not_run = "Requisitos não executados";
+$TLS_req_title_passed = "Requisitos atendidos";
+
+$TLS_title_result_req_testplan = "Resultados do teste baseado na Especificação dos Requisitos";
+$TLS_title_test_plan = "Plano de Teste";
+
+
+
+// ----- gui/templates/resultsSend.tpl -----
+$TLS_btn_send_report = "Enviar relatório";
+$TLS_check_send_to_me = "Enviar com cópia para mim";
+$TLS_mail_body = "Corpo:";
+$TLS_mail_report = "Relatório:";
+$TLS_mail_subject = "Assunto:";
+$TLS_mail_to = "Para:";
+$TLS_status_for_build = "Status da Build (Baseline)";
+$TLS_tp_status = "Status geral do Plano de Teste";
+$TLS_tp_status_for_build = "Status do Plano de Teste para a Build (Baseline)";
+
+
+
+// ----- gui/templates/resultsTC.tpl -----
+$TLS_generated_by_TestLink_on = "Relatório gerado em: ";
+
+// ----- gui/templates/resultsImport.tpl -----
+$TLS_results_import_format = "Arquivo XML deve estar no seguinte formato: ";
+$TLS_title_results_import_to = "Importar resultados";
+$TLS_wrong_results_import_format = "Arquivo de Resultados em XML errado (veja a documentação)";
+
+// ----- gui/templates/plan/setUrgency.tpl -----
+$TLS_title_plan_urgency = "Urgência para a Suite de Teste";
+$TLS_th_urgency = "Urgência";
+$TLS_label_set_urgency = "Defina urgência dos Testes: ";
+$TLS_btn_set_urgency_tc = "Definir a urgência individualmente para os Casos de Teste";
+$TLS_urgency_description = "Valor da Urgência afeta a prioridade de Casos de Teste para a execução e apresentação de relatórios. " .
+                           "Urgência média é o valor padrão.";
+$TLS_feedback_urgency_fail = "Atualização da Urgência do teste falhou! Ver log de eventos para obter detalhes.";
+$TLS_feedback_urgency_ok = "Urgência dos testes foi modificada.";
+$TLS_testsuite_is_empty = 'Suite não tem Casos de Teste. Nada pode ser feito.';
+
+
+// ----- gui/templates/printDocOptions.tpl -----
+$TLS_doc_opt_title = 'Opção do Documento';
+$TLS_doc_opt_guide = 'Modificar opções para a estrutura requerida do documento. ' . 
+					 ' <br/ > Selecione a linha no menu para todas ou uma suite específica ' .
+					 ' para gerar o conteudo do documento.'; //verified
+$TLS_tr_td_show_as = "Mostrar como";
+$TLS_check_uncheck_all_options = "marcar / desmarcar todos";
+
+
+
+// ----- gui/templates/tcReorder.tpl -----
+$TLS_no_tc_to_reorder = "Não existem Casos de Teste para reordenar!";
+$TLS_title_change_tc_order = "Alterar ordem dos Casos de Testes.";
+$TLS_drag_and_drop_to_reorder = "Arrastar e soltar itens para reordená-las";
+
+
+// ----- gui/templates/tcTree.tpl -----
+$TLS_button_refresh = "Atualizar";
+$TLS_button_update_tree = "Atualizar árvore";
+$TLS_do_auto_update = "Atualizar a árvore automaticamente:";
+$TLS_no_tc_spec_av = "Especificação de Teste não disponivel!";
+
+
+
+// ----- gui/templates/tc_exec_assignment.tpl -----
+$TLS_assign_to = "Atribuir para";
+$TLS_btn_do = "OK";
+$TLS_btn_update_selected_tc = "Salvar";
+$TLS_can_not_execute = " (não tem direito de execução)";
+$TLS_check_uncheck_children_checkboxes = "Marcar/desmarcar todos Casos de Testes selecionados (incluindo Suite de Testes filhas)";
+$TLS_title_tc_exec_assignment = "Atribuir tarefas de execução do Caso de Teste plano de teste ";
+$TLS_user = "Usuário";
+$TLS_user_bulk_assignment = "Atribuição de usuários em lote: ";
+
+
+// ----- tc_exec_assignment.php -----
+$TLS_mail_subject_testcase_assigned = 'Test Link - Caso de Teste atribuido - Test Plano de Teste';
+$TLS_mail_subject_testcase_assignment_removed = 'Test Link - Caso de Teste atribuido EXCLUIDO - Plano de Teste';
+$TLS_mail_testcase_assigned = "Sequência de Casos de Testes foram atribuidos a você %s por %s <br /><br />";
+$TLS_mail_testcase_assignment_removed = "%s - A sequência de Caso de Testes atribuída FOI EXCLUIDA por %s <br /><br />";
+$TLS_send_mail_to_tester = "Enviar notificação de e-mail para testador";
+
+
+// ----- gui/templates/testSetNavigator.tpl -----
+
+
+
+// ----- gui/templates/userInfo.tpl -----
+$TLS_btn_change_passwd = "Trocar Senha";
+$TLS_btn_upd_user_data = "Atualizar";
+$TLS_btn_apikey_generate = "Gerar uma nova chave";
+$TLS_th_new_passwd = "Nova Senha";
+$TLS_th_new_passwd_again = "Confirmar Nova Senha";
+$TLS_th_old_passwd = "Senha antiga";
+$TLS_title_account_settings = "Configurações da Conta";
+$TLS_title_personal_data = "Dados pessoais";
+$TLS_title_personal_passwd = "Senha pessoal";
+$TLS_title_api_interface = "API interface";
+$TLS_warning_different_pwd = "Favor entrar com sua senha novamente. Valores adicionados eram diferentes.";
+$TLS_warning_empty_pwd = "Você não pode deixar a senha em branco!";
+$TLS_your_password_is_external = "Sua senha é gerenciada por um sistema externo.<br />".
+                                 "Você não pode mudá-la pelo Testlink.";
+$TLS_user_api_key = "Chave de acesso pessoal API";
+$TLS_audit_login_history = "Histórico de login";
+$TLS_audit_last_succesful_logins = "Último login com sucesso";
+$TLS_audit_last_failed_logins = "Último login falho";
+$TLS_result_password_changed = "Sua senha foi alterada com sucesso";
+$TLS_result_apikey_create_ok = "Nova API chave foi gerada";
+$TLS_result_user_changed = "Alterar dados pessoais";
+$TLS_empty_old_passwd = "Senha antiga vazia. Digite sua senha antiga";
+$TLS_never_logged = "Nunca logado";
+
+
+
+// ----- gui/templates/usersassign.tpl -----
+$TLS_TestProject = "Projeto de Teste";
+$TLS_User = "Usuário";
+$TLS_btn_change = "Trocar";
+$TLS_caption_assign_testplan_user_roles = "Designar papéis do Plano de Testes aos Usuários";
+$TLS_caption_assign_testproject_user_roles = "Designar papéis do Projeto de Testes aos Usuários";
+$TLS_menu_assign_testproject_roles = "Atribuir papéis do Projeto";
+$TLS_th_roles = "Papéis";
+$TLS_th_roles_testplan = "Papéis do Plano de Teste";
+$TLS_th_roles_testproject = "Papéis do Projeto de Teste";
+$TLS_title_assign_roles = "Atribuir papéis";
+$TLS_set_roles_to = "Atribuir papéis para";
+$TLS_testproject_roles_assign_disabled="Sua configuração de papel  não permite que você atribua pepéis para os Projetos de Teste";
+$TLS_testplan_roles_assign_disabled="Sua configuração de papel  não permite que você atribua pepéis para os Planos de Teste";
+
+
+// ----- gui/templates/usersedit.tpl -----
+$TLS_button_reset_password = "Redefinir Senha";
+$TLS_caption_user_details = "Detalhes do Usuário";
+$TLS_th_password = "Senha";
+$TLS_warning_empty_first_name = "Por favor entre com um nome";
+$TLS_warning_empty_last_name = "Por favor entre com um sobrenome";
+$TLS_warning_empty_login = "Por favor, entre com um login";
+
+
+// ----- gui/templates/attachmentupload.tpl -----
+$TLS_attachment_upload_ok = "File uploaded";
+$TLS_enter_attachment_title = "Entre com o título para o anexo";
+$TLS_import_was_ok = "Importação bem sucedida";
+$TLS_max_size_cvs_file = "O tamanho máximo do arquivo é";
+$TLS_title_upload_attachment = "Carregar Anexo";
+$TLS_error_file_size_larger_than_maximum_size_check_php_ini = "O tamanho do arquivo é maior que o valor máximo permitido!";
+$TLS_error_file_size_larger_than_maximum_size = "O tamanho do arquivo é maior que o valor máximo configurado no TestLink!";
+$TLS_error_file_upload = "O arquivo não pode ser carregado!";
+
+
+// ----- gui/templates/rolesview.tpl -----
+$TLS_N_A = "N/D";
+$TLS_alt_delete_role = "Deletar Perfil";
+$TLS_alt_edit_role = "Editar Perfil";
+$TLS_btn_confirm_delete = "Deletar";
+$TLS_delete_role = "Deletar Perfil";
+$TLS_no_roles = "No papel";
+$TLS_th_role_description = "Descrição";
+$TLS_title_roles = "Atribuir Perfil";
+$TLS_warning_delete_role = "Você está deletando: %s <br /><br /> Tem certeza?";
+$TLS_warning_users_will_be_reset = "Usuários que serão afetados:";
+
+
+
+// ----- gui/templates/tcexport.tpl -----
+$TLS_export_filename = "Nome do arquivo exportado:";
+$TLS_export_with_keywords = "Exportar com palavras-chave";
+$TLS_warning_empty_filename = "Por favor, dê um nome ao arquivo";
+
+
+// ----- gui/templates/buildView.tpl -----
+$TLS_alt_active_build = "Ativar Baseline";
+$TLS_alt_edit_build = "Clique aqui para editar esta baseline";
+$TLS_alt_open_build = "Abrir Baseline";
+$TLS_btn_build_create = "Criar";
+$TLS_no_builds = "As baselines não foram definidas neste Plano de Teste!";
+$TLS_th_description = "Descrição";
+$TLS_th_open = "Abrir";
+$TLS_title_build_list = "Lista dos Baselines existentes";
+$TLS_warning_delete_build = "Você realmente quer excluir esta baseline? Todos os dados dependentes (resultados de teste) também serão excluidos!";
+$TLS_builds_description = "Cada baseline é identificada pelo título. Possui dois atriutos:<br /> Ativo / Inativo Define se a baseline está ou não disponivel para funcionalidade do TestLink. Baseline inativa não é listado nas páginas de execução e relatórios.
+<br /> Fechado / Aberto Define se os Resultados do Teste podem ser modificados para a baseline.";
+$TLS_build_copy_help = "Se você marcar a opção: " . "<b>[{$TLS_copy_to_all_tplans}]</b>&nbsp;" .
+		"&nbsp;,O nome da build será procurado em cada plano de testes
+		deste projeto de testes" .
+		"e se o nome não existir, uma build será criada.";
+
+
+// ----- gui/templates/planView.tpl -----
+$TLS_testplan_alt_delete_tp = "Excluir o Plano de Teste?";
+$TLS_testplan_alt_edit_tp = "Editar o Plano de Teste?";
+$TLS_testplan_msg_delete_confirm = "Tem certeza que deseja excluir o Plano de Teste completo? " . 
+                                   " Você pode desativá-lo pelo TP editar link.";
+$TLS_testplan_th_delete = "Excluir";
+$TLS_testplan_title_list = "Lista de Planos de Teste existentes";
+$TLS_testplan_txt_empty_list = "Não existem Planos de Testes Definidos! Criar um para permitir a funcionalidade da execução de teste";
+$TLS_alt_active_testplan = "Ativar Plano de Teste";
+$TLS_warning_delete_testplan = "Você está excluindo: %s <br /><br /> Tem certeza?";
+
+
+// ----- gui/templates/mainPage_left.tpl -----
+$TLS_href_assign_user_roles = "Permissão do Usuário";
+$TLS_href_browse_tc = "Procurar Caso(s) de Teste";
+$TLS_href_cfields_management = "Gerenciar Campos Personalizados";
+$TLS_href_cfields_tproject_assign = "Selecionar Campos Personalizados";
+$TLS_href_edit_tc = "Editar Caso(s) de Teste";
+$TLS_href_inventory = "Inventário";
+$TLS_href_inventory_management = 'Gerenciamento de Inventário';
+$TLS_href_keywords_assign = "Selecionar palavra-chave";
+$TLS_href_keywords_manage = "Gerenciar palavra-chave";
+$TLS_href_keywords_view = "Visualizar palavra-chave";
+$TLS_href_print_tc = "Imprimir Casos de Teste";
+$TLS_href_print_req = "Gerado pelo Documento de Especificação de Requisitos";
+$TLS_href_req_assign = "Selecionar Requisitos";
+$TLS_href_req_spec = "Especificar Requisitos";
+$TLS_href_req_overview = "Overview dos Requisitos";
+$TLS_href_roles_management = "Gerenciar Papéis";
+$TLS_href_search_tc = "Procurar Caso de Teste";
+$TLS_href_tproject_management = "Gerenciar Projeto de Teste";
+$TLS_href_user_management = "Gerenciar Usuários";
+$TLS_href_admin_modules   = "Configuraï¿½ï¿½o Sistema";
+$TLS_title_requirements = "Requisitos";
+$TLS_title_test_spec = "Especificar Testes";
+$TLS_title_product_mgmt = "Projeto de Teste";
+$TLS_href_plan_define_priority = "Prioridades do Plano de Teste";
+$TLS_href_my_testcase_assignments="Casos de Teste atribuidos para mim";
+$TLS_href_platform_management = "Gerenciamento de Plataforma";
+
+
+// ----- contribution by asimon for req/reqspec search BUGID 2976 -----
+$TLS_href_search_req = "Pesquisar Requisitos";
+$TLS_href_search_req_spec = "Pesquisar Especificação de Requisitos";
+$TLS_caption_search_form_req = "Pesquisar Requisitos";
+$TLS_caption_search_form_req_spec = "Pesquisar Especificação de Requisitos";
+$TLS_title_search_req = "Pesquisar";
+$TLS_requirement_document_id = "Doc. Req. ID";
+$TLS_req_spec_document_id = "Espec. Req. Doc. ID";
+$TLS_reqversion = "Versão";
+$TLS_title_search_req_spec = "Pesquisar";
+$TLS_requirements = "Requisitos";
+$TLS_req_specs = "Espec. Req.";
+$TLS_req_expected_coverage = "Número esperado de Casos de Teste";
+$TLS_has_relation_type = "Tem a relação de tipo";
+$TLS_reqid = "ID do Requisito ";
+
+
+// ----- gui/templates/mainPage_right.tpl -----
+$TLS_href_add_remove_test_cases = "Adicionar / Remover Casos de Teste";
+$TLS_href_build_new = "Baselines/Releases";
+$TLS_href_execute_test = "Executar Testes";
+$TLS_href_metrics_dashboard = "Painel de Métricas";
+$TLS_href_newest_tcversions = "Verificar Casos de Teste atualizados";
+$TLS_href_plan_assign_urgency = "Definir urgência dos testes";
+$TLS_href_plan_management = "Gerenciar Plano de Teste";
+$TLS_href_plan_mstones = "Gerenciamento de Marcos";
+$TLS_href_rep_and_metrics = "Relatórios e Métricas";
+$TLS_href_tc_exec_assignment = "Atribuir Casos de Teste para Execução";
+$TLS_href_update_tplan = "Atualizar Versão dos Casos de Testes";
+$TLS_href_platform_assign = "Adicionar / Remover Plataformas";
+$TLS_current_test_plan = "Plano de Teste atual";
+$TLS_href_upd_mod_tc = "Atualizar Caso(s) de Teste modificados";
+$TLS_msg_no_rights_for_tp = "<br /> Você não tem permissão para qualquer Plano de Teste ATIVO";
+$TLS_testplan_role = "Perfil do Plano de Teste";
+$TLS_title_test_case_suite = "Conteúdo do Plano de Teste";
+$TLS_title_test_execution = "Execução do Teste";
+$TLS_title_test_plan_mgmt = "Gerenciar Plano de Teste";
+
+
+
+// ----- lib/execute/bug_add.php -----
+$TLS_bug_added = "Caso adicionado";
+$TLS_error_bug_does_not_exist_on_bts = "ID do caso não existe no sistema bugtracker!";
+$TLS_error_wrong_BugID_format = "Formato do ID do Caso inválido!";
+
+
+
+// ----- lib/execute/bug_delete.php -----
+$TLS_bugdeleting_was_ok = "O caso foi excluido com sucesso!";
+
+
+
+// ----- lib/functions/doAuthorize.php -----
+$TLS_error_ldap_auth_failed = "Autenticação LDAP falhou";
+$TLS_error_ldap_bind_failed = "Binding com o LDAP Enlace falhou (credencial inválida)";
+$TLS_error_ldap_server_connect_failed = "Conexão com o servidor LDAP falhou ".
+		"(verifique o hostname, porta ou a versão do LDAP).";
+$TLS_error_ldap_update_failed = "Atualização do LDAP falhou";
+$TLS_error_ldap_user_not_found = "Usuário LDAP não encontrado";
+
+
+
+// ----- lib/functions/product.inc.php -----
+$TLS_info_product_delete_fails = "Ocorreu um erro ao excluir o Projeto de Teste";
+
+
+// ----- lib/results/resultsImport.php -----
+$TLS_imp_result_ko = '- resultado não importado';
+$TLS_invalid_execution_timestamp = "Caso de Teste %s - período executado inválido %s " . $TLS_imp_result_ko;
+$TLS_invalid_tester = "Caso de Teste %s - testador com login %s não foi encontrado " . $TLS_imp_result_ko;
+$TLS_import_results_tc_not_found = "Caso de Teste %s não encontrado no plano de teste - dados não foram inseridos neste caso";
+$TLS_import_results_invalid_result = "Caso de Teste %s tem um resultado inválido - dados não foram inseridos neste caso";
+$TLS_import_results_ok = "Caso de Teste %s - versão %s - Testador: %s - Resultado: %s - Período Execução: %s - Importado!";
+$TLS_import_results_tc_exists = "Caso de Teste %s está no plano de teste, tcversion_id = %s ";
+$TLS_tcase_external_id_do_not_exists = "Caso de Teste com externo ID=%s, não foi encontrado " . $TLS_imp_result_ko;
+$TLS_tcase_internal_id_do_not_exists = "Caso de Teste com interno ID=%s, não foi encontrado "  . $TLS_imp_result_ko;
+$TLS_tcase_id_is_not_number = "Caso de Teste interno id=%s não é um número " . $TLS_imp_result_ko;
+$TLS_bug_id_invalid_len = "Tamanho do BUG ID é inválido [%s > %s] " . $TLS_imp_result_ko;
+
+
+// ----- lib/functions/results.inc.php -----
+$TLS_trep_failing = "Falharam";
+$TLS_trep_passing = "Passaram";
+$TLS_trep_status_for_build = "Status para a baseline";
+$TLS_trep_status_for_ts = "Status para a Suite de Teste";
+$TLS_unassigned 		= "desatribuir";
+
+
+// ----- lib/functions/resultsMoreBuilds.inc.php -----
+$TLS_bugs = "Bugs reportados";
+$TLS_builds_selected = "Baseline(s)";
+$TLS_case_not_run_warning = "Caso de Teste Não Executado";
+$TLS_category_header = "Suite de Teste =";
+$TLS_daterun = "Data de execução";
+$TLS_last_status = "Último status";
+$TLS_number_blocked = "# Bloqueados";
+$TLS_number_cases = "# Casos";
+$TLS_number_executions = "# Casos de Teste Executados";
+$TLS_number_failed = "# " . $TLS_test_status_failed;
+$TLS_number_not_run = "# " . $TLS_test_status_blocked;
+$TLS_number_passed = "# " . $TLS_test_status_passed;
+$TLS_owner = "Testador";
+$TLS_owner_header = $TLS_owner. " =";
+$TLS_runby = "Executado por";
+$TLS_test_plan_name = $TLS_testplan;
+
+
+
+// ----- lib/functions/roles.inc.php -----
+$TLS_desc_cfield_management = "Gerenciar Campos Personalizados";
+$TLS_desc_cfield_view = "Ver Campos Personalizados (somente leitura)";
+$TLS_desc_mgt_modify_key = "Gerenciar de palavra-chave";
+$TLS_desc_mgt_modify_product = "Gerenciar Projeto de Teste";
+$TLS_desc_mgt_modify_req = "Gerenciar Requisitos";
+$TLS_desc_mgt_modify_tc = "Caso de Teste Criar/Editar";
+$TLS_desc_mgt_modify_users = "Gerenciar Usuários";
+$TLS_desc_mgt_view_key = "Ver Palavras-chave (somente leitura)";
+$TLS_desc_mgt_view_req = "Ver Requisitos (somente leitura)";
+$TLS_desc_mgt_view_tc = "Ver Casos de Teste (somente leitura)";
+$TLS_desc_mgt_view_events = "Ver Eventos (somente leitura)";
+$TLS_desc_events_mgt = "Gerenciar Eventos";
+$TLS_desc_platforms_view="Visualização de Plataforma (acesso como somente-leitura)";
+$TLS_desc_platforms_management="Gerenciamento de Plataformas";
+$TLS_desc_project_inventory_view="Visualização de Inventário (acesso como somente-leitura)";
+$TLS_desc_project_inventory_management="Gerenciamento de Inventário";
+
+
+$TLS_desc_role_management = "Gerenciar Regras";
+$TLS_desc_testplan_create_build = "Baseline Criar/Editar";
+$TLS_desc_testplan_execute = "Executar Plano de Teste";
+$TLS_desc_testplan_metrics = "Métricas do Plano de Teste";
+$TLS_desc_testplan_planning = "Planejamento do Plano de Teste";
+$TLS_desc_user_role_assignment = "Atribuição de Regras";
+$TLS_error_duplicate_rolename = "Já tem uma regra com este nome!";
+$TLS_error_role_no_rights = "Você não pode gravar regras sem nenhuma permissão!";
+$TLS_error_role_no_rolename = "Você deve entrar com um nome para a regra!";
+$TLS_inherited_role = "<herdado>";
+$TLS_mgt_testplan_create = "Criar/Editar Plano de Teste";
+$TLS_inherited = "herdado";
+$TLS_no_rights = "sem direitos";
+
+
+// ----- lib/functions/testproject.class.php -----
+$TLS_error_creating_req_spec = "Erro ao criar especificação de requisito";
+$TLS_info_product_name_empty = "Nome vazio não é possivel.";
+$TLS_keyword_already_exists = "Esta palavra-chave já existe";
+$TLS_string_contains_bad_chars = "O texto contém caracteres inválidos que não podem ser usados";
+$TLS_warning_duplicate_req_title = "Já tem um requisisto com este título!";
+
+
+
+// ----- lib/functions/requirements.inc.php -----
+$TLS_conflict = "Conflito";
+$TLS_error_deleting_req = "Erro ao excluir requisitos";
+$TLS_error_inserting_req = "Erro ao inserir requisitos";
+$TLS_error_updating_req = "Erro ao atualizar requisitos";
+$TLS_error_updating_reqspec = "Erro ao atualizar a especificação do requisito";
+$TLS_file_is_not_xml = "Arquivo XML inválido. Não pode ser usado";
+$TLS_req_import_format_description1 = " - tipo CSV requer três campos para cada linha: 'req_doc_id','title','description'";
+$TLS_req_import_format_description2 = " - CSV exportado de DOORS requer cabeçalho da linha.";
+$TLS_req_import_format_docbook = " - DocBook XML format";
+$TLS_req_import_result_overwritten = "sobrescrito!";
+$TLS_req_import_result_skipped = "pulado";
+$TLS_warning_duplicate_reqdoc_id = "ID Documento duplicado";
+
+
+//  ----- lib/functions/requirement_spec_mgr.class.php -----
+$TLS_warning_duplicated_req_spec_doc_id = "Já existe uma Espec. Req. (title:%s) com este ID (%s)";
+$TLS_warning_duplicated_req_spec_title = "Já existe uma Espec. Req. (doc id:%s) com este título (%s)";
+
+
+// ----- lib/functions/testcase.class.php -----
+$TLS_create_new_version="Created new version %s"; 
+$TLS_testcase_name_already_exists = "Já existe um cado de teste com este título (%s)";
+$TLS_created_with_title = "Criado com título (%s)";
+$TLS_the_format_tc_xml_import = "";
+
+
+// ----- lib/functions/testsuite.class.php -----
+$TLS_component_name_already_exists = "Já existe uma Suite de Teste com este nome";
+$TLS_testsuite = $TLS_test_suite;
+
+
+// ----- lib/functions/exec.inc.php -----
+$TLS_test_results_submitted = "Resultados dos Testes enviados.";
+
+
+// ----- lib/functions/info.inc.php -----
+$TLS_email_sent_message = "Seu e-mail foi enviado";
+
+
+// ----- lib/functions/print.inc.php -----
+$TLS_printed_by_TestLink_on = "Impresso por Testlink em";
+$TLS_title_toc = "SUMÁRIO";
+$TLS_passfail = "Status";
+$TLS_testnotes = "Descrição";
+$TLS_last_exec_result = "Último Status";
+$TLS_test_project_notes = "Descrição do Projeto de Teste";
+
+
+// ----- lib/functions/users.inc.php -----
+$TLS_duplicate_login = "Já tem um usuário com este login!";
+$TLS_login_must_not_be_empty = "Login não pode ser vazio!";
+$TLS_wrong_old_password = "Senha antiga errada!";
+
+
+
+// ----- lib/functions/email_api.php -----
+$TLS_stmp_host_unconfigured = "Host SMTP não foi configurado corretamente!";
+
+
+
+// ----- lib/functions/common.php -----
+$TLS_test_automation_exec_ok = " Execução com sucesso!";
+$TLS_test_automation_server_conn_failure = " Não foi possivel conectar ao servidor HTTP.";
+$TLS_XMLRPC_error_number = "XML-RPC Falta número: - ";
+
+
+// ----- lib/functions/configCheck.php -----
+$TLS_attachments_dir = "pasta para anexos:";
+$TLS_bts_connection_problems = "Conexão com seu sistema Bug Tracker falhou:<br>
+                                Favor conferir suas configurações.<br />
+                                Atente que este problema irá degradar a performance do TestLink.";
+$TLS_but_directory_is_not_writable = " A pasta não tem permissão de gravação!";
+$TLS_check_email_config = "Verifique seguintes parâmetros da função e-mail:";
+$TLS_directory_is_writable = "A pasta é gravável";
+$TLS_does_not_exist = "não existe";
+$TLS_exists = " existe";
+$TLS_ldap_extension_not_loaded = "Método de Login está configurado como LDAP<br>" .
+                               "mas a extensï¿½o PHP LDAP não está carregada => " .
+                               "Você não poderia fazer o login.<br>".
+                               "Favor entrar em contato com o administrador do TestLink";
+$TLS_sec_note_admin_default_pwd = "Você deve mudar a senha padrão da conta 'admin'!";
+$TLS_sec_note_remove_install_dir = "A pasta de instalação (install) deve ser removida!";
+$TLS_error_domxml_missing = "Domxml parece não estar presente. Importar XML não vai funcionar!";
+$TLS_error_gd_missing = "A extensão PHP para a biblioteca GD não está disponível. Os gráficos não funcionarão. " .
+		"Encontre o arquivo php.ini. Abra o arquivo e remova o ';' na frente de ;extension=php_gd2.dll. " . 
+		"Reinicie o Apache (Se você estiver usando o Apache). Se isso não funcionar, você provavelmente terá que " .
+		"instalar as bibliotecas php-GD. ";
+$TLS_error_gd_png_support_disabled = "A extensão PHP da biblioteca GD está disponível sem suporte para o formato PNG. 
+		Os gráficos não funcionarão. Configure o PHP ou instale as bibliotecas necessárias.";
+
+		
+// ----- lib/functions/cfield_mgr.class.php -----
+$TLS_text_counter_feedback = "Talvez você poderá entrar com %d caracteres. Esquerda ";
+
+
+// ----- lib/general/frmWorkArea.php -----
+$TLS_create_a_build = "Criar uma nova baseline";
+$TLS_no_build_warning_part1 = "Não há Baselines criadas para este Plano de Teste: ";
+$TLS_no_build_warning_part2 = "Favor criá-lo primeiro ou peça ao administrador.";
+
+
+// ----- lib/general/myTPInfo.php -----
+$TLS_no_testplans_available = "Não há Planos de Testes disponiveis";
+
+
+// ----- lib/general/tlsmarty.inc.php -----
+$TLS_show_hide_api_info = "Mostrar/Ocultar informação da API";
+$TLS_show_hide_direct_link = "Mostrar/Ocultar link direto";
+
+
+// ----- lib/keywords/keywords.inc.php -----
+$TLS_empty_keyword_no = "Você não pode entrar com uma palavra-chave vazia!";
+$TLS_keywords_char_not_allowed = "Vírgulas e aspas não são permitidas em palavras-chave!";
+$TLS_tc_kw_update_fails1 = "Caso de Teste";
+$TLS_tc_kw_update_fails2 = "falhas";
+$TLS_the_format_keyword_csv_import = "palavras-chave;notas";
+
+
+// ----- lib/keywords/keywordsView.php -----
+$TLS_kw_delete_fails = "Falha ao excluir palavra-chave!";
+$TLS_kw_update_fails = "Falha ao atualizar";
+
+
+
+// ----- lib/keywords/keywordsAssign.php -----
+$TLS_assigned_kword = "Palavras-chave Selecionadas";
+$TLS_available_kword = "Palavras-chave Disponiveis";
+
+
+
+// ----- lib/plan/buildNew.php -----
+$TLS_cannot_add_build = "A baseline não pode ser adicionada!";
+$TLS_cannot_delete_build = "A baseline não pode ser excluida!";
+$TLS_cannot_update_build = "Erro ao atualizar a baseline!";
+$TLS_warning_duplicate_build = "Já tem uma baseline com este identificador";
+
+
+
+// ----- lib/plan/plan.inc.php -----
+$TLS_warning_enter_valid_date = "Entre com uma data válida!";
+$TLS_warning_invalid_percentage_value = "Valores de percentagem devem estar entre 0 e 100%";
+$TLS_warning_milestone_date = "Marcos devem ser criados na data de hoje ou posterior!";
+$TLS_warning_percentage_value_higher_than_100 = "Todas as percentagens somadas não pode exceder 100";
+
+
+
+// ----- lib/plan/planMilestone*.php -----
+$TLS_milestone_delete_fails = "A Marco não pode ser excluida!";
+$TLS_warning_milestone_add_failed = "A Marco não pode ser adicionada!";
+$TLS_warning_milestone_update_failed = "A Marco não pode ser atualizada!";
+$TLS_milestone_name_already_exists = "Já existe uma Marco com o nome (%s)";
+
+
+
+// ----- lib/plan/planTestersEdit.php -----
+$TLS_title_assign_tp = "Atribuir Plano de Teste ao usuário: ";
+$TLS_title_assign_users = "Atribuir usuários ao Plano de Teste: ";
+
+
+// ----- lib/plan/planTestersNavigator.php -----
+$TLS_nav_test_plan = "Navegador - Planos de Teste";
+$TLS_nav_users = "Navegador - Usuários";
+
+
+//  -----lib/plan/planUpdateTC.php -----
+$TLS_deleted = "deletado";
+$TLS_different_versions = "Diferente Versão";
+$TLS_plan_update_no_tc_updated = "Casos de Teste não atualizados";
+$TLS_updated = "atualizado";
+$TLS_all_versions_where_latest = "Nada a fazer - todas as versões dos casos de teste " .
+		"as últimas disponíveis";
+$TLS_num_of_updated = "%d os Casos de Teste foram atualizados";
+
+
+// ----- lib/plan/testSetNavigator.php -----
+$TLS_title_test_plan_navigator = "Navegador do Plano de Teste";
+
+
+// ----- lib/plan/testSetRemove.php -----
+$TLS_tcase_removed_from_tplan = "Caso de Teste removido do Plano";
+$TLS_multiple_tcase_removed_from_tplan = "Casos de Teste removidos do Plano de Teste";
+
+
+// ----- lib/plan/planEdit.php -----
+$TLS_testplan_created_ok = "Plano de Teste foi criado";
+$TLS_update_tp_failed1 = "Atualizar Plano de Teste '";
+$TLS_update_tp_failed2 = "' falhou";
+$TLS_warning_duplicate_tplan_name = "Já existe um Plano de Teste com esse Nome. Escolha outro nome";
+
+
+$TLS_platform_default_suffix = "Plataforma padrão %s";
+$TLS_platform_default_notes = "Plataforma automaticamente criada do Plano de Teste %s";
+
+// ----- lib/platforms/platformsAssign.php -----
+$TLS_unknown_platform="Atenção/Crítico<br>" .
+		                  " Neste Plano de Teste existe versões de Casos de Teste sem plataformas atribuidas. <br>" .
+						          " Isto significa que provavelmente você tem trabalhado sobre esse Plano de Teste antes de " .
+						          " atribuir plataformas.<br>" .
+						          " Depois de ter atribuido uma plataforma para este Plano de Teste você PRECISA " .
+						          " adicionar/remoevr um Caso de Teste para a plataforma correta " .
+						          " para ligar seus Casos de Teste<br>".
+						          " Para facilitar o seu trabalho se você atribuir agora aqui uma plataforma para um Plano de Teste " .
+						          " sem platarmas, todos os Casos de Teste associados serão atualizados com esta plataforma ";
+
+// ----- lib/results/printDocOptions.php -----
+$TLS_opt_show_hdrNumbering = "Cabeçalho de numeração";
+$TLS_opt_show_toc = "Mostrar índice";
+$TLS_opt_show_suite_txt = "Descrição da Suite de Teste";
+$TLS_opt_show_tplan_txt = "Descrição do Plano de Teste";
+$TLS_opt_show_tc_body = "Mostrar Corpo do Caso de Teste";
+$TLS_opt_show_tc_summary = "Mostrar Pré-Condição";
+$TLS_opt_show_tc_author = "Mostrar Autor do Caso de Teste";
+$TLS_opt_show_tc_reqs = "Requisitos relacionados ao CT";
+$TLS_opt_show_tc_keys = "Palavras-Chave relacionadas ao CT";
+$TLS_opt_show_cfields = "Campos Personalizados do Caso de Teste";
+$TLS_opt_show_passfail = "Resutado Testes";
+$TLS_opt_show_metrics = "Métricas";
+$TLS_opt_req_spec_scope = "Documento de Especificação de Requisitos - Escopo";
+$TLS_opt_req_spec_author = "Documento de Esepcificação de Requisitos - Autor";
+$TLS_opt_req_spec_overwritten_count_reqs = "Documento de Especificação de Requisitos - Sobrescrever contagem de REQs";
+$TLS_opt_req_spec_type = "Documento de Esepcificação de Requisitos - Tipo";
+$TLS_opt_req_spec_cf = "Documento de Esepcificação de Requisitos - Campos Personalizados";
+$TLS_opt_req_scope = "Escopo do Requisito";
+$TLS_opt_req_author = "Autor do Requisito";
+$TLS_opt_req_status = "Status do Requisito";
+$TLS_opt_req_type = "Tipo do Requisito";
+$TLS_opt_req_cf = "Campo Personalizado do Requisito";
+$TLS_opt_req_relations = "Relações do Requisito";
+$TLS_opt_req_linked_tcs = "Requisitos relacionados com os Casos de Teste";
+$TLS_opt_req_coverage = "Cobertura dos Requisitos";
+$TLS_title_tc_print_navigator = "Navegador - Imprimir Especificações de Teste";
+$TLS_title_req_print_navigator = "Navegador - Imprimir Especificação de Requisitos";
+$TLS_title_tp_print_navigator = "Navegador - Imprimir Plano de Teste ";
+$TLS_testplan_report = "Relatório do Plano de Teste";
+$TLS_testspecification_report = "Relatorio de Especificação de Teste";
+$TLS_requirement_specification_report = "Relatório de Especificação de Requisito";
+$TLS_related_tcs = "Casos de Teste Relacionados";
+
+// ----- lib/project/projectedit.php -----
+$TLS_error_product_name_duplicate = "Já existe um projeto com esse nome %s. <br>Por favor escolha um nome diferente";
+$TLS_error_tcase_prefix_exists = "Prefixo do Caso de Teste %s já existe";
+$TLS_info_no_more_prods = "Sem mais Projetos de Teste.";
+$TLS_info_product_activated = "O Projeto de Teste foi ativado.";
+$TLS_info_product_inactivated = "O Projeto de Teste foi desativado.";
+$TLS_info_product_not_deleted_check_log = "O Projeto de Teste não foi excluido. Favor verificar o log do TestLink.";
+$TLS_info_product_was_deleted = "O Projeto de Teste foi excluido com sucesso.";
+$TLS_refer_to_log = " Favor consultar o log do TestLink para mais informações.";
+$TLS_test_project_activated = "Projeto de Teste %s foi ativado com sucesso";
+$TLS_test_project_created = "Projeto de Teste %s foi criado com sucesso";
+$TLS_test_project_deleted = "Projeto de Teste %s foi excluido com sucesso";
+$TLS_test_project_inactivated = "Projeto de Teste %s foi desativado com sucesso";
+$TLS_test_project_updated = "Projeto de Teste %s foi atualizado com sucesso";
+$TLS_test_project_update_failed = "Atualização do Projeto de Teste %s falhou!";
+
+
+// ----- lib/results/charts.php -----
+$TLS_graphical_reports = "Relatórios Gráficos";
+$TLS_overall_metrics = "Métricas Gerais";
+$TLS_results_by_keyword = "Resultados por palavra-chave";
+$TLS_results_by_tester = "Resultados por Testador";
+$TLS_results_top_level_suites = "Resultados por Suites Nivel Top";
+$TLS_chart_report = "Relatório";
+$TLS_chart_assigned_testers = "Proprietários";
+$TLS_chart_keywords = "Palavras-chave";
+$TLS_chart_testsuites = "Suites de Teste";
+$TLS_overall_metrics_for_platform = "Métricas Gerais - Plataforma: ";
+
+
+// ----- lib/req/reqImport.php -----
+$TLS_file_is_not_ok_for_import_type = "Arquivo parece ser incompativel com o tipo de importação selecionado";
+$TLS_file_is_not_text = "Arquivo não é do tipo texto. Não pode ser usado";
+$TLS_please_choose_req_file = "Favor escolher o arquivo a ser carregado";
+$TLS_req_import_finished = "A importação está concluida!";
+$TLS_tproject_import_requirements = '%s : Importar Requisitos';
+$TLS_reqspec_import_requirements = '%s : Importar Especificação de Requisitos';
+$TLS_tproject_import_req_spec = '%s : Espec. Req. Importados';
+$TLS_reqspec_import_req_spec = '%s : Espec. Req. Importados';
+
+
+// ----- lib/req/reqSpecView.php -----
+$TLS_cant_create_tc_from_req_nothing_sel = "Favor selecionar um requisito!";
+$TLS_req_created = "Requisito %s foi criado com sucesso";
+
+
+
+// ----- lib/req/reqTcAssign.php -----
+$TLS_req_msg_noselect = "Nada foi selecionado";
+$TLS_req_msg_notupdated_coverage = "Cobertura não foi atualizada para os Requisitos: ";
+$TLS_bulk_req_assign_msg = ' Esta operação irá atribuir requisitos selecionados para (número máximo de) %s Casos de Teste' .
+                         '<br />presentes na Suite de Teste selecionada.';
+						 
+$TLS_bulk_req_assign_no_test_cases = 'Operação não pode ser realizada porque não existem Casos de Teste selecionados dentro da Suite de Teste';	
+
+$TLS_bulk_assigment_done = '%s atribuições foram feitas';
+$TLS_req_title_bulk_assign = 'Atribuição de massa de Requisitos ';
+$TLS_req_title_available = 'Requisitos disponiveis';
+$TLS_no_req_spec_available = "Projeto de Testes sem especificação de requisitos disponível";
+
+// ----- requirement relations (BUGID 1748)
+$TLS_relation_id = "#";
+$TLS_current_req = "Requisito atual";
+$TLS_relation_type = "Tipo";
+$TLS_relation_document = "Requisito Relacionado";
+$TLS_relation_status = "Status";
+$TLS_relation_set_by = "Definido por";
+$TLS_relation_delete = "Removido";
+$TLS_relations = "Relações";
+$TLS_th_relations = "# Req. Relacionado";
+$TLS_new_relation = "Nova relação";
+$TLS_relation_project = "no Projeto de Teste";
+$TLS_in = "no projeto";
+$TLS_relation_destination_doc_id = "ID do Documento de Requisito";
+$TLS_new_rel_add_success = "Uma nova relação foi adicionada com sucesso.";
+$TLS_rel_add_error_dest_id = "Destino do ID do Documento é inválido.";
+$TLS_rel_add_error = "Erro ao adicionar uma nova relação.";
+$TLS_rel_add_error_self = "Um requisito não pode ter uma relação com ele mesmo.";
+$TLS_rel_add_error_exists_already = "Uma relação de tipo similar (\"%s\") já existe entre estes dois requisitos.";
+$TLS_delete_rel_success = "Uma ralação foi removida com sucesso.";
+$TLS_error_deleting_rel = "Relação não pode ser removida.";
+$TLS_delete_rel_msgbox_title = "Remover relação";
+$TLS_delete_rel_msgbox_msg = "Deseja realmente remover a relação #%i?";
+$TLS_img_title_delete_relation = "Clique para remover esta relação.";
+
+
+// ----- configured requirement relation types (BUGID 1748) -----
+$TLS_req_rel_is_parent_of = "pai de ";
+$TLS_req_rel_is_child_of = "filha de";
+$TLS_req_rel_blocks = "bloqueados";
+$TLS_req_rel_depends = "depende de";
+$TLS_req_rel_is_related_to = "relacionado a";
+
+// ----- lib/results/resultsBugs.php -----
+$TLS_title_test_report_all_builds = "Relatório de Teste: Resultados do Caso de Teste para todas as Baselines";
+
+
+
+// ----- lib/results/resultsAllBuilds.php -----
+$TLS_title_metrics_x_build = " - Resultado das Métricas de Teste por Baseline";
+
+
+
+// ----- lib/results/resultsByStatus.php -----
+$TLS_list_of_blocked = "Lista de Casos de Teste Bloqueados";
+$TLS_list_of_failed = "Lista de Casos de Teste com Falha";
+$TLS_list_of_not_run = "Lista de Casos de Teste não Executados";
+
+
+// ----- lib/results/testPlanWithCF----
+$TLS_link_report_tplans_with_cf = "Plano de Teste com informações de Campos Personalizados";
+$TLS_caption_testPlanWithCF = $TLS_link_report_tplans_with_cf;
+
+// ----- lib/results/resultsTC.php -----
+$TLS_result_on_last_build = '[Última Build]';
+$TLS_tcversion_indicator = ' [v%s]';
+
+
+// ----- cfg/reports.cfg.php -----
+$TLS_link_charts = "Gráficos";
+$TLS_link_report_blocked_tcs = "Casos de Testes Bloqueados";
+$TLS_link_report_failed = "Casos de Testes com falha";
+$TLS_link_report_general_tp_metrics = "Métricas Gerais do Plano de Teste";
+$TLS_link_report_metrics_active_build = "Métricas do Baseline ativa";
+$TLS_link_report_metrics_more_builds = "Métricas da Consulta";
+$TLS_link_report_not_run = "Casos de teste não executados";
+$TLS_link_report_overall_build = "Status Geral da Baseline";
+$TLS_link_report_reqs_coverage = "Relatório baseado em Requisitos";
+$TLS_link_report_tcases_without_tester = "Casos de Testes não atribuidos a Testadores";
+$TLS_link_report_test = "Matriz de Resultados de Teste";
+$TLS_link_report_test_plan = "Relatório do Plano de Teste";
+$TLS_link_report_test_report = "Relatório de Teste";
+$TLS_link_report_total_bugs = "Bugs por Caso de Teste";
+$TLS_link_report_uncovered_testcases = "Casos de Teste sem requisitos atribuidos";
+$TLS_link_report_tcases_with_cf='Casos de Teste com informações de Campos Personalizados';
+$TLS_link_report_reqs_with_cf = "Informação de Requisitos com Campos Personalizados";
+$TLS_caption_testCasesWithCF=$TLS_link_report_tcases_with_cf;
+$TLS_caption_requirementsWithCF = $TLS_link_report_reqs_with_cf;
+$TLS_link_report_free_testcases_on_testproject = "Casos de Teste não atribuidos para qualquer Plano de Teste";
+
+
+$TLS_no_linked_tc_cf='Não há Casos de Teste com informações de Campos Personalizados';
+
+$TLS_format_html 		= 'HTML';
+$TLS_format_odt 		= 'OpenOffice Writer';
+$TLS_format_ods 		= 'OpenOffice Calc';
+$TLS_format_xls 		= 'Excel';
+$TLS_format_msword 		= 'Word';
+$TLS_format_pdf 		= 'PDF';
+$TLS_format_mail_html 	= 'Email (HTML)';
+
+
+// ----- lib/results/resultsSend.php -----
+$TLS_send_to_empty_email_warning = "Você não pode enviar email sem preencher o endereço. Favor entrar com um endereço de email válido.";
+$TLS_warning_create_build_first = "Você deve criar baselines ou importar dados primeiro.";
+
+
+// ----- lib/results/displayMgr.php -----
+$TLS_error_sendreport_no_email_credentials = "Email para este usuário não foi cadastrado, favor editar o campo email na aba 'Pessoal'";
+
+
+
+// ----- lib/testcases/archive.inc.php -----
+
+
+
+// ----- lib/testcases/listTestCases.php -----
+
+
+
+// ----- lib/testcases/tcImport.php -----
+$TLS_action_on_duplicated_name = "Ação para nomes duplicados";
+$TLS_action_for_duplicates = "Ação para duplicados";
+$TLS_already_exists_updated = "Já existe, dados da última versão foram atualizados.";
+$TLS_please_choose_file_to_import = "Por favor, escolha o arquivo para importar";
+$TLS_title_tc_import_to = "Importar Caso(s) de Teste";
+$TLS_title_tsuite_import_to = "Importar Suite de Teste";
+$TLS_wrong_xml_tcase_file = "Arquivo XML incorreto do Caso de Teste";
+$TLS_wrong_xml_tsuite_file = "Arquivo XML incorreto da Suite de Teste";
+$TLS_cf_value_not_imported_missing_cf_on_testproject = "Valor do campo personalizado '%s' não pode ser importado " .
+                                                     "porque não há campo personalizado com esse nome " .
+                                                     "e disponivel para %s neste Projeto";
+													 
+$TLS_req_not_in_req_spec_on_tcimport = "Requisitos DOCID=%s não pode ser vinculado ao caso de teste," .
+		"porque não é filho direto de Espec Req.: %s";
+		
+$TLS_req_spec_ko_on_tcimport = "Req. Spec=%s não existe, requisitos não podem ser " .
+		"vinculado ao caso de teste";
+		
+$TLS_update_last_testcase_version='Atualizar dados na última versão';
+$TLS_create_new_testcase_version='Criar uma nova versão';
+$TLS_generate_new_testcase='Criar um novo caso de teste com um título diferente';
+$TLS_no_cf_defined_can_not_import="Valores dos Campos Personalizados estão presentes no arquivo de importação ".
+    "mas não podem ser importados porque não há Campos Personalizados na Especificação de Testes. Modele o escopo neste Projeto de Teste"; 
+	
+$TLS_no_reqspec_defined_can_not_import="Requisitos estão presentes no arquivo de importação".
+    "mas não podem ser importados porque não há especificação de requisitos
+    definidos para este Projeto de Teste"; 
+
+$TLS_same_internalID = 'têm o mesmo ID interno';
+$TLS_same_externalID = 'têm o mesmo ID externo'; // (only applicable to Test Cases)';
+$TLS_same_name = 'têm o mesmo nome';
+$TLS_duplicate_criteria = "Considere o Casos de Teste como duplicado se";	
+
+// ----- lib/testcases/tcexport.php -----
+$TLS_no_testcases_to_export = "Não há Casos de Teste para exportar";
+$TLS_no_testsuites_to_export = "Não há Suite de Testes para exportar";
+$TLS_title_tc_export = "Exportar Caso de Teste";
+$TLS_title_tc_export_all = "Exportar todos os Casos de Teste";
+$TLS_title_tsuite_export = "Exportar Suite de Testes";
+$TLS_title_tsuite_export_all = "Exportar todas as Suites de Testes";
+
+
+
+// ----- lib/testcases/containerEdit.php -----
+$TLS_delete 			= "Deletar";
+$TLS_delete_notice = "Atenção: Todos os Resultados de Execução Relacionados serão excluidos!";
+$TLS_warning_empty_com_name = "Favor dar um nome para a Suite de Teste";
+$TLS_remove_assigned_testcases = "Remover atribuição de todos os Casos de Teste atribuidos para o Plano de Teste";
+$TLS_btn_unassign_all_tcs = "Remover a atribuição de todos os Casos de Teste atribuidos";
+$TLS_unassign_all_tcs_msgbox_title = "Remover todas as atribuições dos Casos de Teste?";
+$TLS_unassign_all_tcs_warning_msg = "Se você clicar em Sim, todos os Casos de Teste atribuidos serão removidos do Plano de Teste %s.";
+$TLS_unassigned_all_tcs_msg = "Todos os Casos de Teste atribuidos tiveram a atribuição removida do Plano de Teste %s.";
+$TLS_nothing_to_unassign_msg = "Não há Casos de Teste atribuidos para usuários para o Plano de Teste %s.";
+
+
+
+// ----- lib/testcases/tcEdit.php -----
+$TLS_current = "atual";
+$TLS_delete_linked = "Links para os planos de testes serão removidos";
+$TLS_delete_linked_and_exec = "Links para os planos de testes e informações relacionadas à execução serão removidos";
+$TLS_error_tc_add = "Ocorreu um erro ao adicionar o Caso de Teste";
+$TLS_title_del_tc = "Excluir Caso de Teste ";
+
+
+
+// ----- lib/usermanagement/rolesview.php -----
+$TLS_error_role_deletion = "A regra não pode ser excluida!";
+
+
+// ----- lib/usermanagement/usersassign.php -----
+$TLS_no_test_projects = "Não há Projetos de Teste definidos";
+$TLS_no_test_plans = "Não há Planos de Teste definidos para este Projeto de Teste";
+$TLS_test_project_user_roles_updated = "Regras de Usuário atualizadas!";
+$TLS_test_plan_user_roles_updated = "Regras de Usuário atualizadas!";
+
+
+// ----- lib/usermanagement/usersedit.php -----
+$TLS_user_created = "Usuário %s foi criado com sucesso";
+$TLS_user_deleted = "Usuário %s foi excluido com sucesso";
+$TLS_user_disabled = "Usuário %s foi desabilitado com sucesso";
+$TLS_user_not_added = "O usuário não foi adicionado!";
+$TLS_error_user_not_updated = "O usuário não pode ser atualizado!";
+$TLS_error_user_not_deleted = "O usuário não pode ser deletado!";
+$TLS_error_user_not_disabled = "O usuário não pode ser desabilitado!";
+$TLS_error_user_login_length_error = "Tamanho do Login inválido!";
+
+
+
+// ----- lib/usermanagement/rolesedit.php -----
+$TLS_error_role_creation = "A regra não pode ser criada!";
+$TLS_error_role_update = "A regra não pode ser atualizada!";
+
+
+
+// ----- lib/cfields/cfields_edit.php -----
+$TLS_cf_name_exists = "O nome do campo personalizado já existe. Favor escolher um novo nome.";
+$TLS_error_creating_cf = "O campo personalizado não pode ser criado!";
+$TLS_do_update = "atualizado";
+$TLS_do_delete = "deletado";
+$TLS_do_add = "adicionado";
+$TLS_warning_delete_cf = "Você está deletando: %s <br /><br /> Tem certeza?";
+
+
+
+// ----- lib/project/fix_tplans.php -----
+$TLS_list_inactive_tplans1 = "Listagem ";
+$TLS_list_inactive_tplans2 = "Planos de Teste ativo que atualmente não são associados a um Projeto de Teste";
+$TLS_assoc_test_project = "Associado Projeto de Teste";
+$TLS_btn_fix_tplans = "Atualizar";
+$TLS_fix_tplans_no_rights = "Você não tem permissão para gerenciar Projetos de Teste<br />Contate o administrador";
+$TLS_no_tplans_to_fix = "No momento, não há Planos de Teste que não estão associadas a um Projeto de Teste  - Muito Bom!";
+
+
+// ----- lib/project/project_req_spec_mgmt.tpl -----
+$TLS_btn_new_req_spec = "Nova Especificação de Requisito";
+$TLS_btn_reorder_req_spec = "Reordernar Especificação de Requisitos";
+$TLS_btn_export_all_reqspec = "Exportar todas as Especificações de Requisitos";
+
+
+// ----- lib/requirements/reqOverview.php -----
+$TLS_caption_req_overview = "Overview dos Requisitos";
+$TLS_no_linked_req_cf = 'Não existem Reuqisitos definidos para este Projeto de Teste.';
+$TLS_th_coverage = 'Cobertura';
+$TLS_all_versions_displayed = 'Todas as versões de cada requsitos estão sendo exibidas.';
+$TLS_latest_version_displayed = 'Apenas a última versão de cada requisito está sendo exibida.';
+$TLS_dont_show_all_versions_btn = 'Exibir apenas a última versão de cada requisito';
+$TLS_show_all_versions_btn = 'Exibir todas as versões de cada requisito';
+
+
+// ----- reqSpecEdit.php -----
+$TLS_delete_req_spec = "Deletar Especificação de Requisito";
+$TLS_req_spec_created = "Especificação de Requisito: %s foi criada com sucesso";
+$TLS_req_spec_deleted = "Especificação de Requisito: %s foi deletada com sucesso";
+$TLS_title_req_spec = "Especificação de Requisitos";
+$TLS_warning_empty_req_spec_title = "Título da Especificação de Requisito não pode ser vazio!";
+$TLS_warning_empty_doc_id = "ID do documento não pode estar em branco";
+$TLS_create_req_spec = "Criar Especificação de Requisito";
+$TLS_create_child_req_spec = "Criar Especificação de Requisito filho";
+$TLS_edit_req_spec = "Editar Especificação de Requisitos";
+
+
+// ----- reqEdit.php -----
+$TLS_create_req = "Criar Requisito";
+$TLS_delete_req = "Deletar Requisito";
+$TLS_edit_req = "Editar Requisito";
+$TLS_req_created = "Requisito %s foi criado com sucesso";
+$TLS_req_deleted = "Requisito: %s foi excluido com sucesso";
+$TLS_req_version_deleted = "Req: %s-%s versão %s foi removido com sucesso";
+
+
+// ----- reqSpecReorder.tpl -----
+$TLS_title_change_req_spec_order = "Alterar ordem da Especificação de Requisitos";
+
+
+// ----- requirement_mgr -----
+$TLS_created_on_testsuite = "Casos de Teste foram criados na Suite de Teste %s";
+$TLS_testsuite_name_created = "Suite de Teste %s foi criada";
+
+
+// ----- keywordsEdit.php -----
+$TLS_keyword_management = "Gerenciar palavras-chave";
+$TLS_create_keyword = "Criar palavra-chave";
+$TLS_edit_keyword = "Editar palavra-chave";
+$TLS_warning_empty_keyword = "Palavra-chave não deve estar vazia!";
+
+// ----- platformsEdit.php -----
+$TLS_platform_management = "Gerenciamento de Plataforma";
+$TLS_create_platform = "Criar uma plataforma";
+$TLS_edit_platform = "Editar uma plataforma";
+$TLS_platform_name_already_exists = "O Nome da Plataforma %s já existe";
+$TLS_platform_update_failed = "Falha na atualização da plataforma";
+$TLS_warning_empty_platform = "Plataforma não pode ser vazia!";
+
+// ----- api/TestlinkXMLRPCServerErrors.php -----
+$TLS_API_INVALID_AUTH = "Não pode autenticar cliente: chave inválida";
+$TLS_API_INSUFFICIENT_RIGHTS = "Chave do desenvolvedor correspondente a usuário que não possui direitos para executar esta ação";
+$TLS_API_NO_DEV_KEY = "devKey não fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_NO_TCASEID = "ID do Caso de Teste não fornecido. Um valor vï¿½lido deve ser fornecido!";
+$TLS_API_NO_TCASEEXTERNALID = "ID Externo do Caso de Teste não fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_NO_TPLANID = "ID do Plano de Teste não fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_NO_TEST_MODE = "Um Teste Modo deve ser fornecido!";
+$TLS_API_NO_STATUS = "Nenhum status fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_NO_TESTCASENAME = "Nome do Caso de Teste não fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_NO_TESTPROJECTID = "ID do Projeto de Teste não fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_NO_TESTSUITEID = "ID Suite de Teste não fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_NO_TPID = "ID do Plano de Teste(tpid) não fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_NO_TCID = "ID do Caso de Teste (tcid) fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_INVALID_TCASEID= "O ID do Caso de Teste (tcid) fornecido não existe!";
+$TLS_API_INVALID_BUILDID = "O ID da Baseline (buildid) fornecido não existe!";
+$TLS_API_INVALID_TPLANID = "O ID do Plano de Teste (%s) fornecido não existe!";
+$TLS_API_INVALID_STATUS = "O status (status) fornecido não é válido!";
+$TLS_API_INVALID_TESTCASE_EXTERNAL_ID="ID Externo do Caso de Teste (%s) não existe!";
+
+$TLS_API_TCASEID_NOT_INTEGER = "O ID do Caso de Teste (testcaseid) precisa ser um inteiro!";
+$TLS_API_TESTCASENAME_NOT_STRING = "testcasename precisa ser uma string!";
+$TLS_API_NO_BUILD_FOR_TPLANID = "Não existem builds para este Plano de Teste fornecido! " . 
+                                "Uma Build precisa ser criada para reportar os resultados.";
+$TLS_API_BUILDID_NOGUESS = "Guessing está desabilitado, então uma id da build deve ser especificada!";
+$TLS_API_BUILDNAME_ALREADY_EXISTS = "ID retornado de baseline já existente (case insensitive): ";
+$TLS_API_NO_BUILDID = "Nenhum buildid fornecido. Um valor válido deve ser fornecido!";
+$TLS_API_TCASEID_NOT_IN_TPLANID = "O Caso de Teste (tpid) fornecido não está associado com o Plano de Teste (tpid).";
+$TLS_API_GENERAL_SUCCESS = "Sucesso!";
+$TLS_API_INVALID_TESTPROJECTID = "O ID do Projeto de Teste (testprojectid) fornecido não existe!";
+$TLS_API_INVALID_TESTSUITEID = "O ID Suite de TesteD (testsuiteid) fornecido não existe!";
+$TLS_API_NO_TESTCASE_BY_THIS_NAME = "Não é possivel encontrar Caso de Teste corresponde. Não existe Caso de Teste com nome fornecido!";
+$TLS_API_NOT_YET_IMPLEMENTED = "Esta funcionalidade ainda não foi implementada!";
+$TLS_API_NO_CUSTOMFIELD_BY_THIS_NAME="Não é possivel encontrar o Campo Personalizado correspondente. " .
+                                     "Nenhum Campo Personalizado existe com o nome fornecido!";
+
+$TLS_API_NO_USER_BY_THIS_LOGIN = "Não foi encontrado sessão iniciada para o usuário informado.";
+$TLS_API_MISSING_REQUIRED_PARAMETER = "Parâmetro %s é obrigatório, mas não foi informado";
+
+$TLS_API_INVALID_TESTCASE_VERSION_NUMBER="O número da versão solicitada não existe para o caso de teste";
+$TLS_API_PARAMETER_NOT_INT = "Parâmerto %s deve ser um inteiro.";
+
+$TLS_API_TPLAN_TPROJECT_KO="O Plano de Teste (name=%s / id=%s) não pertence ao Projeto de Teste (name=%s / id=%s)";
+$TLS_API_TCASE_TPROJECT_KO="O Caso de Teste (%s:%s) não pertence ao Projeto de Teste (name=%s / id=%s)";
+$TLS_API_TCASE_VERSION_NUMBER_KO="Versão (%s) não existe para o Caso de Teste (%s:%s).";
+
+$TLS_API_TPROJECT_IS_EMPTY="Projeto de Teste (%s) está vazio.";
+$TLS_API_TPROJECT_PREFIX_ALREADY_EXISTS="Prefixo (%s) já está em uso no Projeto de Teste (%s)";
+
+$TLS_API_REQSPEC_TPROJECT_KO="Especificação de Requisitos (title=%s / id=%s) não pertence ao Projeto de Teste (name=%s / id=%s)";
+
+$TLS_API_REQSPEC_KO="Especificação de Requisitos (id=%s) não existe no sistema";
+$TLS_API_REQ_KO="Requisito (id=%s) não existe no sistema";
+$TLS_API_REQSPEC_IS_EMPTY="Especificação de Requisitos (title=%s / id=%s) não tem requisitos";
+$TLS_API_REQ_REQSPEC_KO="Requisito (docid=%s/title=%s/id=%s) não pertence à Especificação de Requisitos Req. Spec. (title=%s / id=%s)";
+$TLS_API_TPLAN_HAS_NO_BUILDS="Não há builds definidas para o Plano de Testes (name=%s/id=%s)";
+$TLS_API_VERSION_NOT_VALID="Número da Versão %s não é válido.";
+
+$TLS_API_BAD_BUILD_FOR_TPLAN = "Baseline (id:%s), não existe no Plano de Teste (nome:%s/id:%s).";
+
+$TLS_API_CUSTOMFIELD_NOT_APP_FOR_NODE_TYPE="Campo Personalizado (name:%s), não pode ser usado no %s, mas em %s";
+
+$TLS_API_NO_TESTSUITENAME="Nenhum nome de suite de teste fornecido. Um nome para a suite de teste deve ser fornecido!";
+$TLS_API_TESTSUITENAME_NOT_STRING = "O nome da suite de teste deve ser uma string!";
+$TLS_API_TESTSUITE_DONOTBELONGTO_TESTPROJECT="Suite de Teste (escolhida como parent id) com id %s não pertence ao Projeto de Teste (name=%s / id=%s)";
+
+
+$TLS_API_CUSTOMFIELD_HAS_NOT_DESIGN_SCOPE="O Campo Personalizado (name:%s), não está configurado para o Escopo de Design";
+$TLS_API_CUSTOMFIELD_NOT_ASSIGNED_TO_TESTPROJECT="O Campo Customizado (name:%s), não está atribuido para o Projeto de Teste(name=%s / id=%s)";
+$TLS_API_TESTPROJECTNAME_DOESNOT_EXIST="O Projeto de Teste (name:%s) não existe.";
+$TLS_API_TESTPLANNAME_DOESNOT_EXIST="O Plano de Teste (name:%s) não existe no Projeto de Teste (name:%s).";
+$TLS_API_INVALID_PARENT_TESTSUITEID = "O ID da Suite de Teste (%s) informado como PARENT para a Suite de Teste (name:%s) " .
+                                      "não pertence a uma Suite de Teste existente no sistema!";
+
+$TLS_API_NO_TESTCASE_FOUND = "Nao foram encontrados Casos de Teste com este critério de pesquisa.";
+$TLS_API_TESTPLANNAME_ALREADY_EXISTS="O Plano de Teste (name:%s) JÁ EXISTE no Projeto de Teste (name:%s).";
+
+$TLS_API_NODEID_IS_NOT_INTEGER = "O Id do nodo (node id) não é um valor inteiro positivo.";
+$TLS_API_NODEID_DOESNOT_EXIST="o nodo com ID (%s) não existe no sistema.";
+
+$TLS_API_CFG_DELETE_EXEC_DISABLED = "A configuração não permite a remoção de execuções";
+
+$TLS_API_PLATFORM_NOT_LINKED_TO_TESTPLAN = "A plataforma (name=%s) não está associada com o Plano de Teste (name:%s).";
+$TLS_API_TESTPLAN_HAS_NO_PLATFORMS = "O Plano de Teste (name:%s) não têm plataforma associada";
+
+$TLS_API_TCASEID_NOT_IN_TPLANID_FOR_PLATFORM = "O Caso de Teste (name=%s/id=%s) não esté associado com " .
+                                               "o Plano de Teste (name=%s/id=%s) para a Plataforma (name=%s/id=%s).";
+
+											   
+// ----- audit log entries -----
+$TLS_audit_login_succeeded = "Login para '{%1}' em '{%2}' foi efetivado";
+$TLS_audit_login_failed = "Login para '{%1}' em '{%2}' falhou";
+$TLS_audit_role_saved = "Perfil '{%1}' foi salvo";
+$TLS_audit_role_created = "Perfil '{%1}' foi criado";
+$TLS_audit_role_deleted = "Perfil '{%1}' foi deletado";
+
+
+$TLS_audit_cfield_created = "Campo personalizado '{%1}' foi criado";
+$TLS_audit_cfield_saved = "Campo personalizado '{%1}' foi salvo";
+$TLS_audit_cfield_deleted = "Campo personalizado '{%1}' foi deletado";
+$TLS_audit_cfield_assigned = "Campo personalizado'{%1}' foi atribuido ao Projeto de Teste '{%2}'";
+$TLS_audit_cfield_unassigned = "Campo personalizado '{%1}' foi desatribuido ao Projeto de Teste '{%2}'";
+$TLS_audit_cfield_display_order_changed = "Ordem de exibição dos Campos Personalizados do Projeto de Teste '{%1}' foi salvo";
+$TLS_audit_cfield_activated = "Campo personalizado '{%1}' foi ativado no Projeto de Teste '{%2}'";
+$TLS_audit_cfield_deactivated = "Campo personalizado '{%1}' foi desativado no Projeto de Teste '{%2}'";
+
+$TLS_audit_user_apikey_set = "Chave-API para '{%1}' foi gerada";
+$TLS_audit_user_saved = "Usuário '{%1}' foi salvo";
+$TLS_audit_user_pwd_saved = "Senha do usuário '{%1}' foi salva";
+$TLS_audit_users_roles_added_testproject = "Usuário '{%1}' foi atribuido ao perfil '{%3}' ao Projeto de Teste '{%2}'";
+$TLS_audit_users_roles_added_testplan = "Usuário '{%1}' foi atribuido ao perfil '{%3}' ao Plano de Teste '{%2}'";
+$TLS_audit_all_user_roles_removed_testplan = "Todos os perfis foram removidos do Plano de Teste '{%1}'";
+$TLS_audit_all_user_roles_removed_testproject = "Todos os perfis foram removidos do Projeto de Teste id '{%1}'";
+$TLS_audit_user_created = "Usuário '{%1}' foi criado";
+$TLS_audit_user_deleted = "Usuário '{%1}' foi deletado";
+$TLS_audit_user_disabled = "Usuário '{%1}' foi desabilitado";
+$TLS_audit_user_logout = "'{%1} saiu do TestLink'";
+$TLS_audit_users_self_signup = "Usuário '{%1}' se inscreveu no TestLink";
+$TLS_audit_pwd_reset_requested = "Redefinição de senha solicitada para '{%1}'";
+$TLS_audit_user_role_changed= "Usuário '{%1}' perfil alterado antigo='{%2}' novo='{%3}'";
+$TLS_audit_user_active_status_changed = "Usuário '{%1}' alterou o status ativo velho='{%2}' novo='{%3}'";
+
+$TLS_audit_security_user_right_missing = "Usuário '{%1}' tem privilégios insuficientes para '{%3}' ação sobre '{%2}'! Saida forçada!";
+
+$TLS_audit_testproject_created = $TLS_testproject . " '{%1}' foi criado";
+$TLS_audit_testproject_saved = $TLS_testproject . " '{%1}' foi salvo";
+$TLS_audit_testproject_deleted = $TLS_testproject . " '{%1}' foi deletado";
+
+$TLS_audit_keyword_created = "Palavra-chave '{%1}' foi criada";
+$TLS_audit_keyword_saved = "Palavra-chave '{%1}' foi salva";
+$TLS_audit_keyword_deleted = "Palavra-chave '{%1}' foi deletada";
+$TLS_audit_keyword_assigned_tc = "Palavra-chave '{%1}' foi adicionada ao Caso de Teste '{%2}'";
+$TLS_audit_keyword_assignment_removed_tc = "Palavra-chave '{%1}' foi removida do Caso de Teste '{%2}'";
+$TLS_audit_all_keyword_assignments_removed_tc = "Todas Palavras-chave foram removidas do Caso de Teste '{%1}'";
+
+$TLS_audit_executionbug_added = "Bug '{%1}' foi acrescentado durante a execução";
+$TLS_audit_executionbug_deleted = "Bug '{%1}' foi deletado durante a execução";
+
+$TLS_audit_attachment_deleted = "Anexo '{%1}' foi deletado";
+$TLS_audit_attachment_created = "Anexo '{%1}' - arquivo '{%2}' foi criado";
+
+$TLS_audit_req_spec_created = $TLS_testproject . " '{%1}' - Especificação de Requisitos '{%2}' foi criada";
+$TLS_audit_req_spec_saved = $TLS_testproject . " '{%1}' - Especificação de Requisitos '{%2}' foi salva";
+$TLS_audit_req_spec_deleted = $TLS_testproject . " '{%1}' - Especificação de Requisitos '{%2}' foi deletada";
+$TLS_audit_req_spec_renamed = $TLS_testproject . " '{%1}' - Especificação de Requisitos '{%2}' renomeada para '{%3}'";
+
+$TLS_audit_requirement_created = "Requisito '{%1}' foi criado";
+$TLS_audit_requirement_saved = "Requisito '{%1}' foi salvo";
+$TLS_audit_requirement_deleted = "Requisito '{%1}' foi deletado";
+$TLS_audit_req_assigned_tc = "Requisito com título '{%1}' foi atribuido ao Caso de Teste '{%2}'";
+$TLS_audit_req_assignment_removed_tc = "Requisito com título '{%1}' foi removido do Caso de Teste '{%2}'";
+$TLS_audit_requirement_copy = "Req 'DOCID:{%1}' foi criado como uma cópia do Req 'DOCID:{%2}'";
+$TLS_audit_req_version_deleted = " Versão {%1} do Req 'DOCID:{%2}' - {%3} foi removida."; 
+$TLS_audit_req_version_frozen = " Versão {%1} do Req 'DOCID:{%2}' - {%3} foi congelada.";
+
+$TLS_audit_build_created = $TLS_testproject . " '{%1}' - " . $TLS_testplan . " '{%2}' - Baseline '{%3}' foi criada";
+$TLS_audit_build_saved = $TLS_testproject . " '{%1}' - " . $TLS_testplan . " '{%2}' - Baseline '{%3}' foi salva";
+$TLS_audit_build_deleted = $TLS_testproject . " '{%1}' - " . $TLS_testplan . " '{%2}' - Baseline '{%3}' foi deleted";
+
+$TLS_audit_testplan_deleted = $TLS_testproject . " '{%1}' - Plano de Teste '{%2}' foi deletado";
+$TLS_audit_testplan_saved = $TLS_testproject . " '{%1}' - Plano de Teste '{%2}' foi salvo";
+$TLS_audit_testplan_created = $TLS_testproject . " '{%1}' - Plano de Teste '{%2}' foi criado";
+$TLS_audit_milestone_deleted = "Plano de Teste '{%1}' - Marco '{%1}' foi deletada";
+$TLS_audit_milestone_created = "Plano de Teste '{%1}' - foi criada";
+$TLS_audit_milestone_saved = "Plano de Teste '{%1}' - foi salva";
+
+$TLS_audit_tc_added_to_testplan = "Caso de Teste '{%1}' versão {%2} foi adicionada ao Plano de Teste {%3}";
+$TLS_audit_tc_removed_from_testplan = "Caso de Teste '{%1}' versão {%2} foi removida do Plano de Teste {%3}";
+
+$TLS_audit_missing_localization = "String '{%1}' não localizada em '{%2}'";
+
+$TLS_audit_events_deleted = "Usuário '{%1}' deletou todos os Eventos";
+
+
+// ----- eventviewer.php -----
+$TLS_th_loglevel = "Nivel";
+$TLS_th_timestamp = "Período";
+$TLS_th_activity = "Informação da Atividade";
+$TLS_label_startdate = "Data Início";
+$TLS_label_enddate = "Data Final";
+$TLS_log_level_AUDIT = "Auditoria";
+$TLS_log_level_WARNING = "Advertência";
+$TLS_log_level_INFO = "Info";
+$TLS_log_level_ERROR = "Erro";
+$TLS_log_level_DEBUG = "Debug";
+$TLS_event_viewer = "Visualizar Eventos";
+$TLS_th_session_info = "Informação da Sessão";
+$TLS_th_sessionID = "Sessão ID";
+$TLS_th_source = "Código";
+$TLS_click_on_event_info = "Clique em qualquer evento para ver detalhes.";
+$TLS_th_activity_code = "Atividade";
+$TLS_th_object_id = "Objeto ID";
+$TLS_th_object_type = "Objeto Tipo";
+$TLS_message_please_wait = "Aguarde ...";
+$TLS_title_eventinfo = "Informação do Evento";
+$TLS_title_eventdetails = "Detalhes do Evento";
+$TLS_th_user = "Usuário";
+$TLS_show_event_history = "Visualizar o histórico do Evento";
+$TLS_btn_clear_events = "Apagar Todos Eventos";
+$TLS_th_event_description = "Descrição";
+$TLS_select_user = "Usuário (Padrão Todos)";
+
+
+// ----- int_mantis.php -----
+// Used to display at User interface label as title attribute
+// Attention must follow rule: issue_status_, because there is logic
+// build on this.
+// 
+$TLS_issue_status_new = "Novo problema";
+$TLS_issue_status_feedback = "Feedback";
+$TLS_issue_status_acknowledged = "Problema reconhecido";
+$TLS_issue_status_confirmed = "Confirmar problema";
+$TLS_issue_status_assigned = "Aceitar problema";
+$TLS_issue_status_resolved = "Resolver problema";
+$TLS_issue_status_closed = "Fechar problema";
+$TLS_issue_status_custom_undefined_on_tl = 'Status customizado NÃO CONFIGURADO no Test Link - visualize o log (Administração)';
+$TLS_access_to_bts = "Acessar problema no sistema de mudança";
+
+// ----- uncoveredTestCases.php -----
+$TLS_report_testcases_without_requirement = $TLS_link_report_uncovered_testcases;
+$TLS_no_uncovered_testcases = 'Nenhum Caso de Teste sem cobertura';
+$TLS_testproject_has_no_reqspec = 'Não há nenhuma Especificação de Requisitos definida';
+$TLS_testproject_has_no_requirements = 'Não há Requisitos definidos';
+
+
+// ----- testCasesWithoutTester -----
+$TLS_caption_testCasesWithoutTester = $TLS_link_report_tcases_without_tester;
+$TLS_all_testcases_have_tester = 'Todos Casos de Testes foram atribuidos a um Testador';
+
+// ----- freeTestCases -----
+$TLS_report_free_testcases_on_testproject=$TLS_link_report_free_testcases_on_testproject;
+$TLS_all_testcases_has_testplan="Todos os Casos de Teste foram atribuidos ao Plano de Teste";
+$TLS_all_testcases_are_free="Casos de Teste não foram atribuidos ao Plano de Teste";
+
+// ----- timeCharts ----- 
+$TLS_interval_end_date 		= "Último Intervalo de Data";
+$TLS_interval_header 		= "Intervalo Tipo";
+$TLS_interval_number 		= "Número de Intervalos";
+$TLS_link_time_charts		= "Gráfico de Tempo";
+$TLS_time_charts_metrics 	= "Gráfico de Métricas de Tempo";
+$TLS_time_charts_title 		= "Gráfico de Tempo";
+
+// ----- linkto.php -----
+$TLS_testproject_not_found = "O Projeto de Teste com o prefixo (%s) não existe";
+$TLS_testproject_not_set = "A Chave do Projeto de Teste (tprojectPrefix) não encontrada no _GET.";
+$TLS_item_not_set = "Item não setado - o que você quer ver? [item=tc|req|reqspec]";
+$TLS_id_not_set = "ID não setado.";
+$TLS_testcase_not_found = "O Caso de Teste %s não foi encontrado no Projeto de Teste (prefix:%s).";
+$TLS_req_spec_not_found = "A Especificação de Requisitos %s não foi encontrada no Projeto de Teste (prefix:%s).";
+$TLS_req_not_found = "O Requisito %s não foi encontrado no Projeto de Teste (prefix:%s).";
+$TLS_invalid_item = 'Item inválido (%s)';
+$TLS_btn_show_direct_link = "Exibir link permanente";
+
+// ----- testcase/req comparison -----
+$TLS_title_compare_versions_tc = "Página de comparação das versõe dos Casos de Teste";
+$TLS_title_compare_versions_req = "Página de comparação das versões de Requisitos";
+$TLS_btn_compare_versions = "Comparar versões";
+$TLS_btn_compare_selected_versions = "Comparar as versões selecionadas";
+$TLS_select_versions = "Seleciona a versão para comparação:";
+$TLS_version = "Versão ";
+$TLS_compare = "Comparar ";
+$TLS_modified = "Última modificação ";
+$TLS_modified_by = "Última modificação por ";
+$TLS_num_changes = "Número de mudanças em %s: %s.";
+$TLS_no_changes = "Sem mudanças em %s.";
+$TLS_context = "Contexto (número de linhas):";
+$TLS_show_all = "axibir todos";
+$TLS_version_short = "v";
+$TLS_diff_subtitle_tc = "Diferenças entre versões %s (v%s) e versões %s (v%s) do Caso de Teste %s"; 
+$TLS_diff_subtitle_req = "Diferenças entre versões %s (v%s) e versões %s (v%s) de requisitos %s";
+$TLS_warning_context = "Contexto (linhas) precisa ser um número.";
+$TLS_warning_context_range = "Contexto está fora dos limites (precisa ser um número positivo).";
+$TLS_warning_empty_context = "Contexto (linhas) não podem estar em branco.";
+$TLS_warning_selected_versions = "Você precisa selecionar duas versões da lista.";
+$TLS_warning_same_selected_versions = "Você precisa selecionar duas versões diferentes da lista.";
+
+// ----- grab from not-systematic developers -----
+$TLS_step_actions = "Ações do Passo";
+$TLS_step_details="Detalhes do Passo";
+$TLS_step_number="#";
+$TLS_step_number_verbose = "Número do Passo";
+$TLS_step_number_x_created = "Passo número: %s criado";
+$TLS_step_number_x_created_as_copy = "Passo número: %s criado como cópia de %s";
+$TLS_edit_step_number_x = "Editar o passo de número: %s - Caso de Teste: %s - Versão: %s";
+$TLS_create_step = "Passo criado - Caso de Teste: %s - Versão: %s";
+$TLS_delete_step = "Remover passo";
+$TLS_warning_delete_step = "<p>Você está prestes a remover o passo número: %s </p><p>Você tem certeza?</p>";
+$TLS_warning_step_number = " Número do passo precisa ser um número de > 0";
+$TLS_warning_step_number_already_exists = " Número do passo %s já existe";
+
+$TLS_BTS_integration_failure = " Integração com o Sistema de Bugtracking: %s - falhou";
+$TLS_BTS_connect_to_database_fails = "Conexão com o banco de dados do Bugtracker falhou: %s";
+$TLS_MANTIS_status_not_configured = 'Pegou o status do bug: %s do Mantis DB, mas o status não está configurado no arquivo int_mantis.php';
+$TLS_testcase_set_copied = "%s Casos de Teste foram copiados";
+$TLS_one_testcase_copied = "Caso de Teste foi copiado";
+
+$TLS_import_req_spec_created = 'Criado - ID Doc. Espec. Req.:%s';
+$TLS_import_req_spec_skipped = 'Ignorado - ID Doc. Espec. Req.:%s - Já existe em um outro branch';
+$TLS_import_req_spec_updated = 'Atualizado - ID Doc. Espec. Req.:%s';
+$TLS_import_req_spec_ancestor_skipped = 'Ignorado - ID Doc. Espec. Req.:%s - um container pai já existe em outro branch';
+
+$TLS_import_req_created = 'Criado - ID Doc. Requisito:%s';
+$TLS_import_req_skipped = 'Ignorado - ID Doc. Requisito:%s - Já existe em outro branch';
+$TLS_import_req_updated = 'Atualizado - ID Doc. Requisito:%s';
+$TLS_import_done = 'Importação concluida';
+$TLS_import_req_conflicts_other_branch = 'ID do documento conflitou com um requisito em outro branch';
+$TLS_import_req_exists_here = 'ID do documento já existe';
+
+// ----- END ------------------------------------------------------------------
+?>
