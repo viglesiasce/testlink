@@ -1,0 +1,214 @@
+===============================================================
+                    TestLink 1.9 - Read me
+===============================================================
+
+Contents
+1. Introduction
+2. Release notes
+3. System Requirements
+4. Installation
+5. Upgrade and Migration
+6. TestLink Team 
+7. Bug Reports and Feedback
+
+
+1. Introduction
+===============================================================
+
+TestLink is a web based test management and test execution system.
+It enables quality assurance teams to create and manage their test 
+cases as well as to organize them into test plans. These test plans 
+allow team members to execute test cases and track test results 
+dynamically.
+
+TestLink is a GPL licensed open source project. All of the source code 
+behind TestLink is freely available for download via SourceForge 
+at http://www.sourceforge.net If you are interested in contributing 
+to the TestLink effort feel free to contact us.
+There is no hidden fee - 100% free for using!
+
+
+2. Release notes
+===============================================================
+
+This is release candidate of final and stable release and we recommend 
+to update from older version.
+
+New features within 1.8: 
+    * Platforms - possibility to test with several configuration/environment
+    * Requirements versions, type
+    * Test case: Step-by-step structure
+    * Inventory
+    * Compatibility with PHP5.3 
+    
+See CHANGELOG file for detailed list.
+
+
+3. System Requirements - server
+===============================================================
+
+Server environment should consists from:
+- web-server: Apache 1.2 , 2.x
+- PHP 5.2, 5.3
+- DBMS: MySQL 4.1 - 5.x , Postgres 8.x , MS-SQL 2000
+
+Supported client web-browsers: 
+- Firefox 3.x
+- Internet Explorer 6.x, 7.x   
+
+
+4. Installation
+===============================================================
+The following details the basic steps for installation on any   
+system. The instructions may seem unix-centric but should work  
+fine on Windows systems.
+
+Barring complications, it should take you about 10-20 minutes 
+to install, configure, and be using TestLink.
+
+Short summary:
+ 1. Transfer files
+ 2. Uncompress files
+ 3. Launch web based installer
+
+1. First, transfer the file to your web-server using whatever 
+method you like best (ftp, scp, etc).  You will need to telnet/ssh 
+into the server machine for the next steps.
+
+2. Next, untar/gunzip it to the directory that you want.
+The usual command is (1 step):
+
+	tar zxvf <filename.tar.gz>
+
+OR  (2 steps):
+
+	gunzip <filename.tar.gz>
+	tar xvf <filename.tar>
+
+Total Commander, Winzip, and other programs should also be able 
+to handle decompression of the archive.
+
+At this point you may want to rename the directory to something 
+different to 'testlink'. You should allow write access for
+logging, upload and template directories.
+
+3. Launch web based installer
+We will create the necessary database tables and a basic configuration
+file. From your web server, access http://yoursite/testlink/ 
+or similar URL and follow instructions.
+
+Check Installation manual and TestLink forum if you meet a problem.
+
+
+5. Upgrade and Migration
+===============================================================
+When accessing Installer page you will found following options:
+
+ - New Installation
+ - Migration from 1.8 to 1.9
+
+ Steps
+ - Make a Backup of your current database.
+ - Using  a NEW DIRECTORY (DO NOT OVERWRITE your old installation),  
+   do only following steps from Install procedure:
+                                           Transfer files
+                                           Uncompress files
+ - Copy your old config_db.inc.php and custom_config.inc.php to NEW DIRECTORY.
+ - Launch TestLink
+ - TestLink will check Database version, and if some upgrade/migration 
+   is needed will launch automatically the installer.
+
+ If you are updating a same major version (for example 1.7.0 to 1.7.1) 
+ you need to use Upgrade Database.
+ 
+ If you are using a different major version detailed in options,  
+ you need to use the specific Migrations.
+ 
+ If in some steps TestLink ask you for two databases, NEVER use 
+ same name from both.
+ 
+ If you do not find nothing useful, post in forum
+   
+ Always before login, after an upgrade/migration clear browser cookies.
+
+
+6. TestLink Team 
+===============================================================
+
+This list comprise people that has helped
+
+--- Project core team ---
+* Martin Havlat - Project lead, builds, infrastructure, developer
+* Francisco Mancardi - Project lead, core developer, contributors code reviewer
+* Andreas Morsing - core developer
+
+--- Developers ---
+* Erik Eloff
+* Julian Krien
+* Andreas Simon
+* Amit Khullar
+
+--- Automated Testing ---
+* Masami Ichikawa
+* Toshiyuki Kawanishi - Japanese localization, developer
+
+--- Contributors and earlier developers ---
+
+* Chad Rosen - (Originator - version 1.0.x)
+* Kevin Levy - Developer
+* Asiel Brumfield - Infrastructure, developer
+* Jason B. Archibald - Developer
+
+* Tools R Us - contributing team
+* Oscar Castroviejo - trackplus interface
+* Seweryn Plywaczyk - text area custom field
+* grdscarabe@grdscarabe.net and Alexandre Da Costa - French localization
+* Walter Giaquinto/Alessandro Lia	and  bruno.busco@gmail.com - Italian localization
+* Alessandro Lia - Javascript and CSS advice.
+* Leonardo Molinari - Portuguese localization
+* jorgesf@jsf.jazztel.es - Spanish localization
+* Jonas Fleer : search test case by custom field on test projects
+* Lightbulb Technology Services Pvt. Ltd. - techpartners: import test cases from XLS file
+  abhishek.kulkarni@gmail.com and amit.dixit@lbtp.co.in 
+* Kester Mielke <kmielke@pironet-ndh.com> (execution tree colouring and counters by tc status)
+* Peter Rooms - Bug coloring and labeling according status using same colors than Mantis.
+* Eugenia Drosdezki - Move/copy multiple testcases
+*                     Access to content of docs folder on combo box  
+*                     Multiselect OR keywords filter
+* Japanese Testing Engineer's Forum (TEF) in Japan
+  Working Group of TestLink Japanese Translation Project
+  http://sourceforge.jp/projects/testlinkjp/
+ 
+  Atsushi Nagata,       AZMA Daisuke,         Hiromi Nishiyama,
+  Kaname Mochizuki,     Kaoru Nakamura,       Kunio Murakami,
+  Lumina Nishihara,     Marino Suda,          Masahide Katsumata,
+  Masami Ichikawa,      Masataka Yoneta,      Sadahiko Hantani,
+  Shinichi Sugiyama,    Shinsuke Matsuki,     Shizuka Ban,
+  Takahiro Wada,        Toshinori Sawaguchi,  Toshiyuki Kawanishi,
+  Yasuhiko Okada,       Yoichi Kunihiro,      Yoshihiro Yoshimura,
+  Yukiko Kajino			Yasuharu Nishi
+
+
+
+--- Code reuse ---  
+  We try to follow as much as possibile the following principle:
+       Do not reinvent the wheel.
+  We use code, and documentation from other Open Source Systems 
+  (see CODE_REUSE document for details).
+
+
+7. Bug Reports and Feedback
+===============================================================
+
+You may contact us at the TestLink forum at 
+http://www.teamst.org/
+
+If you found this software useful for your company please
+post in forum on section "Companies using TestLink".
+
+To submit a bug or a feature, please use our Mantis installation at 
+http://www.testlink.org/mantis/. 
+
+
+
+      
