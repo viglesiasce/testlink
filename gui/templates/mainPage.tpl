@@ -21,7 +21,6 @@
 {include file="inc_ext_js.tpl"}
 
 <script language="JavaScript" src="{$basehref}gui/niftycube/niftycube.js" type="text/javascript"></script>
-This is where the niftycube
 
 {literal}
 <script type="text/javascript">
