@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-20 15:58:18
+<?php /* Smarty version 2.6.26, created on 2010-09-22 15:37:52
          compiled from mainPage.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'replace', 'mainPage.tpl', 17, false),array('function', 'config_load', 'mainPage.tpl', 18, false),)), $this); ?>
@@ -19,6 +19,8 @@ unset($_smarty_tpl_vars);
 
 <script language="JavaScript" src="<?php echo $this->_tpl_vars['basehref']; ?>
 gui/niftycube/niftycube.js" type="text/javascript"></script>
+This is where the niftycube
+
 <?php echo '
 <script type="text/javascript">
 window.onload=function()
@@ -45,7 +47,7 @@ window.onload=function()
     }
 
     display_left_block_5();
-
+//    display_center_block_1();
     if( typeof display_right_block_1 != \'undefined\')
     {
         display_right_block_1();
@@ -75,7 +77,6 @@ $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
 <?php endif; ?>
-
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "mainPageRight.tpl", 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;
@@ -83,6 +84,11 @@ unset($_smarty_tpl_vars);
  ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "mainPageLeft.tpl", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
+<?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => "mainPageCenter.tpl", 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-03 15:33:36
+<?php /* Smarty version 2.6.26, created on 2010-09-22 15:37:53
          compiled from mainPageLeft.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'mainPageLeft.tpl', 18, false),)), $this); ?>
@@ -161,14 +161,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 
 
     </script>
 
-<div class="vertical_menu" style="float: left">
-    <div id='menu_left_block_1'></div><br />
-  <div id='menu_left_block_2'></div><br />
-  <div id="menu_left_block_3"></div><br />
-  <div id="menu_left_block_4"></div><br />
-  <div id="menu_left_block_5"></div><br />
-  
-	<?php if ($this->_tpl_vars['display_left_block_1']): ?>
+  	<?php if ($this->_tpl_vars['display_left_block_1']): ?>
     <div id='testproject_topics'>
 	  <?php if ($this->_tpl_vars['gui']->grants['project_edit'] == 'yes'): ?>
   		<img src="<?php echo @TL_ITEM_BULLET_IMG; ?>

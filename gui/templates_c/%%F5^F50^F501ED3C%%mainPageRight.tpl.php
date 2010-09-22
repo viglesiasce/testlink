@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-03 15:33:36
+<?php /* Smarty version 2.6.26, created on 2010-09-22 15:37:52
          compiled from mainPageRight.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'mainPageRight.tpl', 14, false),array('modifier', 'escape', 'mainPageRight.tpl', 123, false),array('modifier', 'truncate', 'mainPageRight.tpl', 124, false),)), $this); ?>
@@ -105,7 +105,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 
 
 <?php endif; ?>
 
-<div class="vertical_menu" style="float: right; margin:10px 10px 10px 10px">
+<div class="vertical_menu" style="float: left">
 	<?php if ($this->_tpl_vars['gui']->num_active_tplans > 0): ?>
 	  <div class="testproject_title">
      <?php echo lang_get_smarty(array('s' => 'help','var' => 'common_prefix'), $this);?>
@@ -182,7 +182,12 @@ $this->_sections['tPlan']['last']       = ($this->_sections['tPlan']['iteration'
   <div id='menu_right_block_1'></div><br />
   <div id='menu_right_block_2'></div><br />
   <div id="menu_right_block_3"></div><br />
-  
+  <div id="menu_left_block_1"></div><br />
+  <div id="menu_left_block_2"></div><br />
+  <div id="menu_left_block_3"></div><br />
+  <div id="menu_left_block_3"></div><br /> 
+  <div id="menu_left_block_4"></div><br />
+  <div id="menu_left_block_5"></div><br />
   	<?php if ($this->_tpl_vars['display_right_block_1']): ?>
     <div id='test_plan_mgmt_topics'>
     
@@ -301,4 +306,4 @@ $this->_sections['tPlan']['last']       = ($this->_sections['tPlan']['iteration'
     </div>
   <?php endif; ?>
   
-</div>
+</div>

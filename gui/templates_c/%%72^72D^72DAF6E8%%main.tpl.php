@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-03 15:29:17
+<?php /* Smarty version 2.6.26, created on 2010-09-22 15:37:52
          compiled from main.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'main.tpl', 14, false),array('modifier', 'default', 'main.tpl', 15, false),)), $this); ?>
@@ -21,7 +21,7 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'm
 favicon.ico" type="image/x-icon" />
 </head>
 
-<frameset rows="70,*" frameborder="0" framespacing="0">
+<frameset rows="70,*" cols="*" frameborder="0" framespacing="0">
 	<frame src="<?php echo $this->_tpl_vars['titleframe']; ?>
 " name="titlebar" scrolling="no" noresize="noresize" />
 	<frame src="<?php echo $this->_tpl_vars['mainframe']; ?>
