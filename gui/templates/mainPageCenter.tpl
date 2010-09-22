@@ -34,8 +34,8 @@
         renderTo: 'center_block',
         activeTab: 0,
         //width:800,
-        //height:250,
-        plain:true,
+        height:400,
+        //plain:true,
         defaults:{autoScroll: true},
         items:[{
                 title: 'Normal Tab',
