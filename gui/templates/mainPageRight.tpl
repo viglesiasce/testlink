@@ -101,7 +101,7 @@
 {/if}
 
 {* ----- Right Column begin ---------------------------------------------------------- *}
-<div class="vertical_menu" style="float: right; margin:10px 10px 10px 10px">
+<div class="vertical_menu" style="float: left">
 {* ----------------------------------------------------------------------------------- *}
 	{if $gui->num_active_tplans > 0}
 	  <div class="testproject_title">
@@ -144,7 +144,12 @@
   <div id='menu_right_block_1'></div><br />
   <div id='menu_right_block_2'></div><br />
   <div id="menu_right_block_3"></div><br />
-  
+  <div id="menu_left_block_1"></div><br />
+  <div id="menu_left_block_2"></div><br />
+  <div id="menu_left_block_3"></div><br />
+  <div id="menu_left_block_3"></div><br /> 
+  <div id="menu_left_block_4"></div><br />
+  <div id="menu_left_block_5"></div><br />
   {* ----------------------------------------------------------------------------------- *}
 	{if $display_right_block_1}
     <div id='test_plan_mgmt_topics'>
