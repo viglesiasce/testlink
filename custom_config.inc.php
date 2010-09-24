@@ -181,6 +181,19 @@
 // $tlCfg->req_spec_template->scope->value = 'what a req_spec';
 // $tlCfg->req_spec_template->scope->type = 'file';
 // $tlCfg->req_spec_template->scope->value = 'c:\usr\local\xampp-1.7.2\xampp\htdocs\head-20090909\item_templates\req_spec.txt';
+$tlCfg->username_format = '%first% %last%';
+$tlCfg->gui->text_editor['all'] = array( 'type' => 'tinymce');
+$tlCfg->exec_cfg->show_history_all_builds = TRUE;
+$tlCfg->exec_cfg->exec_mode->tester='assigned_to_me_or_free';
+
+
+$tlCfg->testcase_template->summary = new stdClass();
+$tlCfg->testcase_template->summary->type = 'file';
+$tlCfg->testcase_template->summary->value = '/var/www/html/testlink_test/testcase_template.txt';
+
+$tlCfg->execution_template->notes = new stdClass();
+$tlCfg->execution_template->notes->type = 'file';
+$tlCfg->execution_template->notes->value = '/var/www/html/testlink_test/results_template.txt';
 
 
 ?>

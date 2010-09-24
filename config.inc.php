@@ -677,7 +677,7 @@ $tlCfg->exec_cfg->user_filter_default='none';
 
 // 'horizontal' ->  step and results on the same row
 // 'vertical'   ->  steps on one row, results in the row bellow
-$tlCfg->exec_cfg->steps_results_layout = 'horizontal';
+$tlCfg->exec_cfg->steps_results_layout = 'vertical';
 
 
 // Parameters to show notes/details when entering test execution feature
@@ -698,7 +698,7 @@ $tlCfg->exec_cfg->expand_collapse->testsuite_details = LAST_USER_CHOICE;
 // 'horizontal' ->  step and results on the same row
 // 'vertical'   ->  steps on one row, results in the row bellow
 // $g_spec_cfg->steps_results_layout = 'vertical';
-$tlCfg->spec_cfg->steps_results_layout = 'horizontal';
+$tlCfg->spec_cfg->steps_results_layout = 'vertical';
 
 
 // ENABLED -> User will see a test suite filter while creating test specification
