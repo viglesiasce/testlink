@@ -122,7 +122,6 @@ if($testplanID > 0)
     $arrPlans[$index]['selected']=1;
 }
 
-
 $gui->testplanRole = null;
 if ($testplanID && isset($currentUser->tplanRoles[$testplanID]))
 {
@@ -160,7 +159,7 @@ $gui->securityNotes = getSecurityNotes($db);
 $gui->testprojectID = $testprojectID;
 $gui->testplanID = $testplanID;
 $gui->docs = getUserDocumentation();
-
+$gui->current_tp_name = $arrPlans[$index]['name'];
 $smarty->assign('gui',$gui);
 $smarty->display('mainPage.tpl');
 

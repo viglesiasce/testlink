@@ -30,37 +30,44 @@
 
 <script  type="text/javascript"> 
 {literal}
+
+Ext.ux.IFrameComponent = Ext.extend(Ext.BoxComponent, {
+     onRender : function(ct, position){
+          this.el = ct.createChild({tag: 'iframe', id: 'iframe-'+ this.id, frameBorder: 0, src: this.url});
+     }
+});
+   var current_tp_name = '{/literal}{$gui->current_tp_name}{literal}';
+   var wiki = new Ext.Panel({
+     id: id,
+     title: current_tp_name + ' Testplan Wiki',
+     //closable:true,
+     // layout to fit child component
+     layout:'fit', 
+     // add iframe as the child component
+     items: [ new Ext.ux.IFrameComponent({ id: 'iFrame', url: 'http://wiki/index.php/' + current_tp_name  +'_Testing_page' }) ]
+   });
+
+    var testcases = new Ext.Panel({
+     id: 'testcase_panel',
+     title: 'My  Testcases',
+     //closable:true,
+     // layout to fit child component
+     layout:'fit', 
+     // add iframe as the child component
+     items: [ new Ext.ux.IFrameComponent({ id: 'iFrame2', url: 'http://10.2.32.20/testlink_test/lib/testcases/tcAssignedToUser.php' }) ]
+   }); 
+
    var tabs2 = new Ext.TabPanel({
         renderTo: 'center_block',
         activeTab: 0,
         //width:800,
-        height:400,
-        //plain:true,
-        defaults:{autoScroll: true},
-        items:[{
-                title: 'Normal Tab',
-                html: "My content was added during construction."
-            },{
-                title: 'Ajax Tab 1',
-                autoLoad:'ajax1.htm'
-            },{
-                title: 'Ajax Tab 2',
-                autoLoad: {url: 'ajax2.htm', params: 'foo=bar&wtf=1'}
-            },{
-                title: 'Event Tab',
-                listeners: {activate: handleActivate},
-                html: "I am tab 4's content. I also have an event listener attached."
-            },{
-                title: 'Disabled Tab',
-                disabled:true,
-                html: "Can't see me cause I'm disabled"
-            }
-        ]
+        height: 800,
+	//autoHeight: true,
+	//plain:true,
+	defaults:{autoScroll: true},
+        items:[wiki, testcases]
     });
 
-    function handleActivate(tab){
-        alert(tab.title + ' was activated.');
-    }
 {/literal}
 
 </script>
