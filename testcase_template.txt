@@ -1,0 +1,37 @@
+Feature:
+
+SubFeature:
+
+
+Summary:
+
+
+Equipment required:
+
+
+Test overview
+
+INITIALIZATION PHASE
+1.	Verify BLC software version
+2.	Verify blacklist alarm state is clear
+3.	Check memory available
+4.	Check network connectivity
+5.	Verify system logging is configured (SNMP/syslog)
+
+
+TESTING PHASE
+1.	
+
+2.	
+3.	
+4.	
+
+CLOSING PHASE
+1.	Tear down connections for test tools and stop the running traffic or calls.
+2.	Record statistics from the test run.
+3.	Record any logged errors or anomalies
+4.	Verify clean teardown of traffic and calls
+5.	Check alarms
+
+
+
