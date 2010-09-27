@@ -97,12 +97,12 @@
 //
 //
 // SMTP server Configuration ("localhost" is enough in the most cases)
-//$g_smtp_host        = 'localhost';  # SMTP server MUST BE configured  
+$g_smtp_host        = 'mail.occamnetworks.com';  # SMTP server MUST BE configured  
 
 # Configure using custom_config.inc.php
-//$g_tl_admin_email     = 'tl_admin@127.0.0.1'; # for problem/error notification 
-//$g_from_email         = 'testlink@127.0.0.1';  # email sender
-//$g_return_path_email  = 'francisco@127.0.0.1';
+$g_tl_admin_email     = 'no_reply@occam-testlink.com'; # for problem/error notification 
+$g_from_email         = 'testlink@occamnetworks.com';  # email sender
+$g_return_path_email  = 'viglesias@occamnetworks.com';
 
 # Urgent = 1, Not Urgent = 5, Disable = 0
 // $g_mail_priority = 5;   
@@ -182,7 +182,7 @@
 // $tlCfg->req_spec_template->scope->type = 'file';
 // $tlCfg->req_spec_template->scope->value = 'c:\usr\local\xampp-1.7.2\xampp\htdocs\head-20090909\item_templates\req_spec.txt';
 $tlCfg->username_format = '%first% %last%';
-$tlCfg->gui->text_editor['all'] = array( 'type' => 'tinymce');
+//$tlCfg->gui->text_editor['all'] = array( 'type' => 'tinymce');
 $tlCfg->exec_cfg->show_history_all_builds = TRUE;
 $tlCfg->exec_cfg->exec_mode->tester='assigned_to_me_or_free';
 
