@@ -332,7 +332,7 @@ function initializeGui($statusCode,&$argsObj)
     $guiObj->warning_msg = '';
 
     // Humm this may be can be configured ???
-    foreach(array('failed','blocked','not_run') as $verbose_status)
+    foreach(array('failed','blocked','not_run', 'in_progress') as $verbose_status)
     {
         if($argsObj->type == $statusCode[$verbose_status])
         {

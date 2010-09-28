@@ -407,6 +407,7 @@ $tlCfg->results['status_code'] = array (
 	'blocked'       => 'b',
 	'passed'        => 'p',
 	'not_run'       => 'n',
+	'in_progress'   => 'i',
 	'not_available' => 'x',
 	'unknown'       => 'u',
 	'all'           => 'a'
@@ -430,7 +431,8 @@ $tlCfg->results['status_label'] = array(
 	'not_run'  		=> 'test_status_not_run',
 	'passed'   		=> 'test_status_passed',
 	'failed'   		=> 'test_status_failed',
-	'blocked'  		=> 'test_status_blocked'
+	'blocked'  		=> 'test_status_blocked',
+	'in_progress'           => 'test_status_in_progress'
 //	'all'      		=> 'test_status_all_status',
 //	'not_available' => 'test_status_not_available',
 //	'unknown'       => 'test_status_unknown'
@@ -457,7 +459,8 @@ $tlCfg->results['status_label_for_exec_ui'] = array(
 	'not_run'  		=> 'test_status_not_run',
 	'passed'  		=> 'test_status_passed',
 	'failed'  		=> 'test_status_failed',
-	'blocked' 		=> 'test_status_blocked'
+	'blocked' 		=> 'test_status_blocked',
+	'in_progress'           => 'test_status_in_progress'
 );
 
 /** 
@@ -474,7 +477,8 @@ $tlCfg->results['charts']['status_colour'] = array(
  	'not_run'  		=> '000000',
 	'passed'   		=> '006400',
 	'failed'   		=> 'B22222',
-	'blocked'  		=> '00008B'
+	'blocked'  		=> '00008B',
+	'in_progress'           => '808000'
 );
 
 /*

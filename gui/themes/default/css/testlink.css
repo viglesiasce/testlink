@@ -524,11 +524,14 @@ div.blocked {
 div.not_run {
 	background:		black;
 }
+div.in_progress {
+background: #808000; /* hanah */
+}
 
 
 /* ***** execution tree coloring ************************* */
 span.light_passed, span.light_failed, span.light_blocked,
-span.light_not_run, span.light_not_available, span.light_unknown
+span.light_not_run, span.light_not_available, span.lighe_in_progress, span.light_unknown
 {
 	color:				black;
 	padding:			3px;
@@ -557,6 +560,9 @@ span.light_not_available {
 
 span.light_unknown {
 	background: 		#DDFFFF; /* cyan; */
+}
+span.light_in_progress {
+background: #FFEECC;
 }
 
 /* ***** render test result status (coloring background) ************************* */
@@ -590,6 +596,12 @@ span.light_unknown {
 	background:		#00FFFF; /* cyan; */
 }
 
+.in_progress {
+
+	color: white;
+	background: #808000; /* hanah */
+}
+
 /* ***** render test result status (coloring text) ************************* */
 .passed_text {
 	color:    #006400; /* darkgreen */
@@ -615,7 +627,10 @@ span.light_unknown {
 	color:    black;
   font-weight: bold;
 }
-
+.in_progress_text{
+	color: #808000;
+	font-weight:bold;
+}
 .unknown_text {
 	color: 			#00FFFF; /* cyan; */
   font-weight: bold;

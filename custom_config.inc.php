@@ -135,33 +135,36 @@ $g_return_path_email  = 'viglesias@occamnetworks.com';
 
 //$g_log_level='DEBUG';
 
-// $tlCfg->results['status_code'] = array ( 
-//         "failed"        => 'f', 
-//         "blocked"       => 'b', 
-//         "passed"        => 'p', 
-//         "not_run"       => 'n', 
-//         "not_available" => 'x', 
+$tlCfg->results['status_code'] = array ( 
+         "failed"        => 'f', 
+         "blocked"       => 'b', 
+         "passed"        => 'p', 
+         "not_run"       => 'n', 
+	 "in_progress"    => 'i'
+//        "not_available" => 'x', 
 //         "unknown"       => 'u', 
 //         "all"           => 'a' 
-// ); 
+ ); 
 // 
-// $tlCfg->results['status_label'] = array( 
-//         "passed"                => "test_status_passed", 
-//         "failed"                => "test_status_failed", 
-//         "blocked"               => "test_status_blocked", 
-//         "not_run"               => "test_status_not_run", 
+ $tlCfg->results['status_label'] = array( 
+         "passed"                => "test_status_passed", 
+         "failed"                => "test_status_failed", 
+         "blocked"               => "test_status_blocked", 
+         "not_run"               => "test_status_not_run", 
+	 "in_progress"           => "test_status_in_progress"
 // //    "all"                   => "test_status_all_status", 
 //         "not_available"    => "test_status_not_available", 
 // //      "unknown"          => "test_status_unknown" 
-// ); 
+ ); 
 // 
-// $tlCfg->results['status_label_for_exec_ui'] = array( 
-//         "passed"  => "test_status_passed", 
-//         "failed"  => "test_status_failed", 
-//         "blocked" => "test_status_blocked", 
-//         "not_run" => "test_status_not_run",
+ $tlCfg->results['status_label_for_exec_ui'] = array( 
+        "passed"  => "test_status_passed", 
+         "failed"  => "test_status_failed", 
+         "blocked" => "test_status_blocked", 
+         "not_run" => "test_status_not_run",
+	 "in_progress" => "test_status_in_progress"
 //         "not_available" => "test_status_not_available" 
-// ); 
+); 
 // 
 // $tlCfg->results['default_status'] = "not_run"; 
 //

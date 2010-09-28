@@ -137,12 +137,22 @@ $tlCfg->reports_list['list_tc_norun'] = array(
 	'enabled' => 'all',
 	'format' => 'format_html,format_ods,format_xls,format_mail_html'
 );
+$tlCfg->reports_list['list_tc_in_progress'] = array(
+'title' => 'link_report_in_progress_tcs',
+'url' => 'lib/results/resultsByStatus.php?type=' . $tlCfg->results['status_code']['in_progress'],
+
+'enabled' => 'all',
+
+'format' => 'format_html,format_ods,format_xls,format_mail_html'
+);
+
 $tlCfg->reports_list['tcases_without_tester'] = array( 
 	'title' => 'link_report_tcases_without_tester',
 	'url' => 'lib/results/testCasesWithoutTester.php',
 	'enabled' => 'all',
 	'format' => 'format_html'
 );
+
 $tlCfg->reports_list['charts_basic'] = array( 
 	'title' => 'link_charts',
 	'url' => 'lib/results/charts.php',
