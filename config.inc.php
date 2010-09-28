@@ -325,17 +325,17 @@ $g_smtp_password    = '';  # password
  * 	'MD5' => use password stored on db
  *	'LDAP' => use password from LDAP Server
  */
-$tlCfg->authentication['method'] = 'MD5';
+$tlCfg->authentication['method'] = 'LDAP';
 
 /** LDAP authentication credentials */
 $tlCfg->authentication['ldap_server'] = 'corp.occamnetworks.com';
 $tlCfg->authentication['ldap_port'] = '389';
 $tlCfg->authentication['ldap_version'] = '3'; // could be '2' in some cases
-$tlCfg->authentication['ldap_root_dn'] = 'DC=corp,DC=occamnetworks,DC=COM';
-$tlCfg->authentication['ldap_organization']	= 'CORP';    // e.g. '(organizationname=*Traffic)'
+$tlCfg->authentication['ldap_root_dn'] = 'OU=OccamUsers,DC=corp,DC=occamnetworks,DC=COM';
+$tlCfg->authentication['ldap_organization']	= '';    // e.g. '(organizationname=*Traffic)'
 $tlCfg->authentication['ldap_uid_field'] = 'sAMAccountName'; // Use 'sAMAccountName' for Active Directory
-$tlCfg->authentication['ldap_bind_dn'] = ''; // Left empty for anonymous LDAP binding
-$tlCfg->authentication['ldap_bind_passwd'] = ''; // Left empty for anonymous LDAP binding
+$tlCfg->authentication['ldap_bind_dn'] = 'linuxldap@corp.occamnetworks.com'; // Left empty for anonymous LDAP binding
+$tlCfg->authentication['ldap_bind_passwd'] = 'L!nuxLD@P'; // Left empty for anonymous LDAP binding
 $tlCfg->authentication['ldap_tls'] = false; // true -> use tls
 
 /** Enable/disable Users to create accounts on login page */
