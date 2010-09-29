@@ -860,7 +860,7 @@ $g_repositoryCompressionType = TL_REPOSITORY_COMPRESSIONTYPE_NONE;
 $tlCfg->repository_max_filesize = 1; //MB
 
 // TRUE -> when you upload a file you can give no title
-$g_attachments->allow_empty_title = TRUE;
+$g_attachments->allow_empty_title = FALSE;
 
 // $g_attachments->allow_empty_title == TRUE, you can ask the system
 // to do something
