@@ -24,7 +24,7 @@ Purpose:
 		</tr>	
 	    {if $gui->cfields_exec neq ''}
 	  	<tr>
-	  	  	<td colspan="2">
+	  	  	<td colspan="3">
 	  	  		<div id="cfields_exec" class="custom_field_container" 
 	  	  			style="background-color:#dddddd;">{$gui->cfields_exec}
 	  	  		</div>

@@ -22,5 +22,12 @@ Purpose: smarty template - template for show execution notes
 		</div>
 	</form>
 </div>
+<div class="groupBtn1">
+                  <input type="hidden" name="doAction" value="doUpdate">
+                        <input type="submit" value="{lang_get s='btn_save'}"/>
+                        <input type="button" value="{lang_get s='btn_close'}" onclick="window.close()" />
+                </div>
+
+
 </body>
 </html>

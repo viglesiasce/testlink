@@ -122,6 +122,7 @@ progress();
 				<th>{$sortHintIcon}{$labels.th_status}</th>
 				<th>{$labels.th_notes}</th>
 				<th>{$labels.th_bugs}</th>
+				<th>Attachments</th>
 			</tr>
 	{/if}
 
@@ -218,6 +219,7 @@ progress();
 			    			<th>{$sortHintIcon}{$labels.th_status}</th>
 			    			<th>{$labels.th_notes}</th>
 			    			<th>{$labels.th_bugs}</th>
+						<th>Attachments</th>
 			    		</tr>
 			    		{/if}
 			    		{foreach key=executionInstance item=array from=$gui->suiteList[$suiteId]}
@@ -248,10 +250,16 @@ progress();
 								  {if $inst.status == $gui->resultsCfg.status_code.not_run}
 								  	<td>&nbsp;</td>
 								  	<td>&nbsp;</td>
+								  	<td style="text-align:center;">No&nbsp;</td>
 								  {else}
 								  	<td>{$inst.notes}&nbsp;</td>
 								  	<td style="text-align:center;">{$inst.bugString}&nbsp;</td>
-								  {/if}
+                                                                        {if $inst.has_attach == 1 }
+                                                                        <td style="text-align:center;">Yes&nbsp;</td>
+									{else}
+                                                                        <td style="text-align:center;">No&nbsp;</td>
+									{/if}
+                                                                  {/if}          
 							</tr>
 			    			{/if}
 

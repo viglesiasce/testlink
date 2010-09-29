@@ -565,8 +565,8 @@ $tlCfg->resultMatrixReport->buildColumns['latestBuildOnLeft'] = false;
  * Image is expected in directory <testlink_root>/gui/themes/<your_theme>/images/
  * Leave text values empty if you would like to hide parameters.
  */
-$tlCfg->document_generator->company_name = 'TestLink Community [configure $tlCfg->document_generator->company_name]';
-$tlCfg->document_generator->company_copyright = '2009 &copy; TestLink Community';
+$tlCfg->document_generator->company_name = 'Occam Networks';
+$tlCfg->document_generator->company_copyright = '2010 &copy; Occam Networks';
 $tlCfg->document_generator->confidential_msg = '';
 
 /** CSS used in printed html documents */
@@ -590,7 +590,7 @@ $tlCfg->exec_cfg->enable_test_automation = DISABLED;
 
 // 1 -> user can edit execution notes, on old executions (Attention: user must have test case execution right)
 // DISABLED -> no edit allowed [STANDARD BEHAVIOUR]
-$tlCfg->exec_cfg->edit_notes = DISABLED;
+$tlCfg->exec_cfg->edit_notes = 1;
 
 // ASCending   -> last execution at bottom
 // DESCending  -> last execution on top      [STANDARD BEHAVIOUR]
