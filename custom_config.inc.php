@@ -192,11 +192,11 @@ $tlCfg->exec_cfg->exec_mode->tester='assigned_to_me_or_free';
 
 $tlCfg->testcase_template->summary = new stdClass();
 $tlCfg->testcase_template->summary->type = 'file';
-$tlCfg->testcase_template->summary->value = '/var/www/html/testlink_test/testcase_template.txt';
+$tlCfg->testcase_template->summary->value = '/data/www/testlink/testcase_template.txt';
 
 $tlCfg->execution_template->notes = new stdClass();
 $tlCfg->execution_template->notes->type = 'file';
-$tlCfg->execution_template->notes->value = '/var/www/html/testlink_test/results_template.txt';
+$tlCfg->execution_template->notes->value = '/data/www/testlink/results_template.txt';
 
 
 ?>
