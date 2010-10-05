@@ -54,7 +54,7 @@ Ext.ux.IFrameComponent = Ext.extend(Ext.BoxComponent, {
      // layout to fit child component
      layout:'fit', 
      // add iframe as the child component
-     items: [ new Ext.ux.IFrameComponent({ id: 'iFrame2', url: 'https://10.2.32.20/testlink_test/lib/testcases/tcAssignedToUser.php' }) ]
+     items: [ new Ext.ux.IFrameComponent({ id: 'iFrame2', url: 'https://localhost/lib/testcases/tcAssignedToUser.php' }) ]
    }); 
 
    var tabs2 = new Ext.TabPanel({
