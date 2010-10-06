@@ -9,7 +9,7 @@ sub connect_to_snapshot {
 	my $port_num = "3306";
 	my $database = "DBI:mysql:$database_name:$location:$port_num";
 	my $db_user = "root";
-	my $db_pass = "joshgui12";
+	my $db_pass = "testlink";
 	my $dbh = DBI->connect($database,$db_user,$db_pass) or die $DBI::errstr;
 	return $dbh;
 	###############################################################
@@ -23,38 +23,12 @@ sub connect_to_testlink {
 	my $port_num = "3306";
 	my $database = "DBI:mysql:$database_name:$location:$port_num";
 	my $db_user = "root";
-	my $db_pass = "joshgui12";
+	my $db_pass = "testlink";
 	my $dbh = DBI->connect($database,$db_user,$db_pass) or die $DBI::errstr;
 	return $dbh;
 	###############################################################
 }
-sub connect_to_kingfisher {
-	my $database_name = "bugs";
-	my $location = "kingfisher";
-	my $port_num = "3306";
-	my $database = "DBI:mysql:$database_name:$location:$port_num";
-	my $db_user = "bugs";
-	my $db_pass = "bugs";
-	$dbh = DBI->connect($database,$db_user,$db_pass) or die $DBI::errstr;
-}
 
-sub zapus_config {
-	my %return;
-	$return{'dept'} = param("dept");
-	open (CONFIG, "<zapus.config");
-	while (<CONFIG>) {
-		next if /^#/ || /^$/;
-		chomp;
-		my ($var, $val) = split /\|/;
-		$return{$var} = $val;
-		if ($var =~ /cgi/) {
-			if ($return{'dept'} eq "sitest") {
-				$return{$var} .= "?dept=$return{'dept'}";
-			}
-		}
-	}
-	return \%return;
-}
 
 sub increment_counts {
 
@@ -107,63 +81,6 @@ sub sanitize_testplan {
 	return $foo;
 }        
 
-sub init_sort_array {
-# an array of the same name as the hash that gives readable values
-# for the ordering types
-my @sort_types;
-         $sort_types[0] = "blank for the zeroeth element";
-         $sort_types[1] = "Status, Testcase Author";
-         $sort_types[2] = "Status, Feature";
-         $sort_types[3] = "Testcase Author, Status";
-         $sort_types[4] = "Feature, Status";
-         $sort_types[5] = "Results ID desc";
-         $sort_types[6] = "Testcase ID";
-         $sort_types[7] = "Testcase Author, Testcase ID";
-         $sort_types[8] = "Testcase Author, Feature";
-         $sort_types[9] = "Feature, Testcase Author";
-         $sort_types[10] = "Test plan desc, Results ID desc";
-         $sort_types[11] = "Test plan desc, Feature";
-         $sort_types[12] = "Feature, Tester";
-         $sort_types[13] = "Tester, Feature";
-         $sort_types[14] = "Status, Tester";
-         $sort_types[15] = "Status, Results Id";
-         $sort_types[16] = "Testcase ID desc";
-         $sort_types[17] = "Testcase Author, Testcase ID desc";
-         $sort_types[18] = "Testcase Feature, Testcase ID";
-	 $sort_types[19] = "Assigned To, Status";
-	 $sort_types[20] = "Priority, Status";
-	 $sort_types[21] = "Reviewer, Testcase ID";
-	return @sort_types;
-}
-
-sub init_sort_hash {
-
-# a hash of different ways of ordering a result set
-	my %sort_types = ( 
-		   "1" => "results.status desc, testcases.author",
-                   "2" => "results.status desc, testcases.feature",
-                   "3" => "testcases.author, results.status desc",
-                   "4" => "testcases.feature, results.status desc",
-                   "5" => "results.results_id desc",
-                   "6" => "testcases.test_case_id",
-                   "7" => "testcases.author, testcases.test_case_id",
-                   "8" => "testcases.author, testcases.feature",
-                   "9" => "testcases.feature, testcases.author",
-                  "10" => "results.test_plan desc, results.results_id",
-                  "11" => "results.test_plan desc, testcases.feature",
-                  "12" => "testcases.feature, results.tester",
-                  "13" => "results.tester, testcases.feature",
-                  "14" => "results.status desc, results.tester",
-                  "15" => "results.status desc, results.results_id",
-                  "16" => "testcases.test_case_id desc",
-                  "17" => "testcases.author, testcases.test_case_id desc",
-                  "18" => "testcases.feature, testcases.test_case_id",
-		  "19" => "assignment.assigned_to, results.status desc",
-		  "20" => "priority.priority, results.status desc",
-		  "21" => "reviewer.reviewer, testcases.test_case_id"
-                );
-	return %sort_types; 
-}
 
 sub single_row_query {
 

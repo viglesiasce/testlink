@@ -9,7 +9,7 @@ use Data::Dumper;
 
 use vars qw/ $dbh /;
 
-do "snapshot_globals.pl";
+do "./snapshot_globals.pl";
  
 my $testlink = connect_to_testlink();
 my $snapshot = connect_to_snapshot();
