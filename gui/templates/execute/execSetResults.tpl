@@ -176,6 +176,60 @@ function checkSubmitForStatus($statusCode)
   }
   return true;
 }
+
+function loadData(URL, $ip_val, $tc_id)
+{
+// Create the XML request
+    xmlReq = null;
+    if(window.XMLHttpRequest) xmlReq = new XMLHttpRequest();
+    else if(window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
+    if(xmlReq==null) return; // Failed to create the request
+
+// Anonymous function to handle changed request states
+    xmlReq.onreadystatechange = function()
+    {
+        switch(xmlReq.readyState)
+        {
+        case 0: // Uninitialized
+            break;
+        case 1: // Loading
+            break;
+        case 2: // Loaded
+            break;
+        case 3: // Interactive
+            break;
+        case 4: // Done!
+        // Retrieve the data between the <quote> tags
+	    var ret_status =  xmlReq.responseXML.getElementsByTagName('status')[0].firstChild.data
+	    if(ret_status==1){
+	    document.getElementById('notes[' + $tc_id + ']').value += "Show Version:"  + xmlReq.responseXML.getElementsByTagName('version')[0].firstChild.data;
+            document.getElementById('notes[' + $tc_id + ']').value += "Running Config:"  + xmlReq.responseXML.getElementsByTagName('running_config')[0].firstChild.data;
+	    alert_message("Success", 'Data collection for ' + $ip_val + " complete.");
+	    }
+	    else{
+		alert_message("Failure", 'Data collection for ' + $ip_val + " failed.");
+	    }
+	     break;
+        default:
+            break;
+        }
+    }
+
+// Make the request
+    xmlReq.open ('GET', URL + $ip_val, true);
+    xmlReq.send (null);
+}
+
+function checkCollectForStatus($ip_val, $tc_id, $dut_type)
+{
+	
+	loadData('getInfo.cgi?ip=', $ip_val, $tc_id);
+	
+		
+	document.getElementById('notes[' + $tc_id + ']').value += ( $ip_val + ":\n" );
+	return false;
+}
+
 </script>
 {/literal}
 

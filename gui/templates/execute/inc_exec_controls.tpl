@@ -48,7 +48,11 @@ Rev:
     		 			            {$args_input_enable_mgmt}
                           onclick="document.getElementById('save_button_clicked').value={$args_tcversion_id};return checkSubmitForStatus('{$ResultsStatusCode.not_run}')"
     		 			            value="{$args_labels.btn_save_exec_and_movetonext}" />
-
+			<input type="text" name="collect_ip_{$args_tcversion_id}" id="collect_ip_{$args_tcversion_id}" size="16"  maxlength="25    5" value="">
+					      <input type="submit" name="save_and_collect[{$args_tcversion_id}]"
+						    {$args_input_enable_mgmt}
+			onclick="document.getElementById('save_button_clicked').value={$args_tcversion_id};return checkCollectForStatus(document.getElementById('collect_ip_{$args_tcversion_id}').value, {$args_tcversion_id})"
+						    value="Collect Info" />
     		 			  {else}
      	    	        <input type="submit" id="do_bulk_save" name="do_bulk_save"
       	    	             value="{$args_labels.btn_save_tc_exec_results}"/>
