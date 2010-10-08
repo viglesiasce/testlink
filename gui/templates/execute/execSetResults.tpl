@@ -177,7 +177,7 @@ function checkSubmitForStatus($statusCode)
   return true;
 }
 
-function loadData(URL, $ip_val, $tc_id)
+function loadData(URL, $ip_val, $tc_id, $command)
 {
 // Create the XML request
     xmlReq = null;
@@ -202,8 +202,7 @@ function loadData(URL, $ip_val, $tc_id)
         // Retrieve the data between the <quote> tags
 	    var ret_status =  xmlReq.responseXML.getElementsByTagName('status')[0].firstChild.data
 	    if(ret_status==1){
-	    document.getElementById('notes[' + $tc_id + ']').value += "Show Version:"  + xmlReq.responseXML.getElementsByTagName('version')[0].firstChild.data;
-            document.getElementById('notes[' + $tc_id + ']').value += "Running Config:"  + xmlReq.responseXML.getElementsByTagName('running_config')[0].firstChild.data;
+	    document.getElementById('notes[' + $tc_id + ']').value +=  "IP: " + $ip_val + " "  + $command + ": "  + xmlReq.responseXML.getElementsByTagName('result')[0].firstChild.data;
 	    alert_message("Success", 'Data collection for ' + $ip_val + " complete.");
 	    }
 	    else{
@@ -216,17 +215,17 @@ function loadData(URL, $ip_val, $tc_id)
     }
 
 // Make the request
-    xmlReq.open ('GET', URL + $ip_val, true);
+    var complete_URL = URL + "?ip=" + $ip_val + "&command=" + $command;
+    xmlReq.open ('GET', complete_URL, true);
     xmlReq.send (null);
 }
 
-function checkCollectForStatus($ip_val, $tc_id, $dut_type)
+function checkCollectForStatus($ip_val, $tc_id, $command)
 {
 	
-	loadData('getInfo.cgi?ip=', $ip_val, $tc_id);
+	loadData('getInfo.cgi', $ip_val, $tc_id, $command);
 	
 		
-	document.getElementById('notes[' + $tc_id + ']').value += ( $ip_val + ":\n" );
 	return false;
 }
 

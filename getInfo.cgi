@@ -24,14 +24,13 @@ for (param()) {
 }
 
 my $ip = $PARAMS->{"ip"};
-
-my %blade_info = get_blade_info($ip);
+my $cmd = $PARAMS->{"command"};
+my %blade_info = get_blade_info($ip, $cmd);
 
 print "Content-type: text/xml\n\n";
 print "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n\n";
 print "<dut_info>\n";
-print "<version id=\"version\">\n". $blade_info{'version'} . "\n</version>\n";
-print "<running_config id=\"runninc_config\">\n". $blade_info{'running_config'} . "\n</running_config>\n";
+print "<result id=\"result\">\n". $blade_info{'result'} . "\n</result>\n";
 print "<status id=\"status\">" . $blade_info{'status'} . "</status>\n";
 print "</dut_info>\n";
 sub get_blade_info(){
@@ -49,26 +48,20 @@ sub get_blade_info(){
         $telnet->waitfor('/\#/i');
         $telnet->prompt('/\#/i');
 	$telnet->cmd('terminal length 0');
-        my @version = $telnet->cmd('show version');
-	my @run_conf = $telnet->cmd('show running-config');
+        my @result = $telnet->cmd($cmd);
 	$telnet->cmd('no terminal length');
-	my $version_string;
-	my $running_config;
+	my $result_string;
 	my $line_count= 0;
-	for my $line (@version){
-		next if($line_count eq $#version);
-		$version_string .= $line;
+	for my $line (@result){
+		next if($line_count eq $#result);
+		$result_string .= $line;
 		$line_count += 1;
 	}
-	for my $line (@run_conf){
-                $running_config .= $line;
-        }
    	
-	$version_string =~ s/^\W//;
+	$result_string =~ s/^\W//;
 	
-	$hash_return{'version'} = $version_string;
-	$hash_return{'running_config'} = $running_config;
-	if ($ok and $#version > 1 ){
+	$hash_return{'result'} = $result_string;
+	if ($ok and $#result > 1 ){
 		$hash_return{'status'}= 1;
 	}
 	else{
