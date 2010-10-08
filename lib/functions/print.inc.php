@@ -794,7 +794,7 @@ function renderTestCaseForPrinting(&$db, &$node, &$printingOptions, $level, $tpl
 	if ($bGetExecutions)
 	{
 		$sql =  " SELECT E.id AS execution_id, E.status, E.execution_ts, E.tester_id," .
-		        " E.notes, E.build_id, E.tcversion_id,E.tcversion_number,E.testplan_id," .
+		        " E.notes, E.build_id, E.tcversion_id,E.tcversion_number,E.testplan_id,E.has_attach," .
 		        " B.name AS build_name " .
 		        " FROM {$tables['executions']} E, {$tables['builds']} B" .
 		        " WHERE E.build_id= B.id " . 
@@ -1232,10 +1232,15 @@ function buildTestExecResults(&$dbHandler,$cfg,$labels,$exec_info)
 	$testStatus = $cfg['status_labels'][$exec_info[0]['status']];
 	$testerName = gendocGetUserName($dbHandler, $exec_info[0]['tester_id']);
 	$executionNotes = $exec_info[0]['notes'];
-	    
+	if( $exec_info[0]['has_attach'] == 1){
+	$has_attach = "Yes";
+	}
+	else{
+	$has_attach = "No";
+	}
 	$out .= '<tr><td width="20%" valign="top">' .
 			'<span class="label">' . $labels['last_exec_result'] . ':</span></td>' .
-			'<td><b>' . $testStatus . "</b></td></tr>\n" .
+			'<td><b>' . $testStatus . "</b> Attachments:" . $has_attach  .  "</td></tr>\n" .
     		'<tr><td width="' . $cfg['firstColWidth'] . '" valign="top">' . $labels['build'] .'</td>' . 
     		'<td>' . htmlspecialchars($exec_info[0]['build_name']) . "</b></td></tr>\n" .
     		'<tr><td width="' . $cfg['firstColWidth'] . '" valign="top">' . $labels['tester'] .'</td>' . 
