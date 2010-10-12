@@ -176,7 +176,23 @@ function checkSubmitForStatus($statusCode)
   }
   return true;
 }
+function disableEnterKey(e)
+{
+     var key;
 
+     if(window.event)
+          key = window.event.keyCode;     //IE
+     else
+          key = e.which;     //firefox
+
+     if(key == 13)
+          return false;
+     else
+          return true;
+}
+function noenter() {
+  return !(window.event && window.event.keyCode == 13); 
+}
 function loadData(URL, $ip_val, $tc_id, $command)
 {
 // Create the XML request
