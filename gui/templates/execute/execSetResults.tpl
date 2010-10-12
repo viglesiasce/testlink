@@ -202,7 +202,8 @@ function loadData(URL, $ip_val, $tc_id, $command)
         // Retrieve the data between the <quote> tags
 	    var ret_status =  xmlReq.responseXML.getElementsByTagName('status')[0].firstChild.data
 	    if(ret_status==1){
-	    document.getElementById('notes[' + $tc_id + ']').value +=  "IP: " + $ip_val + " "  + $command + ": "  + xmlReq.responseXML.getElementsByTagName('result')[0].firstChild.data;
+	    var hashes = "\n#############################################################################\n";
+	    document.getElementById('notes[' + $tc_id + ']').value += hashes + "IP: " + $ip_val + " "  + $command + hashes  + xmlReq.responseXML.getElementsByTagName('result')[0].firstChild.data + hashes;
 	    alert_message("Success", 'Data collection for ' + $ip_val + " complete.");
 	    }
 	    else{
