@@ -29,6 +29,17 @@ sub connect_to_testlink {
 	###############################################################
 }
 
+sub connect_to_ozilla {
+	my $database_name = "bugs";
+        my $location = "tux";
+        my $port_num = "3306";
+        my $database = "DBI:mysql:$database_name:$location:$port_num";
+        my $db_user = "nobody";
+        my $dbh = DBI->connect($database,$db_user) or die $DBI::errstr;
+        return $dbh;
+
+}
+
 
 sub increment_counts {
 
