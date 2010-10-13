@@ -48,20 +48,17 @@ sub get_blade_info(){
         $telnet->waitfor('/\#/i');
         $telnet->prompt('/\#/i');
 	$telnet->cmd('terminal length 0');
-        my @result = $telnet->cmd($cmd);
+        
+	$telnet->print($cmd);
+	my ($result_string) = $telnet->waitfor('/\#\s*?$/');
 	$telnet->cmd('no terminal length');
-	my $result_string;
-	my $line_count= 0;
-	for my $line (@result){
-		next if($line_count eq $#result);
-		$result_string .= $line;
-		$line_count += 1;
-	}
-   	
-	$result_string =~ s/^\W//;
+  
+	$result_string =~ s/\001/ /g; 
+	$result_string =~ s/\020/ /g;
+	
 	
 	$hash_return{'result'} = $result_string;
-	if ($ok and $#result > 1 ){
+	if ($ok and $result_string ){
 		$hash_return{'status'}= 1;
 	}
 	else{
