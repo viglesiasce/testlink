@@ -239,7 +239,7 @@
 				{html_options options=$control->filters.filter_assigned_user.items
 				              selected=$control->filters.filter_assigned_user.selected}
 				</select>
-		    {else}
+		    	{else}
 				<select name="filter_assigned_user" 
 				        id="filter_assigned_user"
 				        onchange="javascript: triggerAssignedBox('filter_assigned_user',
@@ -261,7 +261,7 @@
 	  		           		checked="checked"
 	  		           {/if}
 	  		    />
-				{$labels.include_unassigned_testcases}
+				{$labels.include_unassigned_testcases} At least in the right spot might need to go to 
 			{/if}
 
  			</td>

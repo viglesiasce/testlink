@@ -77,13 +77,13 @@
 // $tlCfg->gui->text_editor['all'] = array( 'type' => 'none');
 //
 // Suggested for BETTER Performance with lot of testcases
-//$tlCfg->gui->text_editor['execution'] = array( 'type' => 'none');
+ $tlCfg->gui->text_editor['execution'] = array( 'type' => 'none');
 //
 // Enable and configure this if you want to have different
 // webeditor type in different TL areas
 // You can not define new areas without making changes to php code
 //
-// $tlCfg->gui->text_editor['execution'] = array( 'type' => 'none');  // BETTER Performance with lot of testcases
+// $tlCfg->gui->text_editor['execution'] = array( 'type' => 'none', 'rows'=> 40, 'cols'=> 100);  // BETTER Performance with lot of testcases
 // 
 // This configuration is useful only if default type is set to 'fckeditor'
 // $tlCfg->gui->text_editor['design'] = array('toolbar' => 'tl_mini');
