@@ -261,7 +261,7 @@
 	  		           		checked="checked"
 	  		           {/if}
 	  		    />
-				{$labels.include_unassigned_testcases} At least in the right spot might need to go to 
+				{$labels.include_unassigned_testcases} 
 			{/if}
 
  			</td>
