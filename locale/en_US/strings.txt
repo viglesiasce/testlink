@@ -1463,8 +1463,8 @@ $TLS_user_bulk_assignment = "Bulk user assignment";
 // ----- tc_exec_assignment.php -----
 $TLS_mail_subject_testcase_assigned='Test Link - Test Case Assignment - Test Plan';
 $TLS_mail_subject_testcase_assignment_removed='Test Link - Test Case Assignment REMOVED - Test Plan';
-$TLS_mail_testcase_assigned = "Following Test Cases has been assigned to you %s by %s <br /><br />";
-$TLS_mail_testcase_assignment_removed = "%s - Your following Test Cases assigments AS BEEN REMOVED  by %s <br /><br />";
+$TLS_mail_testcase_assigned = "Following Test Cases have been assigned to you %s by %s <br /><br />";
+$TLS_mail_testcase_assignment_removed = "%s - Your following Test Cases assigments have been REMOVED  by %s <br /><br />";
 $TLS_send_mail_to_tester="Send mail notification to tester";
 
 

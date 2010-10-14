@@ -306,7 +306,7 @@ $g_return_path_email  = '[return_path_email_not_configured]';
  * Email notification priority (low by default)
  * Urgent = 1, Not Urgent = 5, Disable = 0
  **/
-$g_mail_priority = 5;
+$g_mail_priority = 0;
 
 # Taken from mantis for phpmailer config
 define ("SMTP_SEND",2);
