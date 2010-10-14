@@ -21,7 +21,7 @@
 /* [GLOBAL SETTINGS] */
 
 /** TestLink Release version (MUST BE changed before the release day) */
-define('TL_VERSION', '1.9 (Beta 6 - Development)'); 
+define('TL_VERSION', '1.9'); 
 
 // needed to avoid problems in install scripts that do not include config.inc.php
 // want to point to root install dir, need to remove fixed part
