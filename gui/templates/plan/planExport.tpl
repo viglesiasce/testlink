@@ -1,10 +1,12 @@
 {* 
 TestLink Open Source Project - http://testlink.sourceforge.net/ 
-$Id: planExport.tpl,v 1.1 2010/05/09 15:50:02 franciscom Exp $ 
+$Id: planExport.tpl,v 1.5 2010/10/09 08:55:11 franciscom Exp $ 
 
 test plan export
 
 Revisions:
+20101009 - franciscom - BUGID 3270 - improvements to avoid event viewer warnings
+20101007 - franciscom - BUGID 3270 - Export Test Plan in XML Format
 
 *}
 {lang_get var="labels" 
@@ -41,9 +43,11 @@ function validateForm(f)
 
 {if $gui->do_it eq 1}
   <form method="post" id="export_xml" enctype="multipart/form-data" 
-        action="lib/testcases/tcExport.php"
+        action="lib/plan/planExport.php"
         onSubmit="javascript:return validateForm(this);">
-  
+    <input type="hidden" name="tplan_id" id="tplan_id" value="{$gui->tplan_id}">
+    <input type="hidden" name="platform_id" id="platform_id" value="{$gui->platform_id}">
+    <input type="hidden" name="exportContent" id="exportContent" value="{$gui->exportContent}">
     <table>
     <tr>
     <td>
@@ -63,26 +67,9 @@ function validateForm(f)
 	  <a href={$basehref}{$smarty.const.PARTIAL_URL_TL_FILE_FORMATS_DOCUMENT}>{lang_get s="view_file_format_doc"}</a>
   	</td>
   	</tr>
-    <tr>
-    <td>{$labels.title_req_export}</td>
-    <td><input type="checkbox" name="exportReqs" value="1" checked /></td>
-    </tr>  	
-    <tr>
-    <td>{$labels.export_cfields}</td>
-    <td><input type="checkbox" name="exportCFields" value="1" checked /></td>
-    </tr>
-    <tr>
-    <td>{$labels.export_with_keywords}</td>
-    <td><input type="checkbox" name="exportKeywords" value="0" /></td>
-    </tr>
-
   	</table>
   	
   	<div class="groupBtn">
-  		<input type="hidden" name="testcase_id" value="{$gui->tcID}" />
-  		<input type="hidden" name="tcversion_id" value="{$gui->tcVersionID}" />
-  		<input type="hidden" name="containerID" value="{$gui->containerID}" />
-  		<input type="hidden" name="useRecursion" value="{$gui->useRecursion}" />
   		<input type="submit" name="export" value="{$labels.btn_export}" />
   		<input type="button" name="cancel" value="{$labels.btn_cancel}"
     		     {if $gui->goback_url != ''}  onclick="location='{$gui->goback_url}'"

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:25:40
+<?php /* Smarty version 2.6.26, created on 2010-10-14 16:20:29
          compiled from usermanagement/rolesView.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'usermanagement/rolesView.tpl', 17, false),array('function', 'config_load', 'usermanagement/rolesView.tpl', 23, false),array('modifier', 'replace', 'usermanagement/rolesView.tpl', 22, false),array('modifier', 'escape', 'usermanagement/rolesView.tpl', 52, false),array('modifier', 'strip_tags', 'usermanagement/rolesView.tpl', 95, false),array('modifier', 'strip', 'usermanagement/rolesView.tpl', 95, false),)), $this); ?>

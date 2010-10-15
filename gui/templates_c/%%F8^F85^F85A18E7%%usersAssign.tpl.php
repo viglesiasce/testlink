@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:26:05
+<?php /* Smarty version 2.6.26, created on 2010-10-14 16:20:25
          compiled from usermanagement/usersAssign.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'usermanagement/usersAssign.tpl', 17, false),array('function', 'cycle', 'usermanagement/usersAssign.tpl', 136, false),array('modifier', 'escape', 'usermanagement/usersAssign.tpl', 87, false),)), $this); ?>

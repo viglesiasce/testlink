@@ -137,3 +137,38 @@
 	[10/Sep/30 17:07:58][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
 		string 'goto_testspec' is not localized for locale 'en_US'
 [<<][4ca4c3ee2710a906336606][DEFAULT][/lib/testcases/tcAssignedToUser.php][10/Sep/30 17:07:58][10/Sep/30 17:07:58][took 0.102289 secs]
+[<<][4caf51371cf69549841269][DEFAULT][/lib/testcases/tcAssignedToUser.php][10/Oct/8 17:13:27][10/Oct/8 17:13:27][took 0.262685 secs]
+[>>][4caf51376121d950927385][DEFAULT][/lib/testcases/tcAssignedToUser.php][10/Oct/8 17:13:27]
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'tcversion_indicator' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'goto_testspec' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'assigned_tc_overview' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'platform' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'due_since' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'show_hide_direct_link' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'expand_collapse_groups' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'show_all_columns' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'show_all_columns_tooltip' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'default_state' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'multisort' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'multisort_tooltip' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'multisort_button_tooltip' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'due_since' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'platform' is not localized for locale 'en_US'
+	[10/Oct/8 17:13:27][WARNING][6qs87fs1uqpdi4b2mlbaldq922][GUI]
+		string 'goto_testspec' is not localized for locale 'en_US'
+[<<][4caf51376121d950927385][DEFAULT][/lib/testcases/tcAssignedToUser.php][10/Oct/8 17:13:27][10/Oct/8 17:13:27][took 0.354621 secs]

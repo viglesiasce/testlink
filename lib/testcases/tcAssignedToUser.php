@@ -3,11 +3,16 @@
  * TestLink Open Source Project - http://testlink.sourceforge.net/
  *
  * @filesource $RCSfile: tcAssignedToUser.php,v $
- * @version $Revision: 1.14 $
- * @modified $Date: 2010/08/26 07:27:48 $  $Author: mx-julian $
+ * @version $Revision: 1.24 $
+ * @modified $Date: 2010/10/04 15:03:18 $  $Author: asimon83 $
  * @author Francisco Mancardi - francisco.mancardi@gmail.com
  * 
  * @internal revisions:
+ *  20101004 - asimon - BUGID 3824: added checkbox do display closed builds
+ *  20100927 - asimon - added mouseover information for the exec and edit icons
+ *  20100922 - asimon - removed testcase link, replaced by linked icons for editing and execution
+ *  20100922 - Julian - BUGID 3714 - refactored default grouping and sorting
+ *  20100906 - asimon -  BUGID 3749
  *  20100826 - Julian - removed redundant version indication
  *  20100825 - Julian - make table collapsible if more than 1 table is shown
  *  20100825 - eloff - BUGID 3711 - Hide platform if not used
@@ -45,11 +50,16 @@ $gui->glueChar = config_get('testcase_cfg')->glue_character;
 $gui->tproject_name = $tproject_info['name'];
 $gui->warning_msg = '';
 $gui->tableSet = null;
+$gui->show_closed_builds = $args->show_closed_builds;
+
+$exec_img = TL_THEME_IMG_DIR . "exec_icon.png";
+$edit_img = TL_THEME_IMG_DIR . "edit_icon.png";
 
 $tplan_mgr = new testplan($db);
 
 $l18n = init_labels(array('tcversion_indicator' => null,'goto_testspec' => null, 'version' => null, 
-						  'testplan' => null, 'assigned_tc_overview' => null,'testcases_assigned_to_user' => null));
+						  'testplan' => null, 'assigned_tc_overview' => null,'testcases_assigned_to_user' => null,
+                           'design' => null, 'execution' => null));
 
 if ($args->show_all_users) {
 	$gui->pageTitle=sprintf($l18n['assigned_tc_overview'], $gui->tproject_name);
@@ -79,21 +89,37 @@ $options->mode = 'full_path';
 $filters = array();
 
 // if opened by click on username from page "results by user per build", show all testplans
-if (!$args->show_inactive_and_closed) {
-	//BUGID 3575: show only assigned test cases for ACTIVE test plans
-	$filters['tplan_status'] = 'active';
+//if (!$args->show_inactive_and_closed) {
+//	//BUGID 3575: show only assigned test cases for ACTIVE test plans
+//	$filters['tplan_status'] = 'active';
+//	// BUGID 3749
+//	$filters['build_status'] = 'open';
+//}
+
+$filters['tplan_status'] = 'active';
+
+if ($args->show_closed_builds) {
+	$filters['build_status'] = 'all';
+} else {
+	$filters['build_status'] = 'open';
 }
+
+
 
 // BUGID 3647
 if ($args->build_id) {
 	$filters['build_id'] = $args->build_id;
+	
+	// if build_id is set, show assignments regardless of build and tplan status
+	$filters['build_status'] = 'all';
+	$filters['tplan_status'] = 'all';
 }
 
 $tplan_param = ($args->tplan_id) ? array($args->tplan_id) : testcase::ALL_TESTPLANS;
-$gui->resultSet=$tcase_mgr->get_assigned_to_user($args->user_id, $args->tproject_id, 
+$gui->resultSet=$tcase_mgr->get_assigned_to_user($args->user_id, $args->tproject_id,
                                                  $tplan_param, $options, $filters);
 
-$doIt = !is_null($gui->resultSet); 
+$doIt = !is_null($gui->resultSet);
 if( $doIt )
 {	
 	$tables = tlObjectWithDB::getDBTables(array('nodes_hierarchy'));
@@ -123,13 +149,26 @@ if( $doIt )
 		
 				$current_row[] = htmlspecialchars($tcase['build_name']);
 				$current_row[] = htmlspecialchars($tcase['tcase_full_path']);
-				
-				$current_row[] = "<a href=\"lib/testcases/archiveData.php?edit=testcase&id={$tcase_id}\" " . 
-				        		 " title=\"{$l18n['goto_testspec']}\">" .
-				        		 htmlspecialchars($tcase['prefix']) . $gui->glueChar . $tcase['tc_external_id'] . 
-				        		 ":" . htmlspecialchars($tcase['name']) . 
-				        		 sprintf($l18n['tcversion_indicator'],$tcase['version']) 
-				        		  . "</a>";
+
+				// create linked icons
+				$exec_link = "<a href=\"javascript:openExecutionWindow(" .
+				             "{$tcase_id},{$tcversion_id},{$tcase['build_id']}," .
+				             "{$tcase['testplan_id']},{$tcase['platform_id']});\">" .
+						     "<img title=\"{$l18n['execution']}\" src=\"{$exec_img}\" /></a> ";
+
+				$edit_link = "<a href=\"javascript:openTCEditWindow({$tcase_id});\">" .
+				             "<img title=\"{$l18n['design']}\" src=\"{$edit_img}\" /></a> ";
+
+				$current_row[] = $exec_link . $edit_link . htmlspecialchars($tcase['prefix']) . $gui->glueChar . $tcase['tc_external_id'] .
+				        		 ":" . htmlspecialchars($tcase['name']) .
+				        		 sprintf($l18n['tcversion_indicator'],$tcase['version']);
+
+//				$current_row[] = $link . " <a href=\"lib/testcases/archiveData.php?edit=testcase&id={$tcase_id}\" " .
+//				        		 " title=\"{$l18n['goto_testspec']}\">" .
+//				        		 htmlspecialchars($tcase['prefix']) . $gui->glueChar . $tcase['tc_external_id'] .
+//				        		 ":" . htmlspecialchars($tcase['name']) .
+//				        		 sprintf($l18n['tcversion_indicator'],$tcase['version'])
+//				        		  . "</a>";
 
 				if ($show_platforms)
 				{
@@ -138,11 +177,11 @@ if( $doIt )
 				
 				if ($args->priority_enabled) {
 					if ($tcase['priority'] >= $urgencyImportance->threshold['high']) {
-						$current_row[] = $priority['high'];
+						$current_row[] = "<!-- " . $tcase['priority'] . " -->" . $priority['high'];
 					} else if ($tcase['priority'] < $urgencyImportance->threshold['low']) {
-						$current_row[] = $priority['low'];
+						$current_row[] = "<!-- " . $tcase['priority'] . " -->" . $priority['low'];
 					} else {
-						$current_row[] = $priority['medium'];
+						$current_row[] = "<!-- " . $tcase['priority'] . " -->" . $priority['medium'];
 					}
 				}
 				
@@ -164,15 +203,12 @@ if( $doIt )
 			}
 		}
 		
-		$table_id = 'tl_' . $args->tproject_id . '_' . $tplan_id . '_table_tc_assignment';
-		$table_id .= ($args->show_all_users) ? '_overview' : '_for_user';
-		$table_id .= ($args->build_id) ? '_window' : '';
-
-		$matrix = new tlExtTable($columns, $rows, $table_id);
+		// tplan_id has to be part of table id as a single table for each tplan is created
+		$matrix = new tlExtTable($columns, $rows, "tl_table_tc_assigned_to_user_for_tplan_".$tplan_id);
 		$matrix->title = $l18n['testplan'] . ": " . htmlspecialchars($gui->tplanNames[$tplan_id]['name']);
 		
 		// default grouping by first column, which is user for overview, build otherwise
-		$matrix->groupByColumn = 0;
+		$matrix->setGroupByColumnName($columns[0]['title']);
 		
 		// make table collapsible if more than 1 table is shown and surround by frame
 		if (count($tplanSet) > 1) {
@@ -184,7 +220,9 @@ if( $doIt )
 		$matrix->showToolbar = true;
 		$matrix->toolbarExpandCollapseGroupsButton = true;
 		$matrix->toolbarShowAllColumnsButton = true;
-		$matrix->sortByColumn = $sortByColumn;
+		
+		$matrix->setSortByColumnName($sortByColumn);
+		$matrix->sortDirection = 'DESC';
 		$gui->tableSet[$tplan_id] = $matrix;
 	}
 }
@@ -251,7 +289,19 @@ function init_args()
         $args->user_name = $_SESSION['currentUser']->login;
     }	
 
-
+	// BUGID 3824
+    $show_closed_builds = isset($_REQUEST['show_closed_builds']) ? true : false;
+	$show_closed_builds_hidden = isset($_REQUEST['show_closed_builds_hidden']) ? true : false;
+	if ($show_closed_builds) {
+		$selection = true;
+	} else if ($show_closed_builds_hidden) {
+		$selection = false;
+	} else if (isset($_SESSION['show_closed_builds'])) {
+		$selection = $_SESSION['show_closed_builds'];
+	} else {
+		$selection = false;
+	}
+	$args->show_closed_builds = $_SESSION['show_closed_builds'] = $selection;
 
 	if ($args->show_all_users) {
 		$args->user_id = TL_USER_ANYBODY;
@@ -283,10 +333,15 @@ function getColumnsDefinition($optionalColumns, $show_platforms)
 	}
 
 	$colDef = array();
-	$sortByColNum = 1;
+	// sort by test suite per default
+	$sortByCol = $labels['testsuite'];
+	
+	// user column is only shown for assignment overview
 	if ($optionalColumns['user']) 
 	{
 		$colDef[] = array('title' => $labels['user'], 'width' => 80);
+		// for assignment overview sort by build
+		$sortByCol = $labels['build'];
 	}
 	
 	$colDef[] = array('title' => $labels['build'], 'width' => 80);
@@ -300,14 +355,13 @@ function getColumnsDefinition($optionalColumns, $show_platforms)
 	// 20100816 - asimon - if priority is enabled, enable default sorting by that column
 	if ($optionalColumns['priority']) 
 	{
-	  	// if priority is enabled, enable default sorting by that column
-	  	$sortByColNum = count($colDef);
+	  	$sortByCol = $labels['priority'];
 		$colDef[] = array('title' => $labels['priority'], 'width' => 50);
 	}
 	
 	$colDef[] = array('title' => $labels['status'], 'width' => 50);
 	$colDef[] = array('title' => $labels['due_since'], 'width' => 100);
 
-	return array($colDef, $sortByColNum);
+	return array($colDef, $sortByCol);
 }
 ?>

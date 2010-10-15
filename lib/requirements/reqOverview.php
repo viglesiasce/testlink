@@ -8,13 +8,15 @@
  * @package TestLink
  * @author Andreas Simon
  * @copyright 2010, TestLink community
- * @version CVS: $Id: reqOverview.php,v 1.29 2010/08/26 07:27:48 mx-julian Exp $
+ * @version CVS: $Id: reqOverview.php,v 1.34 2010/09/21 20:53:59 mx-julian Exp $
  *
  * List requirements with (or without) Custom Field Data in an ExtJS Table.
  * See BUGID 3227 for a more detailed description of this feature.
  * 
  * rev:
- * 
+ *
+ * 20100921 - asimon - added datetime formatting and calendar week for date custom fields
+ * 20100908 - Julian - BUGID 2877 -  Custom Fields linked to Req versions
  * 20100823 - Julian - table now uses a unique table id per test project
  * 20100822 - asimon - removal of magic numbers for default table sorting
  * 20100821 - asimon - replaced "show all versions" button by checkbox as requested per e-mail
@@ -51,7 +53,9 @@ $gui = init_gui($args);
 $glue_char = config_get('gui_title_separator_1');
 $charset = config_get('charset');
 $req_cfg = config_get('req_cfg');
-
+$date_format_cfg = config_get('date_format');
+$week_short = lang_get('calendar_week_short');
+$time_format_cfg = config_get('timestamp_format');
 $coverage_enabled = $req_cfg->expected_coverage_management;
 $relations_enabled = $req_cfg->relations->enable;
 
@@ -84,9 +88,6 @@ if(count($gui->reqIDs) > 0) {
 
 		// coverage data
 		$tc_coverage = count($req_mgr->get_coverage($id));
-		
-		// BUGID 3254:
-		$linked_cfields = (array)$req_mgr->get_linked_cfields($id);
 
 		// number of relations, if feature is enabled
 		if ($relations_enabled) {
@@ -160,9 +161,24 @@ if(count($gui->reqIDs) > 0) {
 				$result[] = $relations;
 			}
 			
-			// get custom field values for this req
+			
+			// BUGID 2877 -  Custom Fields linked to Req versions
+			// get custom field values for this req version
+			$linked_cfields = (array)$req_mgr->get_linked_cfields($id,$version['version_id']);
+
 			foreach ($linked_cfields as $cf) {
-	    		$result[] = preg_replace('!\s+!', ' ', htmlspecialchars($cf['value'], ENT_QUOTES, $charset));
+				$verbose_type = trim($req_mgr->cfield_mgr->custom_field_types[$cf['type']]);
+				$value = preg_replace('!\s+!', ' ', htmlspecialchars($cf['value'], ENT_QUOTES, $charset));
+
+				// 20100921 - asimon - added datetime formatting and calendar week for date custom fields
+				if ($verbose_type == 'date' && is_numeric($value) && $value != 0) {
+					$value = strftime("$date_format_cfg ($week_short %W)", $value);
+				}
+				if ($verbose_type == 'datetime' && is_numeric($value) && $value != 0) {
+					$value = strftime("$time_format_cfg ($week_short %W)", $value);
+				}
+
+				$result[] = $value;
 	    	}
 	    	
 	    	$rows[] = $result;
@@ -194,28 +210,26 @@ if(count($gui->reqIDs) > 0) {
         $columns = array();
         $columns[] = array('title' => $labels['req_spec_short'], 'width' => 200);
         $columns[] = array('title' => $labels['title'], 'width' => 150);
-        $columns[] = array('title' => $labels['version'], 'width' => 50);
-        $columns[] = array('title' => $labels['frozen'], 'width' => 50);
+        $columns[] = array('title' => $labels['version'], 'width' => 40);
+        $columns[] = array('title' => $labels['frozen'], 'width' => 40);
         
         if ($coverage_enabled) {
-	    	$columns[] = $labels['th_coverage'];
+	    	$columns[] = array('title' => $labels['th_coverage'], 'width' => 80);
 	    }
 	            
-        $columns[] = $labels['type'];
-        $columns[] = $labels['status'];
+        $columns[] = array('title' => $labels['type'], 'width' => 60);
+        $columns[] = array('title' => $labels['status'], 'width' => 60);
 	    
 		if ($relations_enabled) {
-	    	$columns[] = $labels['th_relations'];
+	    	$columns[] = array('title' => $labels['th_relations'], 'width' => 50);
 	    }
         
 	    foreach($gui->cfields4req as $cf) {
 	    	$columns[] = array('title' => htmlentities($cf['label'], ENT_QUOTES, $charset), 'type' => 'text');
 	    }
 
-	    // create unique tableid for each project (columns can differ between projects)
-	    $table_id = 'tl_'.$args->tproject_id.'_table_req_overview';
 	    // create table object, fill it with columns and row data and give it a title
-	    $matrix = new tlExtTable($columns, $rows, $table_id);
+	    $matrix = new tlExtTable($columns, $rows, 'tl_table_req_overview');
         $matrix->title = $labels['requirements'];
         
         // 20100822 - asimon - removal of magic numbers

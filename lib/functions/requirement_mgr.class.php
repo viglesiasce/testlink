@@ -5,14 +5,33 @@
  *
  * Filename $RCSfile: requirement_mgr.class.php,v $
  *
- * @version $Revision: 1.85 $
- * @modified $Date: 2010/06/24 17:25:53 $ by $Author: asimon83 $
+ * @version $Revision: 1.107 $
+ * @modified $Date: 2010/10/04 20:13:32 $ by $Author: franciscom $
  * @author Francisco Mancardi
  *
  * Manager for requirements.
  * Requirements are children of a requirement specification (requirements container)
  *
  * rev:
+ *	20101003 - franciscom - BUGID 3834: Create version source <>1 - Bad content used.
+ *							create_new_version() interface changed
+ *
+ *  20101001 - asimon - extended html_table_of_custom_field_inputs()
+ *                      to not lose entered custom field values on errors
+ *  20100920 - franciscom - 3686: When importing requirements, provide the option to 'create new version'
+ *  20100915 - Julian - BUGID 3777 - Added get_last_doc_id_for_testproject()
+ *	20100914 - franciscom - createFromMap() - added new option 'skipFrozenReq'
+ *  20100908 - franciscom - BUGID 2877 - Custom Fields linked to Requirement Versions
+ *							createFromXML(),copy_to()
+ *							new method createFromMap()
+ *
+ *  20100907 - franciscom - BUGID 2877 - Custom Fields linked to Requirement Versions
+ *							delete(),exportReqToXML()
+ *
+ *	20100906 - franciscom - BUGID 2877 - Custom Fields linked to Requirement Versions
+ *							create(), html_table_of_custom_field_inputs(),copy_version()
+ *
+ *	20100904 - franciscom - BUGID 3685: XML Requirements Import Updates Frozen Requirement
  *	20100520 - franciscom - BUGID 2169 - customFieldValuesAsXML() new method_exists
  *	20100511 - franciscom - createFromXML() new method
  *	20100509 - franciscom - update() interface changes.
@@ -333,6 +352,9 @@ function create($srs_id,$reqdoc_id,$title, $scope, $user_id,
 			$op = $this->create_version($result['id'],$version_number,$scope,$user_id,
 			                            $status,$type,intval($expected_coverage));
 			$result['msg'] = $op['status_ok'] ? $result['msg'] : $op['msg'];
+
+			// BUGID 2877 - Custom Fields linked to Requirement Versions
+			$result['version_id'] = $op['status_ok'] ? $op['id'] : -1;
 		}	
 	}
 	return $result;
@@ -453,6 +475,9 @@ function update($id,$version_id,$reqdoc_id,$title, $scope, $user_id, $status, $t
 
     returns:
 
+
+	@internal revisions
+	20100907 - franciscom - BUGID 2877 - Custom Fields linked to Requirement Versions 
   */
 	function delete($id,$version_id = self::ALL_VERSIONS)
  	{
@@ -476,8 +501,7 @@ function update($id,$version_id,$reqdoc_id,$title, $scope, $user_id, $status, $t
 			$where_clause_this = " WHERE id = {$id}";
 	    }
 		
-		// When deleting only one version, we need to check if we need to delete 
-		// requirement also.
+		// When deleting only one version, we need to check if we need to delete  requirement also.
 		$children[] = $version_id;
 	  	if( $version_id == self::ALL_VERSIONS)
 	  	{
@@ -496,8 +520,9 @@ function update($id,$version_id,$reqdoc_id,$title, $scope, $user_id, $status, $t
 	    	$children_rs=$this->db->fetchRowsIntoMap($sql,'id');
             $children = array_keys($children_rs); 
 
+			// BUGID 2877 - Custom Fields linked to Requirement Versions
 	    	// Delete Custom fields
-	    	$this->cfield_mgr->remove_all_design_values_from_node($id);
+	    	// $this->cfield_mgr->remove_all_design_values_from_node($id);
 	  		
 	  		// delete dependencies with test specification
 	  		$sql = "DELETE FROM {$this->tables['req_coverage']} " . $where_clause_coverage;
@@ -517,12 +542,15 @@ function update($id,$version_id,$reqdoc_id,$title, $scope, $user_id, $status, $t
         // Delete version info
 	  	if( $doIt )
 	  	{
-	  			$where_clause_children = " WHERE id IN (" .implode(',',$children) . ") ";
-	  			$sql = "DELETE FROM {$this->tables['req_versions']} " . $where_clause_children;
-	  			$result = $this->db->exec_query($sql);
-
-	  			$sql = "DELETE FROM {$this->tables['nodes_hierarchy']} " . $where_clause_children;
-	  			$result = $this->db->exec_query($sql);
+	  		// BUGID 2877 - Custom Fields linked to Requirement Versions                    
+	  		$this->cfield_mgr->remove_all_design_values_from_node((array)$children);
+	  		
+	  		$where_clause_children = " WHERE id IN (" .implode(',',$children) . ") ";
+	  		$sql = "DELETE FROM {$this->tables['req_versions']} " . $where_clause_children;
+	  		$result = $this->db->exec_query($sql);
+        	
+	  		$sql = "DELETE FROM {$this->tables['nodes_hierarchy']} " . $where_clause_children;
+	  		$result = $this->db->exec_query($sql);
 		} 
 
 		if( $deleteAll && $result)
@@ -1079,8 +1107,16 @@ function set_order($map_id_order)
  */
 function exportReqToXML($id,$tproject_id=null)
 {            
+
+	$req = $this->get_by_id($id,requirement_mgr::LATEST_VERSION);
+	$reqData[] = $req[0]; 
+
+	
 	// BUGID 2169
-	$cfXML = $this->customFieldValuesAsXML($id,$tproject_id);
+	// BUGID 2877 - Custom Fields linked to Requirement Versions 
+	// $cfXML = $this->customFieldValuesAsXML($id,$tproject_id);
+	$cfXML = $this->customFieldValuesAsXML($id,$req[0]['version_id'],$tproject_id);
+	
 
  	$rootElem = "{{XMLCODE}}";
 	$elemTpl = "\t" .   "<requirement>" .
@@ -1103,8 +1139,6 @@ function exportReqToXML($id,$tproject_id=null)
 							    "||EXPECTED_COVERAGE||" => "expected_coverage",
 							    );
 	
-	$req = $this->get_by_id($id,requirement_mgr::LATEST_VERSION);
-	$reqData[] = $req[0]; 
 	
 	
 	$xmlStr = exportDataToXML($reqData,$rootElem,$elemTpl,$info,true);						    
@@ -1154,23 +1188,81 @@ function xmlToMapRequirement($xml_item)
 /**
  * createFromXML
  *
+ * @internal revisions
+ * 20100908 - franciscom - BUGID 2877 - Custom Fields linked to Requirement Versions
+ * 20100904 - franciscom - BUGID 3685: XML Requirements Import Updates Frozen Requirement
  */
 function createFromXML($xml,$tproject_id,$parent_id,$author_id,$filters = null,$options=null)
 {
-	$user_feedback = null;
-	$req = $this->xmlToMapRequirement($xml);
+	$reqAsMap = $this->xmlToMapRequirement($xml);
+	
+	// Map structure
+	// node_order => 0
+	// title => Breaks
+	// docid => MAZDA3-0001
+	// description => Heavy Rain Conditions
+	// status => [empty string]
+	// type => [empty string]
+	// expected_coverage => 0
 
+	return 	$this->createFromMap($reqAsMap,$tproject_id,$parent_id,$author_id,$filters,$options);
+}
+
+
+/**
+ * createFromMap
+ *
+ * Map structure
+ * node_order => 0
+ * title => Breaks
+ * docid => MAZDA3-0001
+ * description => Heavy Rain Conditions
+ * status => [empty string]
+ * type => [empty string]
+ * expected_coverage => 0
+ *
+ * @internal revisions
+ * 20100908 - franciscom - created
+ */
+function createFromMap($req,$tproject_id,$parent_id,$author_id,$filters = null,$options=null)
+{
+
+    static $missingCfMsg;
+	static $linkedCF;
+	static $messages;
+	static $labels;
+	static $doProcessCF = false;
+
+    if(is_null($linkedCF) )
+    {
+    	$linkedCF = $this->cfield_mgr->get_linked_cfields_at_design($tproject_id,cfield_mgr::CF_ENABLED,null,
+    															 	'requirement',null,'name');
+		$doProcessCF = true;
+
+		$messages = array();
+  		$messages['cf_warning'] = lang_get('no_cf_defined_can_not_import');
+  		$messages['cfield'] = lang_get('cf_value_not_imported_missing_cf_on_testproject');
+
+		$labels = array('import_req_created' => '','import_req_skipped' =>'', 'import_req_updated' => '', 
+						'frozen_req_unable_to_import' => '', 'requirement' => '', 
+						'import_req_new_version_created' => '');
+		foreach($labels as $key => $dummy)
+		{
+			$labels[$key] = lang_get($key);
+		}	
+	}	
+		
+    $cf2insert=null;
+	$status_ok = true;
+	$user_feedback = null;
+
+	$newReq = null;
     $copy_req = null;
 	$getOptions = array('output' => 'minimun');
     $has_filters = !is_null($filters);
-	$my['options'] = array( 'actionOnDuplicate' => "update");
+	$my['options'] = array( 'hitCriteria' => 'docid' , 'actionOnHit' => "update", 
+							'skipFrozenReq' => true);
 	$my['options'] = array_merge($my['options'], (array)$options);
-
-	$labels = array('import_req_created' => '','import_req_skipped' =>'', 'import_req_updated' => '');
-	foreach($labels as $key => $dummy)
-	{
-		$labels[$key] = lang_get($key);
-	}
 
     // Check:
     // If item with SAME DOCID exists inside container
@@ -1183,15 +1275,18 @@ function createFromXML($xml,$tproject_id,$parent_id,$author_id,$filters = null,$
 	// 
 	$getOptions = array('output' => 'minimun');
 	$msgID = 'import_req_skipped';
-	$check_in_reqspec = $this->getByDocID($req['docid'],$tproject_id,$parent_id,$getOptions);
+
+	$target = array('key' => $my['options']['hitCriteria'], 'value' => $req[$my['options']['hitCriteria']]);
+	$check_in_reqspec = $this->getByAttribute($target,$tproject_id,$parent_id,$getOptions);
+	
 	if(is_null($check_in_reqspec))
 	{
-		$check_in_tproject = $this->getByDocID($req['docid'],$tproject_id,null,$getOptions);
+		$check_in_tproject = $this->getByAttribute($target,$tproject_id,null,$getOptions);
 		if(is_null($check_in_tproject))
 		{
-			$this->create($parent_id,$req['docid'],$req['title'],$req['description'],
-		    		         $author_id,$req['status'],$req['type'],$req['expected_coverage'],
-		    		         $req['node_order']);
+			$newReq = $this->create($parent_id,$req['docid'],$req['title'],$req['description'],
+		    		         		$author_id,$req['status'],$req['type'],$req['expected_coverage'],
+		    		         		$req['node_order']);
 			$msgID = 'import_req_created';
 		}             		 
         else
@@ -1199,24 +1294,71 @@ function createFromXML($xml,$tproject_id,$parent_id,$author_id,$filters = null,$
 			// Can not have req with same req doc id on another branch => BLOCK
 			// What to do if is Frozen ??? -> now ignore and update anyway
 			$msgID = 'import_req_skipped';
-
+			$status_ok = false;
         }               		 
 	}
     else
     {
 		// Need to get Last Version no matter active or not.
-		// What to do if is Frozen ??? -> now ignore and update anyway
 		$reqID = key($check_in_reqspec);
 		$last_version = $this->get_last_version_info($reqID);
-		$result = $this->update($reqID,$last_version['id'],$req['docid'],$req['title'],$req['description'],
-								$author_id,$req['status'],$req['type'],$req['expected_coverage'],
-								$req['node_order']);
-		$msgID = 'import_req_updated';
-    }               		 
-    $user_feedback = array('doc_id' => $req['docid'],'title' => $req['title'], 
-    				 	   'import_status' => sprintf($labels[$msgID],$req['docid']));
-	
-	
+		$msgID = 'frozen_req_unable_to_import';
+		$status_ok = false;
+		if( $last_version['is_open'] == 1 || !$my['options']['skipFrozenReq'])
+		{
+    		switch($my['options']['actionOnHit'])
+			{
+				case 'update_last_version':
+						$result = $this->update($reqID,$last_version['id'],$req['docid'],$req['title'],$req['description'],
+											    $author_id,$req['status'],$req['type'],$req['expected_coverage'],
+											    $req['node_order']);
+						$msgID = 'import_req_updated';
+						$status_ok = true;
+				break;
+				
+				case 'create_new_version':
+						$newItem = $this->create_new_version($reqID,$author_id);
+        	        	
+						// Set always new version to NOT Frozen
+						$this->updateOpen($newItem['id'],1);				
+						$newReq['version_id'] = $newItem['id']; 
+						$msgID = 'import_req_new_version_created';
+						$status_ok = true;
+				break;	
+			}
+		}		
+    }     
+    $user_feedback[] = array('doc_id' => $req['docid'],'title' => $req['title'], 
+    				 	     'import_status' => sprintf($labels[$msgID],$req['docid']));
+    
+    // 20100907 - Custom Fields import
+    if( $status_ok && $doProcessCF && isset($req['custom_fields']) && !is_null($req['custom_fields']) )
+    {
+		$req_version_id = !is_null($newReq) ? $newReq['version_id'] : $last_version['id'];
+    	$cf2insert = null;
+    	foreach($req['custom_fields'] as $cfname => $cfvalue)
+    	{
+    		$cfname = trim($cfname);
+       		if( isset($linkedCF[$cfname]) )
+       		{
+           		$cf2insert[$linkedCF[$cfname]['id']]=array('type_id' => $linkedCF[$cfname]['type'],
+                                                            'cf_value' => $cfvalue);         
+       		}
+       		else
+       		{
+           		if( !isset($missingCfMsg[$cfname]) )
+           		{
+               		$missingCfMsg[$cfname] = sprintf($messages['cfield'],$cfname,$labels['requirement']);
+           		}
+    			$user_feedback[] = array('doc_id' => $req['docid'],'title' => $req['title'], 
+    				 	                 'import_status' => $missingCfMsg[$cfname]);
+       		}
+    	}  
+ 		if( !is_null($cf2insert) )
+ 		{
+    		$this->cfield_mgr->design_values_to_db($cf2insert,$req_version_id,null,'simple');
+    	}	
+    }
 	return $user_feedback;
 }
 
@@ -1271,22 +1413,28 @@ function createFromXML($xml,$tproject_id,$parent_id,$author_id,$filters = null,$
        20070302 - check for $id not null, is not enough, need to check is > 0
 
 */
-function get_linked_cfields($id,$parent_id=null)
+// function get_linked_cfields($id,$parent_id=null)
+function get_linked_cfields($id,$version_id,$parent_id=null)
 {
 	$enabled = 1;
 	if (!is_null($id) && $id > 0)
 	{
     	$req_info = $this->get_by_id($id);
-    	$req_info = $req_info[0];
-	  	$tproject_id = $req_info['testproject_id'];
+	  	$tproject_id = $req_info[0]['testproject_id'];
+	  	unset($req_info);
 	}
 	else
 	{
 	  	$tproject_id = $parent_id;
 	}
+	// BUGID ---
+	// $cf_map = $this->cfield_mgr->get_linked_cfields_at_design($tproject_id,$enabled,null,
+	//                                                           'requirement',$id);
 	$cf_map = $this->cfield_mgr->get_linked_cfields_at_design($tproject_id,$enabled,null,
-	                                                          'requirement',$id);
-
+	                                                          'requirement',$version_id);
+       
+       
+       
 	return $cf_map;
 }
 
@@ -1299,6 +1447,7 @@ function get_linked_cfields($id,$parent_id=null)
 
 
   args: $id
+  		$version_id  --- BUGID   - NEEDS CHANGES
         [parent_id]: need to undertad to which testproject the requirement belongs.
                      this information is vital, to get the linked custom fields.
                      null -> use requirement_id as starting point.
@@ -1314,13 +1463,22 @@ function get_linked_cfields($id,$parent_id=null)
 
   returns: html string
 
+
+  @internal revisions:
+    20101001 - asimon - extended to not lose entered custom field values on errors
+
 */
-function html_table_of_custom_field_inputs($id,$parent_id=null,$name_suffix='')
+// function html_table_of_custom_field_inputs($id,$parent_id=null,$name_suffix='')
+function html_table_of_custom_field_inputs($id,$version_id,$parent_id=null,$name_suffix='', $request = null)
+
 {
     $NO_WARNING_IF_MISSING=true;
     $cf_smarty = '';
-    $cf_map = $this->get_linked_cfields($id,$parent_id);
-    
+    // $cf_map = $this->get_linked_cfields($id,$parent_id);
+    $cf_map = $this->get_linked_cfields($id,$version_id,$parent_id);
+
+    $prefix = $this->cfield_mgr->get_name_prefix();
+
     if(!is_null($cf_map))
     {
     	$cf_smarty = "<table>";
@@ -1328,7 +1486,28 @@ function html_table_of_custom_field_inputs($id,$parent_id=null,$name_suffix='')
     	{
             $label=str_replace(TL_LOCALIZE_TAG,'',
                                lang_get($cf_info['label'],null,$NO_WARNING_IF_MISSING));
-    
+
+            $input_name="{$prefix}{$cf_info['type']}_{$cf_info['id']}{$name_suffix}";
+            $value = isset($request[$input_name]) ? $request[$input_name] : null;
+	        $verbose_type = trim($this->cfield_mgr->custom_field_types[$cf_info['type']]);
+
+	        if ($verbose_type == 'date') {
+		        // if cf is a date field, convert the three given values to unixtime format
+		        if (isset($request[$input_name . '_day'])
+		        && isset($request[$input_name . '_month'])
+		        && isset($request[$input_name . '_year'])) {
+			        $day = $request[$input_name . '_day'];
+			        $month = $request[$input_name . '_month'];
+			        $year = $request[$input_name . '_year'];
+			        $value = mktime(0, 0, 0, $month, $day, $year);
+		        }
+	        }
+
+	        if (!is_null($value) && is_array($value)){
+		        $value = implode("|", $value);
+	        }
+	        $cf_info['value'] = $value;
+
     		$cf_smarty .= '<tr><td class="labelHolder">' . htmlspecialchars($label) . ":</td><td>" .
     			          $this->cfield_mgr->string_custom_field_input($cf_info,$name_suffix) .
     					  "</td></tr>\n";
@@ -1352,14 +1531,16 @@ function html_table_of_custom_field_inputs($id,$parent_id=null,$name_suffix='')
   returns: html string
 
 */
-function html_table_of_custom_field_values($id)
+// function html_table_of_custom_field_values($id)
+function html_table_of_custom_field_values($id,$version_id)
 {
     $NO_WARNING_IF_MISSING=true;
 	$PID_NO_NEEDED = null;
 	$cf_smarty = '';
 
-	$cf_map = $this->get_linked_cfields($id,$PID_NO_NEEDED);
-
+	// $cf_map = $this->get_linked_cfields($id,$PID_NO_NEEDED);
+	$cf_map = $this->get_linked_cfields($id,$version_id,$PID_NO_NEEDED);
+	
 	if(!is_null($cf_map))
 	{
 		foreach($cf_map as $cf_id => $cf_info)
@@ -1370,10 +1551,17 @@ function html_table_of_custom_field_values($id)
 				$label = str_replace(TL_LOCALIZE_TAG,'',
 	                                 lang_get($cf_info['label'],null,$NO_WARNING_IF_MISSING));
 
+				// $cf_smarty .= '<tr><td class="labelHolder">' .
+				// 				htmlspecialchars($label) . ":</td><td>" .
+				// 				$this->cfield_mgr->string_custom_field_value($cf_info,$id) .
+				// 				"</td></tr>\n";
+				
 				$cf_smarty .= '<tr><td class="labelHolder">' .
 								htmlspecialchars($label) . ":</td><td>" .
-								$this->cfield_mgr->string_custom_field_value($cf_info,$id) .
+								$this->cfield_mgr->string_custom_field_value($cf_info,$version_id) .
 								"</td></tr>\n";
+				
+				
 			}
 		}
 
@@ -1425,10 +1613,12 @@ function html_table_of_custom_field_values($id)
   *
   *
   */
- function customFieldValuesAsXML($id,$tproject_id)
+ // function customFieldValuesAsXML($id,$tproject_id)
+ function customFieldValuesAsXML($id,$version_id,$tproject_id)
  {
     $xml = null;
-    $cfMap=$this->get_linked_cfields($id,$tproject_id);
+    // $cfMap=$this->get_linked_cfields($id,$tproject_id);
+    $cfMap=$this->get_linked_cfields($id,$version_id,$tproject_id);
 	if( !is_null($cfMap) && count($cfMap) > 0 )
 	{
         $xml = $this->cfield_mgr->exportValueAsXML($cfMap);
@@ -1457,7 +1647,7 @@ function html_table_of_custom_field_values($id)
    testproject_id
    title
    scope
-   */
+  */
 	function getByDocID($doc_id,$tproject_id=null,$parent_id=null, $options = null)
   	{
 		$debugMsg = 'Class:' . __CLASS__ . ' - Method: ' . __FUNCTION__;
@@ -1553,6 +1743,7 @@ function html_table_of_custom_field_values($id)
 		{
 			$new_item = $this->create_req_only($parent_id,$target_doc,$item_versions[0]['title'],
 			                                   $item_versions[0]['author_id'],$item_versions[0]['node_order']);
+			
 			if ($new_item['status_ok'])
 			{
 		        $ret['status_ok']=1;
@@ -1566,9 +1757,13 @@ function html_table_of_custom_field_values($id)
 					                            $req_version['expected_coverage']);
 
 	    			$new_item['mappings'][$req_version['id']] = $op['id'];
+	    			
+	    			// BUGID 2877 - CF on version
+	        		$this->copy_cfields(array('id' => $req_version['id'], 'version_id' =>  $req_version['version_id']),
+	        							array('id' => $new_item['id'], 'version_id' => $op['id']));
+	    			
 				}
-				
-				$this->copy_cfields($id,$new_item['id']);
+	        	
 	        	$this->copy_attachments($id,$new_item['id']);
 		    	if( isset($my['options']['copy_also']['testcase_assignment']) &&
 		    	    $my['options']['copy_also']['testcase_assignment'] )
@@ -1611,9 +1806,11 @@ function html_table_of_custom_field_values($id)
 	  returns: -
 	
 	*/
-	function copy_cfields($from_id,$to_id)
+	// function copy_cfields($from_id,$to_id)
+	function copy_cfields($source,$destination)
 	{
-	  $cfmap_from=$this->get_linked_cfields($from_id);
+	  // $cfmap_from=$this->get_linked_cfields($from_id);
+	  $cfmap_from=$this->get_linked_cfields($source['id'],$source['version_id']);
 	  $cfield=null;
 	  if( !is_null($cfmap_from) )
 	  {
@@ -1622,7 +1819,7 @@ function html_table_of_custom_field_values($id)
 	      $cfield[$key]=array("type_id"  => $value['type'], "cf_value" => $value['value']);
 	    }
 	  }
-	  $this->cfield_mgr->design_values_to_db($cfield,$to_id,null,'tcase_copy_cfields');
+	  $this->cfield_mgr->design_values_to_db($cfield,$destination['version_id'],null,'reqversion_copy_cfields');
 	}
 
 
@@ -1722,28 +1919,40 @@ function html_table_of_custom_field_values($id)
 	
 	/*
 	  function: create_new_version()
-	            create a new version, doing a copy of last version.
+	            create a new version, doing BY DEFAULT a copy of last version.
+	            If reqVersionID is passed, then this version will be used as source data.
 	
 	  args : $id: requirement id
 	         $user_id: who is doing this operation.
+			 $reqVersionID = default null => use last version as source 
 	
 	  returns:
 	          map:  id: node id of created tcversion
 	                version: version number (i.e. 5)
 	                msg
 	
-	  rev: 
+	  @internal revisions
+	  20101003 - franciscom - BUGID 3834: Create version source <>1 - Bad content used. 
 	*/
-	function create_new_version($id,$user_id)
+	function create_new_version($id,$user_id,$reqVersionID=null)
 	{
 	  // get a new id
 	  $version_id = $this->tree_mgr->new_node($id,$this->node_types_descr_id['requirement_version']);
-	  $last_version_info =  $this->get_last_version_info($id);
-	  $this->copy_version($last_version_info['id'],$version_id,$last_version_info['version']+1,$user_id);
-	
+	  
+	  // Needed to get higher version NUMBER, to generata new VERSION NUMBER
+	  $sourceVersionInfo =  $this->get_last_version_info($id);
+	  $newVersionNumber = $sourceVersionInfo['version']+1; 
+
+	  $ret = array();
 	  $ret['id'] = $version_id;
-	  $ret['version'] = $last_version_info['version']+1;
+	  $ret['version'] = $newVersionNumber;
 	  $ret['msg'] = 'ok';
+
+	  $sourceVersionID = is_null($reqVersionID) ? $sourceVersionInfo['id'] : $reqVersionID;
+
+	  // BUGID 2877 - Custom Fields linked to Requirement Versions
+	  $this->copy_version($id,$sourceVersionID,$version_id,$newVersionNumber,$user_id);
+	
 	  return $ret;
 	}
 
@@ -1774,12 +1983,39 @@ function html_table_of_custom_field_values($id)
 		}
 		return $info;
 	}
+	
+	/**
+	 * get last defined req doc id for specific test project
+	 * 
+	 * @author Julian Krien
+	 * 
+	 * @param int $tproj_id test project id
+	 * 
+	 * @return string last defned req doc id
+	 */
+	
+	function get_last_doc_id_for_testproject($tproj_id)
+	{
+		$info = null;
+		$tproject_mgr = new testproject($this->db);
+		$all_reqs = $tproject_mgr->get_all_requirement_ids($tproj_id);
+		if(count($all_reqs) > 0) {
+			//only use maximum value of all reqs array
+			$last_req = max($all_reqs);
+			$last_req = $this->get_by_id($last_req);
+			$info = $last_req[0]['req_doc_id'];
+		} 
+		return $info;
+	}
 
     /**
 	 * 
  	 *
+ 	 * @internal revisions
+ 	 * 20100906 - franciscom - BUGID 2877 - Custom Fields linked to Requirement Versions 
      */
-	function copy_version($from_version_id,$to_version_id,$as_version_number,$user_id)
+	// function copy_version($from_version_id,$to_version_id,$as_version_number,$user_id)
+	function copy_version($id,$from_version_id,$to_version_id,$as_version_number,$user_id)
 	{
 		
 		$debugMsg = 'Class:' . __CLASS__ . ' - Method: ' . __FUNCTION__;
@@ -1792,6 +2028,13 @@ function html_table_of_custom_field_values($id)
 	         " FROM {$this->tables['req_versions']} " .
 	         " WHERE id={$from_version_id} ";
 	    $result = $this->db->exec_query($sql);
+	         
+	    // BUGID 2877 - Custom Fields linked to Requirement Versions     
+	    $this->copy_cfields(array('id' => $id, 'version_id' => $from_version_id),
+						  	array('id' => $id, 'version_id' => $to_version_id));
+
+
+	         
 	}
 
     /**
@@ -2085,5 +2328,73 @@ function html_table_of_custom_field_values($id)
 		
 		return $htmlSelect;
 	}
+	
+	
+
+	/**
+	 * 
+ 	 * 
+ 	 */
+	function getByAttribute($attr,$tproject_id=null,$parent_id=null, $options = null)
+  	{
+		$debugMsg = 'Class:' . __CLASS__ . ' - Method: ' . __FUNCTION__;
+
+	    $my['options'] = array( 'check_criteria' => '=', 'access_key' => 'id', 
+	                            'case' => 'sensitive', 'output' => 'standard');
+	    $my['options'] = array_merge($my['options'], (array)$options);
+    	
+    	   
+  		$output=null;
+  		$target = $this->db->prepare_string(trim($attr['value']));
+  		
+  		$where_clause = $attr['key'] == 'title' ? " NH_REQ.name " : " REQ.req_doc_id ";  
+  		
+	    switch($my['options']['check_criteria'])
+	    {
+	    	case '=':
+	    	default:
+	    		$check_criteria = " = '{$target}' ";
+	    	break;
+	    	
+	    	case 'like':
+	    		$check_criteria = " LIKE '{$target}%' ";
+	    	break;
+	    }
+  		
+		$sql = " /* $debugMsg */ SELECT ";
+		switch($my['options']['output'])
+		{
+			case 'standard':
+				 $sql .= " REQ.id,REQ.srs_id,REQ.req_doc_id,NH_REQ.name AS title, REQ_SPEC.testproject_id, " .
+		       			 " NH_RSPEC.name AS req_spec_title, REQ_SPEC.doc_id AS req_spec_doc_id, NH_REQ.node_order ";
+		    break;
+		       			 
+			case 'minimun':
+				 $sql .= " REQ.id,REQ.srs_id,REQ.req_doc_id,NH_REQ.name AS title, REQ_SPEC.testproject_id";
+		    break;
+			
+		}
+		$sql .= " FROM {$this->object_table} REQ " .
+		       	" /* Get Req info from NH */ " .
+		       	" JOIN {$this->tables['nodes_hierarchy']} NH_REQ ON NH_REQ.id = REQ.id " .
+		       	" JOIN {$this->tables['req_specs']} REQ_SPEC ON REQ_SPEC.id = REQ.srs_id " .
+		       	" JOIN {$this->tables['nodes_hierarchy']} NH_RSPEC ON NH_RSPEC.id = REQ_SPEC.id " .
+				" WHERE {$where_clause} {$check_criteria} ";
+  		
+  		if( !is_null($tproject_id) )
+  		{
+  			$sql .= " AND REQ_SPEC.testproject_ID={$tproject_id}";
+  		}
+    	
+  		if( !is_null($parent_id) )
+  		{
+  			$sql .= " AND REQ.srs_id={$parent_id}";
+  		}
+  		$output = $this->db->fetchRowsIntoMap($sql,$my['options']['access_key']);
+  		return $output;
+  	}
+
+	
+	
 } // class end
 ?>

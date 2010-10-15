@@ -3,7 +3,7 @@
 -- $Revision: 1.2 $
 -- $Date: 2007/10/19 06:53:06 $
 -- $Author: franciscom $
--- $Name: testlink_1_9_beta6 $
+-- $Name:  $
 -- 
 BEGIN TRANSACTION
 SET QUOTED_IDENTIFIER ON

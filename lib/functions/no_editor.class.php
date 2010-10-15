@@ -44,7 +44,7 @@ class no_editor
 	    	$my_cols = $this->cols;
 
 	    $Html = "<textarea name=\"{$this->InstanceName}\" " .
-		        "id=\"{$this->InstanceName}\" rows=\"40\" cols=\"100\" >".
+		        "id=\"{$this->InstanceName}\" rows=\"{$my_rows}\" cols=\"{$my_cols}\" >".
 		        "{$HtmlValue}</textarea>" ;
 		return $Html ;
 	}

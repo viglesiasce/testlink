@@ -7,30 +7,47 @@
  * @package 	TestLink
  * @author		Andreas Simon
  * @copyright 	2005-2010, TestLink community 
- * @version    	CVS: $Id: reqSearch.php,v 1.2 2010/03/24 12:46:35 asimon83 Exp $
+ * @version    	CVS: $Id: reqSearch.php,v 1.17 2010/10/05 09:03:13 asimon83 Exp $
  * @link 		http://www.teamst.org/index.php
  *
  * Search results for requirements.
  *
  * @internal Revisions:
+ * 20101005 - asimon - replaced linked requirement title by linked icon
+ * 20100929 - asimon - added req doc id to result table
+ * 20100920 - Julian - BUGID 3793 - use exttable to display search results
+ *                   - created function to build table
+ * 20100920 - franciscom - minor refactoring
+ * 20100908 - Julian - BUGID 2877 -  Custom Fields linked to Req versions
  * 20100324 - asimon - added searching for requirement relation type (BUGID 1748)
  */
 
 require_once("../../config.inc.php");
 require_once("common.php");
 require_once("requirements.inc.php");
+require_once('exttable.class.php');
 testlinkInitPage($db);
 
 $templateCfg = templateConfiguration();
+$tpl = 'reqSearchResults.tpl';
+
 $tproject_mgr = new testproject($db);
     	
 $req_cfg = config_get('req_cfg');
 $tcase_cfg = config_get('testcase_cfg');
-$gui = new stdClass();
+$charset = config_get('charset');
+
+$commandMgr = new reqCommands($db);
+$gui = $commandMgr->initGuiBean();
+
 $gui->main_descr = lang_get('caption_search_form_req');
 $gui->warning_msg = '';
 $gui->path_info = null;
 $gui->resultSet = null;
+$gui->tableSet = null;
+
+$edit_label = lang_get('requirement');
+$edit_icon = TL_THEME_IMG_DIR . "edit_icon.png";
 
 $map = null;
 $args = init_args();
@@ -44,7 +61,8 @@ if ($args->tprojectID)
 							array('cfield_design_values', 'nodes_hierarchy', 'req_specs', 'req_relations', 
 								'req_versions', 'requirements', 'req_coverage', 'tcversions'));
 	$filter = null;
-	$from = null;
+    $from = array('by_custom_field' => null, 'by_relation_type' => null, 'by_tcid' => null);
+
 	
 	if ($args->requirement_document_id) {
 		//search by id
@@ -102,24 +120,19 @@ if ($args->tprojectID)
 		$from['by_relation_type'] = " , {$tables['req_relations']} RR "; 
         $filter['by_relation_type'] = " AND RR.relation_type={$relation_type} " .
                                       " AND ( $relation_side ) ";
-	} else {
-    	// avoid E_NOTICE because of undefined index
-    	$from['by_relation_type'] = null;
-    }
+	}
 	
 	if($args->custom_field_id > 0) {
-		//search by custom fields
         $args->custom_field_id = $db->prepare_string($args->custom_field_id);
         $args->custom_field_value = $db->prepare_string($args->custom_field_value);
         $from['by_custom_field'] = " , {$tables['cfield_design_values']} CFD "; 
+
+        // BUGID 2877 -  Custom Fields linked to Req versions
         $filter['by_custom_field'] = " AND CFD.field_id={$args->custom_field_id} " .
-                                     " AND CFD.node_id=NHP.id " .
+                                     " AND CFD.node_id=RV.id " .
                                      " AND CFD.value like '%{$args->custom_field_value}%' ";
-    } else {
-    	// avoid E_NOTICE because of undefined index
-    	$from['by_custom_field'] = null;
-    }
-	
+    } 
+    
     if ($args->tcid != "" && strcmp($args->tcid, $gui->tcasePrefix) != 0) {
     	//search for reqs linked to this testcase
     	$tcid = $db->prepare_string($args->tcid);
@@ -133,9 +146,6 @@ if ($args->tprojectID)
     	$filter['by_tcid'] = "AND TCV.tc_external_id='$tcid' AND TCV.id = NHA.id " .
     						" AND NHA.parent_id = NHAP.id AND RC.testcase_id = NHAP.id " .
     						" AND RC.req_id = NHP.id ";
-    } else {
-    	// avoid E_NOTICE because of undefined index
-    	$from['by_tcid'] = null;
     }
     
 	if ($args->reqStatus != "nostatus") {
@@ -144,7 +154,7 @@ if ($args->tprojectID)
 		$filter['by_status'] = " AND RV.status='{$status}' ";
 	}
 	
-	$sql = "SELECT DISTINCT NHP.id, NHP.name FROM {$tables['nodes_hierarchy']} NH," . 
+	$sql = "SELECT DISTINCT NHP.id, NHP.name, REQ.req_doc_id FROM {$tables['nodes_hierarchy']} NH," .
   			"{$tables['nodes_hierarchy']} NHP, {$tables['requirements']} REQ," .
 			"{$tables['req_versions']} RV {$from['by_custom_field']} {$from['by_tcid']} {$from['by_relation_type']} " .
 			"WHERE NH.parent_id = NHP.id AND RV.id=NH.id AND REQ.id=NHP.id ";
@@ -169,15 +179,14 @@ if ($args->tprojectID)
 
 $smarty = new TLSmarty();
 $gui->row_qty=count($map);
-if($gui->row_qty)
+if($gui->row_qty > 0)
 {
-	$tpl = 'reqSearchResults.tpl';
-	$gui->pageTitle = $gui->main_descr . " - " . lang_get('match_count') . ": " . $gui->row_qty;
 	$gui->resultSet=$map;
 	if($gui->row_qty <= $req_cfg->search->max_qty_for_display)
 	{
 		$req_set=array_keys($map);
-		$gui->path_info=$tproject_mgr->tree_manager->get_full_path_verbose($req_set);
+		$options = array('output_format' => 'path_as_string');
+		$gui->path_info=$tproject_mgr->tree_manager->get_full_path_verbose($req_set,$options);
 	}
 	else
 	{
@@ -186,12 +195,72 @@ if($gui->row_qty)
 }
 else
 {
-	$the_tpl = config_get('tpl');
-	$tpl = isset($the_tpl['reqSearchView']) ? $the_tpl['reqSearchView'] : 'reqViewVersions.tpl';
+	$gui->warning_msg=lang_get('no_records_found');
 }
 
+$table = buildExtTable($gui, $charset, $edit_icon, $edit_label);
+
+if (!is_null($table)) {
+	$gui->tableSet[] = $table;
+}
+
+$gui->pageTitle = $gui->main_descr . " - " . lang_get('match_count') . ": " . $gui->row_qty;
 $smarty->assign('gui',$gui);
 $smarty->display($templateCfg->template_dir . $tpl);
+
+/**
+ * 
+ *
+ */
+function buildExtTable($gui, $charset, $edit_icon, $edit_label) {
+	$table = null;
+	if(count($gui->resultSet) > 0) {
+		$labels = array('req_spec' => lang_get('req_spec'), 'requirement' => lang_get('requirement'));
+		$columns = array();
+		
+		$columns[] = array('title' => $labels['req_spec']);
+		$columns[] = array('title' => $labels['requirement'], 'type' => 'text');
+	
+		// Extract the relevant data and build a matrix
+		$matrixData = array();
+		
+		foreach($gui->resultSet as $result) {
+			$rowData = array();
+			$rowData[] = htmlentities($gui->path_info[$result['id']], ENT_QUOTES, $charset);
+
+			// build requirement link
+			$edit_link = "<a href=\"javascript:openLinkedReqWindow(" . $result['id'] . ")\">" .
+						 "<img title=\"{$edit_label}\" src=\"{$edit_icon}\" /></a> ";
+			$title = htmlentities($result['req_doc_id'], ENT_QUOTES, $charset) . ":" .
+			         htmlentities($result['name'], ENT_QUOTES, $charset);
+			$link = $edit_link . $title;
+			$rowData[] = $link;
+
+//			$rowData[] = "<a href=\"lib/requirements/reqView.php?item=requirement&requirement_id={$result['id']}\">" .
+//			             htmlentities($result['req_doc_id'], ENT_QUOTES, $charset) . ":" .
+//			             htmlentities($result['name'], ENT_QUOTES, $charset);
+			
+			$matrixData[] = $rowData;
+		}
+	
+		$table = new tlExtTable($columns, $matrixData, 'tl_table_req_search');
+		
+		$table->setGroupByColumnName($labels['req_spec']);
+		$table->setSortByColumnName($labels['requirement']);
+		$table->sortDirection = 'DESC';
+		
+		$table->showToolbar = true;
+		$table->allowMultiSort = false;
+		$table->toolbarRefreshButton = false;
+		$table->toolbarShowAllColumnsButton = false;
+		
+		$table->addCustomBehaviour('text', array('render' => 'columnWrap'));
+		
+		// dont save settings for this table
+		$table->storeTableState = false;
+	}
+	return($table);
+}
 
 /*
  function:

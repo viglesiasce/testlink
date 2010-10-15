@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-24 14:27:03
+<?php /* Smarty version 2.6.26, created on 2010-10-12 12:16:37
          compiled from inc_tinymce_init.tpl */ ?>
 <?php echo '
 <script language="javascript" type="text/javascript">

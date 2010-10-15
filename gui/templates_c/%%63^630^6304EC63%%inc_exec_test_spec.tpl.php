@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:50:41
+<?php /* Smarty version 2.6.26, created on 2010-10-12 11:55:48
          compiled from execute/inc_exec_test_spec.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'execute/inc_exec_test_spec.tpl', 36, false),)), $this); ?>

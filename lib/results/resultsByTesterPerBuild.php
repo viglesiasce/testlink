@@ -8,11 +8,15 @@
  * @package TestLink
  * @author Andreas Simon
  * @copyright 2010, TestLink community
- * @version CVS: $Id: resultsByTesterPerBuild.php,v 1.7 2010/08/26 07:27:47 mx-julian Exp $
+ * @version CVS: $Id: resultsByTesterPerBuild.php,v 1.15 2010/09/23 14:53:40 erikeloff Exp $
  *
  * Lists results and progress by tester per build.
  * 
  * @internal revisions:
+ * 20100923 - eloff - refactored to use improved table interface
+ * 20100923 - Julian - BUGID 3803
+ *                   - added status label to status percentage column to be able to reorder columns
+ *                     without losing the context
  * 20100823 - asimon - refactoring: $table_id
  * 20100816 - asimon - enable default sorting by progress column
  * 20100731 - asimon - initial commit
@@ -40,21 +44,21 @@ $status_map = $progress->get_status_map();
 $build_set = $progress->get_build_set();
 $names = $user->getNames($db);
 
-$table_id = 'tl_' . $args->tproject_id . '_' . $args->tplan_id . '_table_results_tester_build';
-
 // build the table header
 $columns = array();
-$columns[] = array('title' => lang_get('build'), 'width' => 50);
-$columns[] = array('title' => lang_get('user'), 'width' => 50);
-$columns[] = array('title' => lang_get('th_tc_assigned'), 'width' => 50);
+$columns[] = array('title_key' => 'build', 'width' => 50);
+$columns[] = array('title_key' => 'user', 'width' => 50);
+$columns[] = array('title_key' => 'th_tc_assigned', 'width' => 50);
 
 foreach ($status_map as $status => $code) {
 	$label = $results_config['status_label'][$status];
-	$columns[] = array('title' => lang_get($label), 'width' => 20);
-	$columns[] = array('title' => '[%]', 'width' => 20);
+	$columns[] = array('title_key' => $label, 'width' => 20);
+	$columns[] = array('title' => lang_get($label).' '.lang_get('in_percent'),
+	                   'col_id' => 'id_'.$label.'_percent',
+	                   'width' => 30);
 }
 
-$columns[] = array('title' => lang_get('progress'), 'width' => 30);
+$columns[] = array('title_key' => 'progress', 'width' => 30);
 
 // build the content of the table
 $rows = array();
@@ -82,12 +86,20 @@ foreach ($matrix as $build_id => $build_execution_map) {
 		// add count and percentage for each possible status
 		foreach ($status_map as $status => $code) {
 			$current_row[] = $statistics[$status]['count'];
-			$current_row[] = $statistics[$status]['percentage'];
+			
+			//use html comment to allow js sort this column properly
+			$status_percentage = is_numeric($statistics[$status]['percentage']) ? 
+			                     $statistics[$status]['percentage'] : -1;
+			$padded_status_percentage = sprintf("%010d", $status_percentage);
+			$commented_status_percentage = "<!-- $padded_status_percentage --> " .
+			                               "{$statistics[$status]['percentage']}";
+			
+			$current_row[] = $commented_status_percentage;
 		}
 		
 		// add general progress for this user
 		// add html comment with which js can sort the column
-		$percentage = is_numeric($statistics['progress']) ? $statistics['progress'] : 0;
+		$percentage = is_numeric($statistics['progress']) ? $statistics['progress'] : -1;
 		$padded_percentage = sprintf("%010d", $percentage); //bring all percentages to same length
 		$commented_progress = "<!-- $padded_percentage --> {$statistics['progress']}";
 		
@@ -99,7 +111,7 @@ foreach ($matrix as $build_id => $build_execution_map) {
 }
 
 // create the table object
-$matrix = new tlExtTable($columns, $rows, $table_id);
+$matrix = new tlExtTable($columns, $rows, 'tl_table_results_by_tester_per_build');
 $matrix->title = lang_get('results_by_tester_per_build');
 
 //group by build

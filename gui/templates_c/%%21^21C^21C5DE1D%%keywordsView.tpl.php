@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 13:22:15
+<?php /* Smarty version 2.6.26, created on 2010-10-15 11:29:22
          compiled from keywords/keywordsView.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'keywords/keywordsView.tpl', 9, false),array('function', 'config_load', 'keywords/keywordsView.tpl', 24, false),array('modifier', 'basename', 'keywords/keywordsView.tpl', 23, false),array('modifier', 'replace', 'keywords/keywordsView.tpl', 23, false),array('modifier', 'escape', 'keywords/keywordsView.tpl', 44, false),array('modifier', 'nl2br', 'keywords/keywordsView.tpl', 49, false),)), $this); ?>

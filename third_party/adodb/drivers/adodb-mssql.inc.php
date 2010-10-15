@@ -11,7 +11,11 @@ Set tabs to 4 for best viewing.
   Native mssql driver. Requires mssql client. Works on Windows. 
   To configure for Unix, see 
    	http://phpbuilder.com/columns/alberto20000919.php3
-	
+
+
+
+20100911 - francisco.mancardi@gruppotesi.com
+function MetaPrimaryKeys($table, $owner=false)	
 */
 
 
@@ -476,9 +480,9 @@ order by constraint_name, referenced_table_name, keyno";
 
 	// "Stein-Aksel Basma" <basma@accelero.no>
 	// tested with MSSQL 2000
-	function MetaPrimaryKeys($table)
+	function MetaPrimaryKeys($table, $owner=false)
 	{
-	global $ADODB_FETCH_MODE;
+		global $ADODB_FETCH_MODE;
 	
 		$schema = '';
 		$this->_findschema($table,$schema);
@@ -591,7 +595,7 @@ order by constraint_name, referenced_table_name, keyno";
 		return array($sql,$this->qstr($sql2),$max,$sql2);
 	}
 	
-	function PrepareSP($sql)
+	function PrepareSP($sql,$param=true)
 	{
 		if (!$this->_has_mssql_init) {
 			ADOConnection::outp( "PrepareSP: mssql_init only available since PHP 4.1.0");

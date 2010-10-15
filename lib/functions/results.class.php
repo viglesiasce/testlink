@@ -1373,7 +1373,7 @@ class results extends tlObjectWithDB
 				}
 			                                        ;
 				$owner_id = $this->getUserForFeature($info['feature_id']);
-				
+
 				// BUGID - 2374: Show Assigned User in the Not Run Test Cases Report 
 				$infoToSave = array('testcaseID' => $testcaseID,
 									'platform_id' => $info['platform_id'],
@@ -1382,7 +1382,6 @@ class results extends tlObjectWithDB
 									'tcversion_id' => $info['tcversion_id'],
 									'version' => $version,
 									'build_id' => '',
-									//'has_attach' => $info['has_attach'],
 									'tester_id' => $owner_id,
 									'execution_ts' => '',
 									'status' => $this->map_tc_status['not_run'],
@@ -1451,7 +1450,7 @@ class results extends tlObjectWithDB
 								$infoToSave['executions_id'] = $executions_id;
 								//@todo: Refactor for this code - BUGID 2242 
 								$infoToSave['bugString'] = $searchBugs ? $this->buildBugString($this->db, $executions_id) : '';
-								$infoToSave['has_attach'] = $exec_row['has_attach'];
+								
 								$dummy = null;
 								$infoToSave['execution_ts'] = localize_dateOrTimeStamp(null, $dummy,'timestamp_format',
 									                                                   $exec_row['execution_ts']);
@@ -1932,18 +1931,6 @@ class results extends tlObjectWithDB
 			$ret = MEDIUM;
 		}
         return $ret;
-	}
-	public function getAttach($execution_id)
-	{
-		$ret = 0;
-		$sql = "SELECT has_attach FROM executions e WHERE e.id=$execution_id";
-		$attach = $this->db->fetchOneValue($sql);
-		if($attach == 1){
-			return 1;
-		}
-		else{
-			return 0;
-		}
 	}
 
 

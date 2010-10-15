@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:50:41
+<?php /* Smarty version 2.6.26, created on 2010-10-14 16:48:36
          compiled from execute/execSetResults.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'execute/execSetResults.tpl', 32, false),array('modifier', 'basename', 'execute/execSetResults.tpl', 55, false),array('modifier', 'replace', 'execute/execSetResults.tpl', 55, false),array('function', 'lang_get', 'execute/execSetResults.tpl', 34, false),array('function', 'config_load', 'execute/execSetResults.tpl', 56, false),array('function', 'cycle', 'execute/execSetResults.tpl', 396, false),array('function', 'html_options', 'execute/execSetResults.tpl', 407, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'execute/execSetResults.tpl', 32, false),array('modifier', 'basename', 'execute/execSetResults.tpl', 55, false),array('modifier', 'replace', 'execute/execSetResults.tpl', 55, false),array('function', 'lang_get', 'execute/execSetResults.tpl', 34, false),array('function', 'config_load', 'execute/execSetResults.tpl', 56, false),array('function', 'cycle', 'execute/execSetResults.tpl', 466, false),array('function', 'html_options', 'execute/execSetResults.tpl', 477, false),)), $this); ?>
 <?php $this->assign('attachment_model', $this->_tpl_vars['cfg']->exec_cfg->att_model); ?>
 <?php $this->assign('title_sep', @TITLE_SEP); ?>
 <?php $this->assign('title_sep_type3', @TITLE_SEP_TYPE3); ?>
@@ -177,6 +177,76 @@ function checkSubmitForStatus($statusCode)
   }
   return true;
 }
+function disableEnterKey(e)
+{
+     var key;
+
+     if(window.event)
+          key = window.event.keyCode;     //IE
+     else
+          key = e.which;     //firefox
+
+     if(key == 13)
+          return false;
+     else
+          return true;
+}
+function noenter() {
+  return !(window.event && window.event.keyCode == 13); 
+}
+function loadData(URL, $ip_val, $tc_id, $command)
+{
+// Create the XML request
+    xmlReq = null;
+    if(window.XMLHttpRequest) xmlReq = new XMLHttpRequest();
+    else if(window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
+    if(xmlReq==null) return; // Failed to create the request
+
+// Anonymous function to handle changed request states
+    xmlReq.onreadystatechange = function()
+    {
+        switch(xmlReq.readyState)
+        {
+        case 0: // Uninitialized
+            break;
+        case 1: // Loading
+            break;
+        case 2: // Loaded
+            break;
+        case 3: // Interactive
+            break;
+        case 4: // Done!
+        // Retrieve the data between the <quote> tags
+	    var ret_status =  xmlReq.responseXML.getElementsByTagName(\'status\')[0].firstChild.data
+	    if(ret_status==1){
+	    var hashes = "\\n#############################################################################\\n";
+	    document.getElementById(\'notes[\' + $tc_id + \']\').value += hashes + "IP: " + $ip_val + " "  + $command + hashes  + xmlReq.responseXML.getElementsByTagName(\'result\')[0].firstChild.data + hashes;
+	    alert_message("Success", \'Data collection for \' + $ip_val + " complete.");
+	    }
+	    else{
+		alert_message("Failure", \'Data collection for \' + $ip_val + " failed.");
+	    }
+	     break;
+        default:
+            break;
+        }
+    }
+
+// Make the request
+    var complete_URL = URL + "?ip=" + $ip_val + "&command=" + $command;
+    xmlReq.open (\'GET\', complete_URL, true);
+    xmlReq.send (null);
+}
+
+function checkCollectForStatus($ip_val, $tc_id, $command)
+{
+	
+	loadData(\'getInfo.cgi\', $ip_val, $tc_id, $command);
+	
+		
+	return false;
+}
+
 </script>
 '; ?>
 

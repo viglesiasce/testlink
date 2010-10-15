@@ -4,13 +4,14 @@
  * This script is distributed under the GNU General Public License 2 or later.
  *
  * @filesource $RCSfile: reqEdit.php,v $
- * @version $Revision: 1.52 $
- * @modified $Date: 2010/08/12 14:00:16 $ by $Author: asimon83 $
+ * @version $Revision: 1.55 $
+ * @modified $Date: 2010/09/15 18:47:59 $ by $Author: franciscom $
  * @author Martin Havlat
  *
  * Screen to view existing requirements within a req. specification.
  *
  * @internal revision
+ *  20100915 - Julian - BUGID 3777 - Allow to insert last req doc id when creating requirement
  *  20100811 - asimon - fixed two warnings because of undefined variables in template
  *  20100808 - aismon - added logic to refresh filtered tree on action
  *  20100319 - asimon - BUGID 3307 - set coverage to 0 if null, to avoid database errors with null value
@@ -53,7 +54,7 @@ if(method_exists($commandMgr,$pFn))
 {
 	$op = $commandMgr->$pFn($args,$_REQUEST);
 }
-renderGui($args,$gui,$op,$templateCfg,$editorCfg);
+renderGui($args,$gui,$op,$templateCfg,$editorCfg,$db);
 
 
 /**
@@ -113,7 +114,7 @@ function init_args()
  * 
  *
  */
-function renderGui(&$argsObj,$guiObj,$opObj,$templateCfg,$editorCfg)
+function renderGui(&$argsObj,$guiObj,$opObj,$templateCfg,$editorCfg,&$dbHandler)
 {
     $smartyObj = new TLSmarty();
     $renderType = 'none';
@@ -196,6 +197,10 @@ function renderGui(&$argsObj,$guiObj,$opObj,$templateCfg,$editorCfg)
             } 
         break;
     }
+    
+    $req_mgr = new requirement_mgr($dbHandler);
+    $guiObj->last_doc_id = $req_mgr->get_last_doc_id_for_testproject($argsObj->tproject_id);
+	$guiObj->doAction = $argsObj->doAction;
 
     switch($renderType)
     {
@@ -247,7 +252,7 @@ function initialize_gui(&$dbHandler,&$argsObj,&$commandMgr)
 	// 20100811 - asimon - fixed two warnings because of undefined variables in template
 	$gui->req_version_id = $argsObj->req_version_id;
 	$gui->preSelectedType = TL_REQ_TYPE_USE_CASE;
-	
+
 	return $gui;
 }
 

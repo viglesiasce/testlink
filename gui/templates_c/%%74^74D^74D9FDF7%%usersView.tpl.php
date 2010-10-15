@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:25:36
+<?php /* Smarty version 2.6.26, created on 2010-10-14 16:20:27
          compiled from usermanagement/usersView.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'usermanagement/usersView.tpl', 18, false),array('modifier', 'escape', 'usermanagement/usersView.tpl', 128, false),)), $this); ?>

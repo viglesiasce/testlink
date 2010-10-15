@@ -1,8 +1,10 @@
 {*
 TestLink Open Source Project - http://testlink.sourceforge.net/
-$Id: reqEdit.tpl,v 1.27 2010/08/07 22:43:12 asimon83 Exp $
+$Id: reqEdit.tpl,v 1.31 2010/10/06 10:26:22 asimon83 Exp $
 Purpose: smarty template - create / edit a req  
 internal revision
+20101006 - asimon - BUGID 3854
+20100915 - Julian - BUGID 3777 - Allow to insert last req doc id when creating requirement
 20100808 - asimon - added logic to refresh filtered tree on changes
 20100502 - franciscom - BUGID 3413: removed debug info
 20100319 - asimon - BUGID 1748 - added logic to add and remove requirement relations
@@ -16,7 +18,8 @@ internal revision
 {lang_get var='labels' 
           s='show_event_history,btn_save,cancel,status,scope,warning,req_doc_id,
              title,warning_expected_coverage,type,warning_expected_coverage_range,
-             warning_empty_reqdoc_id,expected_coverage,warning_empty_req_title'}
+             warning_empty_reqdoc_id,expected_coverage,warning_empty_req_title,
+             insert_last_req_doc_id'}
 {assign var="cfg_section" value=$smarty.template|basename|replace:".tpl":"" }
 {config_load file="input_dimensions.conf" section=$cfg_section}
 
@@ -152,6 +155,11 @@ function configure_attr(oid_type,cfg)
   }
 } // configure_attr
 
+function insert_last_doc_id() {
+	var last_id = document.getElementById('last_doc_id').value;
+	var field = document.getElementById('reqDocId');
+	field.value = last_id;
+}
 	{/literal}
 </script>
 </head>
@@ -171,7 +179,8 @@ function configure_attr(oid_type,cfg)
 	<input type="hidden" name="req_spec_id" value="{$gui->req_spec_id}" />
 	<input type="hidden" name="requirement_id" value="{$gui->req_id}" />
 	<input type="hidden" name="req_version_id" value="{$gui->req_version_id}" />
-
+	<input type="hidden" name="last_doc_id" id="last_doc_id" value="{$gui->last_doc_id|escape}" />
+	
   	<div class="labelHolder"><label for="reqDocId">{$labels.req_doc_id}</label>
   	   		{if $gui->grants->mgt_view_events eq "yes" and $gui->req_id}
 			<img style="margin-left:5px;" class="clickable" src="{$smarty.const.TL_THEME_IMG_DIR}/question.gif" 
@@ -179,10 +188,21 @@ function configure_attr(oid_type,cfg)
 			     alt="{$labels.show_event_history}" title="{$labels.show_event_history}"/>
 		{/if}
   	</div>
+  	
 	<div><input type="text" name="reqDocId" id="reqDocId"
   		        size="{#REQ_DOCID_SIZE#}" maxlength="{#REQ_DOCID_MAXLEN#}"
   		        value="{$gui->req.req_doc_id|escape}" />
   				{include file="error_icon.tpl" field="reqDocId"}
+  				
+  				{* BUGID 3777 *}
+  				{if $gui->req_cfg->allow_insertion_of_last_doc_id && $gui->last_doc_id != null
+  				    && ($gui->doAction == 'create' || $gui->doAction == 'doCreate')}
+	  				<span onclick="javascript:insert_last_doc_id();" >
+	  				<img src="{$smarty.const.TL_THEME_IMG_DIR}/insert_step.png"
+	  				     title='{$labels.insert_last_req_doc_id}: "{$gui->last_doc_id|escape}"'/>
+	  				</span>
+  				{/if}
+  				
   	</div>
  	<br />
  	<div class="labelHolder"> <label for="req_title">{$labels.title}</label></div>
@@ -249,10 +269,11 @@ function configure_attr(oid_type,cfg)
      <br />
   	{/if}
 
+	{* BUGID 3854 *}
 	<div class="groupBtn">
 		<input type="hidden" name="doAction" value="" />
 		<input type="submit" name="create_req" value="{$labels.btn_save}"
-	         onclick="doAction.value='{$gui->operation}'"/>
+	         onclick="doAction.value='{$gui->operation}';parent.frames['treeframe'].document.forms['filter_panel_form'].submit();"/>
 		<input type="button" name="go_back" value="{$labels.cancel}" 
 			onclick="javascript: history.back();"/>
 	</div>

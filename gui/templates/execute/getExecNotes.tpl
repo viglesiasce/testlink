@@ -14,7 +14,7 @@ rev : 20100129 - BUGID 3113 - franciscom
 </head>
 <body>
 {if $webeditorType == 'none'}
-<textarea {$readonly} name="notes" cols="100" rows="20" style="background:transparent;">
+<textarea {$readonly} name="notes" cols="70" rows="10" style="background:transparent;">
 {$notes|escape}
 </textarea>
 {else}

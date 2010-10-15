@@ -2,7 +2,7 @@
 $Revision: 1.5 $
 $Date: 2010/02/20 09:06:07 $
 $Author: franciscom $
-$Name: testlink_1_9_beta6 $
+$Name:  $
 */
 
 -- update config data

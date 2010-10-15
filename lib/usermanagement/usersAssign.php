@@ -11,10 +11,12 @@
  * 
  * @package 	TestLink
  * @copyright 	2005-2010, TestLink community
- * @version    	CVS: $Id: usersAssign.php,v 1.29 2010/03/14 09:18:07 franciscom Exp $
+ * @version    	CVS: $Id: usersAssign.php,v 1.32 2010/10/04 13:22:25 asimon83 Exp $
  * @link 		http://www.teamst.org/index.php
  *
  * @internal Revisions:
+ *  20101004 - asimon - adapted to new interface of getTestersForHtmlOptions
+ *  20100930 - franciscom - BUGID 2344: Private test project
  *	20100313 - erikeloff - BUGID 3271 - show only active users on assign to project/test plan
  *	20091129 - franciscom - ISSUE 2554 - colouring
  *
@@ -122,6 +124,10 @@ $smarty->assign('gui',$gui);
 $smarty->display($templateCfg->template_dir . $templateCfg->default_template);
 
 
+/**
+ * 
+ *
+ */
 function init_args()
 {
 	$iParams = array(
@@ -273,11 +279,25 @@ function getTestProjectEffectiveRoles($dbHandler,&$objMgr,&$argsObj,$users)
 			$argsObj->featureID = $features[0]['id'];
 		}	
 	}
+	
+	// get private/public status for feature2check
+	$loop2do = sizeof($testprojects);
+	$featureIsPublic = 1;
+	for($ppx=0; $ppx < $loop2do; $ppx++)
+	{
+		if( $testprojects[$ppx]['id'] == $argsObj->featureID )
+		{
+			$featureIsPublic = $testprojects[$ppx]['is_public'];
+			break;
+		}
+	}
+	
 	foreach($users as &$user)
 	{
 		$user->readTestProjectRoles($dbHandler,$argsObj->featureID);
 	}
-	$effectiveRoles = get_tproject_effective_role($dbHandler,$argsObj->featureID,null,$users);
+	$effectiveRoles = get_tproject_effective_role($dbHandler,array('id' => $argsObj->featureID, 'is_public' => $featureIsPublic),
+												  null,$users);
 	return array($effectiveRoles,$features,$argsObj->featureID);
 }
 
@@ -343,7 +363,11 @@ function getTestPlanEffectiveRoles(&$dbHandler,&$tplanMgr,$tprojectMgr,&$argsObj
 		$user->readTestProjectRoles($dbHandler,$argsObj->testprojectID);
 		$user->readTestPlanRoles($dbHandler,$argsObj->featureID);
 	}
-	$effectiveRoles = get_tplan_effective_role($dbHandler,$argsObj->featureID,$argsObj->testprojectID,null,$users);
+
+	// 20101004 - asimon - adapted to new interface of getTestersForHtmlOptions
+	$tproject_info = $tprojectMgr->get_by_id($argsObj->tproject_id);
+
+	$effectiveRoles = get_tplan_effective_role($dbHandler,$argsObj->featureID,$tproject_info,null,$users);
  	return array($effectiveRoles,$features,$argsObj->featureID);
 }
 

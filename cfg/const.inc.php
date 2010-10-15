@@ -9,7 +9,7 @@
  * @package 	TestLink
  * @author 		Martin Havlat
  * @copyright 	2007-2009, TestLink community 
- * @version    	CVS: $Id: const.inc.php,v 1.153 2010/08/31 19:59:24 franciscom Exp $
+ * @version    	CVS: $Id: const.inc.php,v 1.159 2010/10/02 17:24:19 franciscom Exp $
  * @see 		config.inc.php
  *
  * @internal 
@@ -21,7 +21,7 @@
 /* [GLOBAL SETTINGS] */
 
 /** TestLink Release version (MUST BE changed before the release day) */
-define('TL_VERSION', '1.9'); 
+define('TL_VERSION', '1.9 (RC 1 - Development)'); 
 
 // needed to avoid problems in install scripts that do not include config.inc.php
 // want to point to root install dir, need to remove fixed part
@@ -407,7 +407,6 @@ $tlCfg->results['status_code'] = array (
 	'blocked'       => 'b',
 	'passed'        => 'p',
 	'not_run'       => 'n',
-	'in_progress'   => 'i',
 	'not_available' => 'x',
 	'unknown'       => 'u',
 	'all'           => 'a'
@@ -431,8 +430,7 @@ $tlCfg->results['status_label'] = array(
 	'not_run'  		=> 'test_status_not_run',
 	'passed'   		=> 'test_status_passed',
 	'failed'   		=> 'test_status_failed',
-	'blocked'  		=> 'test_status_blocked',
-	'in_progress'           => 'test_status_in_progress'
+	'blocked'  		=> 'test_status_blocked'
 //	'all'      		=> 'test_status_all_status',
 //	'not_available' => 'test_status_not_available',
 //	'unknown'       => 'test_status_unknown'
@@ -459,8 +457,7 @@ $tlCfg->results['status_label_for_exec_ui'] = array(
 	'not_run'  		=> 'test_status_not_run',
 	'passed'  		=> 'test_status_passed',
 	'failed'  		=> 'test_status_failed',
-	'blocked' 		=> 'test_status_blocked',
-	'in_progress'           => 'test_status_in_progress'
+	'blocked' 		=> 'test_status_blocked'
 );
 
 /** 
@@ -477,8 +474,7 @@ $tlCfg->results['charts']['status_colour'] = array(
  	'not_run'  		=> '000000',
 	'passed'   		=> '006400',
 	'failed'   		=> 'B22222',
-	'blocked'  		=> '00008B',
-	'in_progress'           => '808000'
+	'blocked'  		=> '00008B'
 );
 
 /*
@@ -572,6 +568,13 @@ $tlCfg->priority_levels = array(
 	LOW => 1
 );
 
+/** @var array importance levels */
+$tlCfg->importance_levels = array( 
+	HIGH => 3,
+	MEDIUM => 2,
+	LOW => 1
+);
+
 /** @var integer Default Test case Importance offered in GUI */
 $tlCfg->testcase_importance_default = MEDIUM;
 
@@ -636,6 +639,7 @@ define('TL_REQ_STATUS_REWORK','W');
 define('TL_REQ_STATUS_FINISH','F');
 
 // key: status; value: text label
+$tlCfg->req_cfg = new stdClass();
 $tlCfg->req_cfg->status_labels = array(TL_REQ_STATUS_VALID => 'review_status_valid', 
 					                   TL_REQ_STATUS_NOT_TESTABLE => 'req_status_not_testable',
 					                   TL_REQ_STATUS_DRAFT => 'req_status_draft',
@@ -654,6 +658,9 @@ $tlCfg->req_cfg->status_labels = array(TL_REQ_STATUS_VALID => 'review_status_val
  * <li><b>Non-functional</b> - performance, infrastructure, robustness, security, safety, etc.</li>
  * <li><b>Constrain</b> - Constraints and Limitations</li>
  * </ul>
+ *
+ * CRITIC: DO NOT REMOVE ANY OF THIS CONSTANTS, BECAUSE TL EXPECT THIS TO BE DEFINED
+ *
  * @since TestLink 1.9
  **/
 define('TL_REQ_TYPE_INFO', 1);
@@ -769,8 +776,7 @@ define('TL_REQ_SPEC_TYPE_SYSTEM_REQ_SPEC', 3);
 // define('TL_REQ_SPEC_TYPE_CULTURAL_AND_POLITICAL',8);
 // define('TL_REQ_SPEC_TYPE_LEGAL',9);
 
-
-
+$tlCfg->req_spec_cfg = new stdClass();
 $tlCfg->req_spec_cfg->type_labels = array(
 		TL_REQ_SPEC_TYPE_SECTION => 'req_spec_type_section', 
 		TL_REQ_SPEC_TYPE_USER_REQ_SPEC => 'req_spec_type_user_req_spec',
@@ -829,6 +835,8 @@ define('VALID_REQ', 'v');
 // Format string follows date() spec - see PHP Manual
 // We can not use $g_timestamp_format, because format strings for date() and strftime() 
 // uses same LETTER with different meanings (Bad Luck!)
+$tlCfg->gui = new stdClass();
+$tlCfg->gui->custom_fields = new stdClass();
 $tlCfg->gui->custom_fields->time_format = 'H:i:s';                                                       
 
 
@@ -919,8 +927,26 @@ $tlCfg->guiTopMenu[7] = array(
 ); 
 
 
-/**  @TODO havlatm: remove const; in addition the text should refer to Install manual */  
 define( 'PARTIAL_URL_TL_FILE_FORMATS_DOCUMENT',	'docs/tl-file-formats.pdf');
 
+
+// Configure Charts dimension
+$tlCfg->results['charts']['dimensions'] = 
+	array('topLevelSuitesBarChart'  => array('chartTitle' => 'results_top_level_suites',
+											 'XSize' => 900,'YSize' => 400,'beginX' => 40, 'beginY' => 100,
+											 'legendXAngle' => 35 ),
+	      'keywordBarChart'  => array('chartTitle' => 'results_by_keyword',
+							 		  'XSize' => 900,'YSize' => 400,'beginX' => 40, 'beginY' => 100,
+									  'legendXAngle' => 25 ),
+	      'ownerBarChart'  => array('chartTitle' => 'results_by_tester',
+							 		  'XSize' => 900,'YSize' => 400,'beginX' => 40, 'beginY' => 100,
+									  'legendXAngle' => 35 ),
+	      'overallPieChart'  => array('chartTitle' => 'results_by_tester',
+							 		  'XSize' => 400,'YSize' => 400,'radius' => 150, 'legendX' => 10, 'legendY' => 15 ),
+	      'platformPieChart'  => array('chartTitle' => 'results_by_tester',
+							 		  'XSize' => 400,'YSize' => 400,'radius' => 150, 'legendX' => 10, 'legendY' => 15 )
+	);							
+	
+		
 // ----- END ----------------------------------------------------------------------------
 ?>

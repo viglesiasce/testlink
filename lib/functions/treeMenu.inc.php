@@ -8,11 +8,18 @@
  * @package 	TestLink
  * @author 		Martin Havlat
  * @copyright 	2005-2009, TestLink community 
- * @version    	CVS: $Id: treeMenu.inc.php,v 1.144 2010/08/21 13:38:25 asimon83 Exp $
+ * @version    	CVS: $Id: treeMenu.inc.php,v 1.153 2010/10/03 19:53:20 franciscom Exp $
  * @link 		http://www.teamst.org/index.php
  * @uses 		config.inc.php
  *
  * @internal Revisions:
+ *	20101003 - franciscom - generateExecTree() - added option remove_empty_nodes_of_type on get_subtree() call
+ *  20100929 - asimon - BUGID 3814: fixed keyword filtering with "and" selected as type
+ *  20100926 - amitkhullar - BUGID 3806 - Filter not working in tree menu for Assign TC Execution
+ *	20100912 - franciscom - BUGID 3772: MS SQL - LIMIT CLAUSE can not be used
+ *	20100908 - Julian - BUGID 2877 - Custom Fields linked to Req versions
+ *                                 - Custom Fields linked to TC versions
+ *	20100908 - franciscom - extjs_renderExecTreeNodeOnOpen() - 'tlNodeType' -> testlink_node_type				 	 
  *  20100820 - asimon - refactoring for less redundant checks and better readibility of code
  *                      in generateExecTree()
  *	20100812 - franciscom - get_filtered_req_map() - BUGID 3671
@@ -799,6 +806,8 @@ function renderTreeNode($level,&$node,$hash_id_descr,
  * - Remove Test cases from test plan
  * 
  * @internal Revisions:
+ *
+ *	20101003 - franciscom - added option remove_empty_nodes_of_type on get_subtree() call
  *  20100820 - asimon - refactoring for less redundant checks and better readibility
  *  20100719 - asimon - BUGID 3406 - user assignments per build:
  *                                   filter assigned test cases by setting_build
@@ -879,7 +888,15 @@ function generateExecTree(&$db,&$menuUrl,$tproject_id,$tproject_name,$tplan_id,
 	$nt2exclude_children = array('testcase' => 'exclude_my_children',
 		                         'requirement_spec'=> 'exclude_my_children');
 	
-  	$my['options']=array('recursive' => true,
+  	// 20101003 - franciscom
+  	// remove test spec, test suites (or branches) that have ZERO test cases linked to test plan
+  	// 
+  	// IMPORTANT:
+  	// using 'order_cfg' => array("type" =>'exec_order',"tplan_id" => $tplan_id))
+  	// makes the magic of ignoring test cases not linked to test plan.
+  	// This unexpected bonus can be useful on export test plan as XML.
+  	//
+  	$my['options']=array('recursive' => true, 'remove_empty_nodes_of_type' => $tree_manager->node_descr_id['testsuite'],
   	                     'order_cfg' => array("type" =>'exec_order',"tplan_id" => $tplan_id));
  	$my['filters'] = array('exclude_node_types' => $nt2exclude,
  	                       'exclude_children_of' => $nt2exclude_children);
@@ -925,7 +942,8 @@ function generateExecTree(&$db,&$menuUrl,$tproject_id,$tproject_name,$tplan_id,
 			
 			$tplan_tcases = $tplan_mgr->get_linked_tcversions($tplan_id,$linkedFilters,$opt);
 			
-			if($tplan_tcases && $doFilterByKeyword && $keywordsFilterType == 'AND')
+			// BUGID 3814: fixed keyword filtering with "and" selected as type
+			if($tplan_tcases && $doFilterByKeyword && $keywordsFilterType == 'And')
 			{
 				$filteredSet = $tcase_mgr->filterByKeyword(array_keys($tplan_tcases),$keyword_id,$keywordsFilterType);
 
@@ -1003,10 +1021,16 @@ function generateExecTree(&$db,&$menuUrl,$tproject_id,$tproject_name,$tplan_id,
 				       " AND testplan_id = {$tplan_id} " .
 					   " AND platform_id = {$info['platform_id']} " .
 					   " AND build_id = {$filters->setting_build} " .
-					   " ORDER BY execution_ts DESC LIMIT 1 ";
+					   " ORDER BY execution_ts DESC ";
 				
+				// BUGID 3772: MS SQL - LIMIT CLAUSE can not be used
+				// get_recordset($sql,$fetch_mode = null,$limit = -1)
 				$result = null;
-				$result = $db->fetchOneValue($sql);
+				$rs = $db->get_recordset($sql,null,1);
+				if( !is_null($rs) )
+				{
+					$result = $rs[0]['status'];	
+				}
 				
 				if (is_null($result)) {
 					// if no value can be loaded it has to be set to not run
@@ -1028,9 +1052,7 @@ function generateExecTree(&$db,&$menuUrl,$tproject_id,$tproject_name,$tplan_id,
 		$assignedTo = $include_unassigned ? null : $assignedTo;
 		
 		$pnFilters = array('assignedTo' => $assignedTo);
-		$keys2init = array('filter_testcase_name',
-		                   'filter_execution_type',
-		                   'filter_priority');
+		$keys2init = array('filter_testcase_name','filter_execution_type','filter_priority');
 		
 		foreach ($keys2init as $keyname) {
 			$pnFilters[$keyname] = isset($filters->{$keyname}) ? $filters->{$keyname} : null;
@@ -1323,7 +1345,8 @@ function extjs_renderExecTreeNodeOnOpen(&$node,$node_type,$tcase_node,$tc_action
 	
 	// $doIt=true;
 	// custom Property that will be accessed by EXT-JS using node.attributes
-   	$node['tlNodeType'] = $node_type;
+   	// 20100908 - tlNodeType -> 'testlink_node_type'
+   	$node['testlink_node_type'] = $node_type;
 	switch($node_type)
 	{
 		case 'testproject':
@@ -1430,7 +1453,7 @@ function filter_by_cf_values(&$tcase_tree, &$cf_hash, &$db, $node_type_testsuite
 	static $debugMsg = null;
 	
 	if (!$debugMsg) {
-		$tables = tlObject::getDBTables('cfield_design_values');
+		$tables = tlObject::getDBTables(array('cfield_design_values','nodes_hierarchy'));
 		$debugMsg = 'Function: ' . __FUNCTION__;
 	}
 	
@@ -1471,46 +1494,23 @@ function filter_by_cf_values(&$tcase_tree, &$cf_hash, &$db, $node_type_testsuite
 			// node is testcase, check if we need to delete it
 			
 			$passed = false;
+			//BUGID 2877 - Custom Fields linked to TC versions
+			$sql = " /* $debugMsg */ SELECT CFD.value FROM {$tables['cfield_design_values']} CFD," .
+				   " {$tables['nodes_hierarchy']} NH" .
+				   " WHERE CFD.node_id = NH.id" .
+				   " AND NH.parent_id = {$node['id']} AND value in ('" . implode("' , '",$cf_hash) . "')";
 			
-			foreach ($cf_hash as $cf_id => $cf_value)
-			{
-				// there will never be more than one record that has a field_id / node_id combination
-				$sql = " /* $debugMsg */ SELECT value FROM {$tables['cfield_design_values']} " .
-				       " WHERE field_id = $cf_id " .
-				       " AND node_id = {$node['id']} ";
-				
-				$result = $db->exec_query($sql);
-				$row = $db->fetch_array($result);
-				
-				// push both to arrays so we can compare
-				$possibleValues = explode ('|', $row['value']);
-				$valuesSelected = explode ('|', $cf_value);
-				
-				// we want to match any selected item from list and checkboxes.
-				if ( count($valuesSelected) ) {
-					foreach ($valuesSelected as $vs_id => $vs_value) {
-						$found = array_search($vs_value, $possibleValues);
-						if (is_int($found)) {
-							$passed = true;
-						} else {
-							$passed = false;
-							break;
-						}
-					}
-				}
-
-				// jumping out of foreach here creates an AND search
-				// removing this if would cause OR search --> the first found value counts
-				if (!$passed) {
-					break;
-				}
-			}
+			$rows = $db->fetchRowsIntoMap($sql,'value');
+			
+			//if there exist as many rows as custom fields to be filtered by
+			//the tc does meet the criteria
+			$passed = (count($rows) == count($cf_hash)) ? true : false;
 			
 			// now delete node if no match was found
 			if (!$passed) {
 				unset($tcase_tree[$key]);
 				$node_deleted = true;
-			}			
+			}
 		}
 	}
 	
@@ -1658,23 +1658,29 @@ function filter_by_status_for_build(&$tplan_mgr,&$tcase_set,$tplan_id,$filters) 
  * @param array $filters filters to apply to test case set
  * @return array new tcase_set
  */
-function filter_by_status_for_last_execution(&$db, &$tplan_mgr,&$tcase_set,$tplan_id,$filters) {
+function filter_by_status_for_last_execution(&$tplan_mgr,&$tcase_set,$tplan_id,$filters) {
+	testlinkInitPage($db); //BUGID 3806
 	$tables = tlObject::getDBTables('executions');
 	$result_key = 'filter_result_result';
-	
-	$in_status = implode("','", $filters->$result_key);
+
+	// need to check if result is array because multiple can be selected in advanced filter mode
+	$in_status = is_array($filters->$result_key) ? implode("','", $filters->$result_key) : $filters->$result_key;
 	
 	foreach($tcase_set as $tc_id => $tc_info) {
 		// get last execution result for each testcase, 
+		
 		// if it differs from the result in tcase_set the tcase will be deleted from set
 		$sql = " SELECT status FROM {$tables['executions']} E " .
 			   " WHERE tcversion_id = {$tc_info['tcversion_id']} AND testplan_id = {$tplan_id} " .
 			   " AND platform_id = {$tc_info['platform_id']} " .
 			   " AND status = '{$tc_info['exec_status']}' " .
 			   " AND status IN ('{$in_status}') " .
-			   " ORDER BY execution_ts DESC limit 1 ";
+			   " ORDER BY execution_ts DESC "; 
+			   
 		$result = null;
-		$result = $db->fetchArrayRowsIntoMap($sql,'status');
+		
+		// BUGID 3772: MS SQL - LIMIT CLAUSE can not be used
+		$result = $db->fetchArrayRowsIntoMap($sql,'status',1);
 		
 		if (is_null($result)) {
 			unset($tcase_set[$tc_id]);
@@ -2014,7 +2020,8 @@ function get_filtered_req_map(&$db, $testproject_id, &$testproject_mgr, $filters
 		
 		foreach ($filters['filter_custom_fields'] as $cf_id => $cf_value) {
 			$sql .= " JOIN {$tables['cfield_design_values']} CF{$suffix} " .
-			        " ON CF{$suffix}.node_id = R.id ";
+			        //BUGID 2877 -  Custom Fields linked to Req versions
+			        " ON CF{$suffix}.node_id = RV.id " .
 			        " AND CF{$suffix}.field_id = {$cf_id} ";
 			
 			// single value or array?
@@ -2193,7 +2200,7 @@ function prepare_reqspec_treenode($level, &$node, &$filtered_map, &$map_id_nodet
 
 /**
  * Prepares nodes in the filtered requirement tree for displaying with ExtJS.
- * @author Andreas Simn
+ * @author Andreas Simon
  * @param array $node the object to prepare
  * @param array $filtered_map a map of filtered requirements, req that are not in this map will be deleted
  * @param array $map_id_nodetype array with node type IDs as keys, node type descriptions as values
@@ -2226,6 +2233,8 @@ function render_reqspec_treenode(&$node, &$filtered_map, &$map_id_nodetype) {
 	$node['leaf'] = false; // will be set to true later for requirement nodes
 	$node['position'] = isset($node['node_order']) ? $node['node_order'] : 0;
 	$node['cls'] = 'folder';
+	
+	// custom Properties that will be accessed by EXT-JS using node.attributes 
 	$node['testlink_node_type']	= $node_type;
 	$node['forbidden_parent'] = $forbidden_parents[$node_type];
 	

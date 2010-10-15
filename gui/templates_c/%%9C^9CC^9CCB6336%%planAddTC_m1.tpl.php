@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:35:58
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:47:59
          compiled from plan/planAddTC_m1.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'plan/planAddTC_m1.tpl', 22, false),array('function', 'config_load', 'plan/planAddTC_m1.tpl', 36, false),array('function', 'html_options', 'plan/planAddTC_m1.tpl', 96, false),array('function', 'localize_date', 'plan/planAddTC_m1.tpl', 316, false),array('modifier', 'escape', 'plan/planAddTC_m1.tpl', 80, false),)), $this); ?>
@@ -213,7 +213,7 @@ $this->_smarty_include(array('smarty_include_tpl_file' => "inc_refreshTreeWithFi
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
-	<?php endif; ?>
+<?php endif; ?>
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-29 16:46:10
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:28:01
          compiled from plan/buildView.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'basename', 'plan/buildView.tpl', 11, false),array('modifier', 'replace', 'plan/buildView.tpl', 11, false),array('modifier', 'escape', 'plan/buildView.tpl', 41, false),array('modifier', 'strip_tags', 'plan/buildView.tpl', 71, false),array('modifier', 'strip', 'plan/buildView.tpl', 71, false),array('modifier', 'truncate', 'plan/buildView.tpl', 71, false),array('function', 'config_load', 'plan/buildView.tpl', 12, false),array('function', 'lang_get', 'plan/buildView.tpl', 21, false),array('function', 'localize_date', 'plan/buildView.tpl', 72, false),)), $this); ?>

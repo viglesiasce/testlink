@@ -6,7 +6,7 @@
  * @package    TestLink
  * @author     Andreas Simon
  * @copyright  2006-2010, TestLink community
- * @version    CVS: $Id: tlTestCaseFilterControl.class.php,v 1.18 2010/08/30 09:14:59 asimon83 Exp $
+ * @version    CVS: $Id: tlTestCaseFilterControl.class.php,v 1.27 2010/10/05 14:17:08 asimon83 Exp $
  * @link       http://www.teamst.org/index.php
  * @filesource http://testlink.cvs.sourceforge.net/viewvc/testlink/testlink/lib/functions/tlTestCaseFilterControl.class.php?view=markup
  *
@@ -35,6 +35,13 @@
  *
  * @internal Revisions:
  *
+ * 20101005 - asimon - BUGID 3853: show_filters disabled still shows panel
+ * 20100929 - asimon - BUGID 3817
+ * 20100972 - asimon - additional fix to BUGID 3809
+ * 20100927 - amitkhullar - BUGID 3809 - Radio button based Custom Fields not working
+ * 20100901 - asimon - show button "show/hide cf" only when there are cfields
+ * 20100901 - asimon - re-enabled filter for assigned user when assigning testcases
+ * 20100901 - asimon - re-enable option "user_filter_default"
  * 20100830 - asimon - BUGID 3726: store user's selection of build and platform
  * 20100811 - asimon - BUGID 3566: show/hide CF
  * 20100810 - asimon - added TC ID filter for Test Cases
@@ -255,6 +262,8 @@ class tlTestCaseFilterControl extends tlFilterControl {
 	                                                          'filter_keywords',
 	                                                          'filter_priority',
 	                                                          'filter_execution_type',
+		                                                      // enabled user filter when assigning testcases
+		                                                      'filter_assigned_user',
 	                                                          'filter_custom_fields',
 	                                                          'filter_result'),
 	                                     'plan_add_mode' => array('filter_tc_id',
@@ -523,22 +532,30 @@ class tlTestCaseFilterControl extends tlFilterControl {
 
 		// iterate through all filters and activate the needed ones
 		$this->display_filters = false;
+
 		foreach ($this->all_filters as $name => $info) {
 			$init_method = "init_$name";
-			if (in_array($name, $this->mode_filter_mapping[$this->mode]) && 
-				method_exists($this, $init_method) && $this->configuration->{$name} == ENABLED) {
+			// BUGID 3853
+			if (in_array($name, $this->mode_filter_mapping[$this->mode]) &&
+				method_exists($this, $init_method) && $this->configuration->{$name} == ENABLED &&
+				$this->configuration->show_filters == ENABLED) {
 
 				$this->$init_method();
-				
+
 				// there is at least one filter item to display => switch panel on
 				$this->display_filters = true;
-				
+
 			} else {
 				// is not needed, deactivate filter by setting it to false in main array
 				// and of course also in active filters array
 				$this->filters[$name] = false;
 				$this->active_filters[$name] = null;
 			}
+		}
+
+		// special situation: the assigned user filter is in plan mode only needed for one feature
+		if ($this->mode == 'plan_mode' && $this->args->feature != 'tc_exec_assignment') {
+			$this->settings['filter_assigned_user'] = false;
 		}
 
 		// add the important settings to active filter array
@@ -1259,6 +1276,10 @@ class tlTestCaseFilterControl extends tlFilterControl {
 	} // end of method
 
 	private function init_filter_assigned_user() {
+		if (!$this->testproject_mgr) {
+			$this->testproject_mgr = new testproject($this->db);
+		}
+
 		$key = 'filter_assigned_user';
 		$unassigned_key = 'filter_assigned_user_include_unassigned';
 		$tplan_id = $this->settings['setting_testplan']['selected'];
@@ -1270,8 +1291,10 @@ class tlTestCaseFilterControl extends tlFilterControl {
 		} else {
 			$this->do_filtering = true;
 		}
-		
-		$all_testers = getTestersForHtmlOptions($this->db, $tplan_id, $this->args->testproject_id, null,
+
+		$tproject_info = $this->testproject_mgr->get_by_id($this->args->testproject_id);
+
+		$all_testers = getTestersForHtmlOptions($this->db, $tplan_id, $tproject_info, null,
 			                                    array(TL_USER_ANYBODY => $this->option_strings['any'],
 			                                          TL_USER_NOBODY => $this->option_strings['none'],
 			                                          TL_USER_SOMEBODY => $this->option_strings['somebody']),
@@ -1289,17 +1312,20 @@ class tlTestCaseFilterControl extends tlFilterControl {
 			$right_to_manage = $role->hasRight('testplan_planning');
 			
 			$simple = false;
-			//I REMOVED THIS CHECK BECAUSE I WANT ANYBODY TO BE ABLE TO SEE THE TESTCASES IN A TESTPLAN
-			//
-			//if (isset($simple_tester_roles[$role->dbID]) || ($right_to_execute && !$right_to_manage)) {
-			//	// user is only simple tester and may not see/execute everything
-			//	$simple = true;
-			//}
-			
+			if (isset($simple_tester_roles[$role->dbID]) || ($right_to_execute && !$right_to_manage)) {
+				// user is only simple tester and may not see/execute everything
+				$simple = true;
+			}
+
 			$view_mode = $simple ? $this->configuration->exec_cfg->view_mode->tester : 'all';
 			
 			if ($view_mode != 'all') {
 				$visible_testers = (array)$this->user->getDisplayName();
+				$selection = (array)$this->user->dbID;
+			}
+
+			// re-enable option "user_filter_default"
+			if (!$selection && $this->configuration->exec_cfg->user_filter_default == 'logged_user') {
 				$selection = (array)$this->user->dbID;
 			}
 		}
@@ -1330,6 +1356,10 @@ class tlTestCaseFilterControl extends tlFilterControl {
 	private function init_filter_custom_fields() {
 		
 		$key = 'filter_custom_fields';
+
+		$this->filters[$key] = false;
+		$this->active_filters[$key] = null;
+
 		if (!$this->exec_cf_mgr) {
 			$this->exec_cf_mgr = new exec_cfield_mgr($this->db, $this->args->testproject_id);
 		}
@@ -1372,7 +1402,7 @@ class tlTestCaseFilterControl extends tlFilterControl {
 			
 			// no magic number: 1 because of course only one replacement per value shall be done
 			$limit = 1;
-	
+
 			foreach ($selection as $cf_id => $value) {
 				
 				$cf_html_name = $field_names[$cf_id]['cf_name'];
@@ -1386,7 +1416,7 @@ class tlTestCaseFilterControl extends tlFilterControl {
 						$replacement = '${1} selected ${2}';
 						$menu = preg_replace($pattern, $replacement, $menu, $limit);
 					break;
-
+					
 					case 'checkbox':
 					case 'multiselection list':
 						// this is similar to single selection list, but a bit more complicated
@@ -1400,8 +1430,14 @@ class tlTestCaseFilterControl extends tlFilterControl {
 							$menu = preg_replace($pattern, $replacement, $menu, $limit);
 						}
 					break;
-					
-					
+
+					// BUGID 3809
+					case 'radio':
+						$pattern = '/(.*name="' . $cf_html_name . '.*value="' . $value . '")(.*)/';
+						$replacement = '${1} checked="checked" ${2}';
+						$menu = preg_replace($pattern, $replacement, $menu, $limit);
+					break;
+
 					case 'numeric':
 					case 'float':
 					case 'email':
@@ -1421,10 +1457,13 @@ class tlTestCaseFilterControl extends tlFilterControl {
 		}
 
 		// BUGID 3566: show/hide CF
-		$this->filters[$key] = array('items' => $menu, 
-			                         'btn_label' => $btn_label, 
-			                         'collapsed' => $collapsed);
+		if ($field_names) {
+			$this->filters[$key] = array('items' => $menu,
+										 'btn_label' => $btn_label,
+										 'collapsed' => $collapsed);
+		}
 		$this->active_filters[$key] = $selection;
+		
 	} // end of method
 
 	private function init_filter_result() {
@@ -1458,13 +1497,18 @@ class tlTestCaseFilterControl extends tlFilterControl {
 		$result_selection = $this->args->{$result_key};
 		$method_selection = $this->args->{$method_key};
 		$build_selection = $this->args->{$build_key};
-		
+
 		// default values
 		$default_filter_method = $this->configuration->filter_methods['default_type'];
 		$any_result_key = $this->configuration->results['status_code']['all'];
 		$newest_build_id = $this->testplan_mgr->get_max_build_id($tplan_id, testplan::GET_ACTIVE_BUILD);
-		
-		if (is_null($result_selection) || is_null($method_selection) || $this->args->reset_filters) {
+
+		// BUGID 3817
+		if (is_null($method_selection)) {
+			$method_selection = $default_filter_method;
+		}
+
+		if (is_null($result_selection) || $this->args->reset_filters) {
 			// no selection yet or filter reset requested
 			$result_selection = $any_result_key;
 			$method_selection = $default_filter_method;
@@ -1503,6 +1547,9 @@ class tlTestCaseFilterControl extends tlFilterControl {
 			$this->active_filters[$result_key] = null;
 			$this->active_filters[$method_key] = null;
 			$this->active_filters[$build_key] = null;
+			$this->filters[$key][$result_key]['selected'] = $any_result_key;
+			$this->filters[$key][$method_key]['selected'] = $default_filter_method;
+			$this->filters[$key][$build_key]['selected'] = $newest_build_id;
 		} else {
 			$this->active_filters[$result_key] = $result_selection;
 			$this->active_filters[$method_key] = $method_selection;

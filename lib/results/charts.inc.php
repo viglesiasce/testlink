@@ -1,11 +1,14 @@
 <?php
 /** 
  * TestLink Open Source Project - http://testlink.sourceforge.net/ 
- * $Id: charts.inc.php,v 1.3 2009/12/08 16:11:05 havlat Exp $ 
+ * $Id: charts.inc.php,v 1.6 2010/09/14 19:44:24 franciscom Exp $ 
  *
  * @author	Francisco Mancardi - francisco.mancardi@gmail.com
  *
- * rev: 20081113 - franciscom - BUGID 1848
+ * @internal revisions
+ *
+ * 20100912 - franciscom - BUGID 2215
+ * 20081113 - franciscom - BUGID 1848
  *
  */
 require_once('../../config.inc.php');
@@ -26,8 +29,8 @@ function createChart(&$info,&$cfg)
 {
     $backgndColor=array('R' => 255, 'G' => 255, 'B' => 254);
     $chartCfg=new stdClass();
-    $chartCfg->XSize=$info->canDraw ? $cfg->XSize : 600;
-    $chartCfg->YSize=$info->canDraw ? $cfg->YSize : 50;                    
+    $chartCfg->XSize = $info->canDraw ? $cfg->XSize : 600;
+    $chartCfg->YSize = $info->canDraw ? $cfg->YSize : 50;                    
     
     $chartCfg->border = new stdClass();
     $chartCfg->border->width = 1;
@@ -35,13 +38,30 @@ function createChart(&$info,&$cfg)
 
     $chartCfg->graphArea = new stdClass();
     $chartCfg->graphArea->color=array('R' => 213, 'G' => 217, 'B' => 221);
-    $chartCfg->graphArea->beginX = 40; 
-    $chartCfg->graphArea->beginY = 40;
+    
+    $chartCfg->graphArea->beginX = property_exists($cfg,'beginX') ? $cfg->beginX : 40; 
+    $chartCfg->graphArea->beginY = property_exists($cfg,'beginY') ? $cfg->beginY : 100; 
+    
     $chartCfg->graphArea->endX = $chartCfg->XSize - $chartCfg->graphArea->beginX;
     $chartCfg->graphArea->endY = $chartCfg->YSize - $chartCfg->graphArea->beginY;
 
     $chartCfg->scale=new stdClass();
-    $chartCfg->scale->mode=SCALE_ADDALL;
+
+	// 20100914 - franciscom 
+	// After reading documentation
+	// drawScale
+	// Today there is four way of computing scales :
+	//
+    // - Getting Max & Min values per serie : ScaleMode = SCALE_NORMAL
+    // - Like the previous one but setting the min value to 0 : ScaleMode = SCALE_START0
+    // - Getting the series cumulative Max & Min values : ScaleMode = SCALE_ADDALL
+    // - Like the previous one but setting the min value to 0 : ScaleMode = SCALE_ADDALLSTART0
+	//
+	// This will depends on the kind of graph you are drawing, today only the stacked bar chart 
+	// can use the SCALE_ADDALL mode. 
+	// Drawing graphs were you want to fix the min value to 0 you must use the SCALE_START0 option. 
+	//
+    $chartCfg->scale->mode = SCALE_ADDALLSTART0;
     $chartCfg->scale->color = array('R' => 0, 'G' => 0, 'B' => 0);
     $chartCfg->scale->drawTicks = TRUE;
     $chartCfg->scale->angle=$cfg->scale->legendXAngle;
@@ -61,6 +81,7 @@ function createChart(&$info,&$cfg)
     $chartCfg->title->color=array('R' => 0, 'G' => 0, 'B' => 255);
     
     $Test = new pChart($chartCfg->XSize,$chartCfg->YSize);
+    $Test->reportWarnings("GD");
     $Test->drawBackground($backgndColor['R'],$backgndColor['G'],$backgndColor['B']);
     $Test->drawGraphArea($chartCfg->graphArea->color['R'],
                          $chartCfg->graphArea->color['G'],$chartCfg->graphArea->color['B']);

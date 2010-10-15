@@ -9,6 +9,8 @@
   'STEP_NUMBER_MAXLEN' => '2',
   'SCOPE_TRUNCATE' => '100',
   'SCOPE_SHORT_TRUNCATE' => '30',
+  'FILENAME_MAXLEN' => '50',
+  'FILENAME_SIZE' => '50',
   'TC_TITLE_SIZE' => '32',
   'TC_TITLE_MAXLEN' => '32',
   'REQ_NAME_SIZE' => '35',

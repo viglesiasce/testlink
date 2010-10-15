@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-28 10:20:16
+<?php /* Smarty version 2.6.26, created on 2010-10-14 16:20:40
          compiled from usermanagement/usersEdit.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'config_load', 'usermanagement/usersEdit.tpl', 9, false),array('function', 'lang_get', 'usermanagement/usersEdit.tpl', 14, false),array('function', 'html_options', 'usermanagement/usersEdit.tpl', 235, false),array('modifier', 'escape', 'usermanagement/usersEdit.tpl', 170, false),array('modifier', 'count_characters', 'usermanagement/usersEdit.tpl', 230, false),)), $this); ?>

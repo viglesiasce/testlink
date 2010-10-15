@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-24 17:53:19
+<?php /* Smarty version 2.6.26, created on 2010-10-12 11:56:02
          compiled from inc_copyrightnotice.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'inc_copyrightnotice.tpl', 2, false),)), $this); ?>

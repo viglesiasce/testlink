@@ -1,10 +1,11 @@
 {* 
 TestLink Open Source Project - http://testlink.sourceforge.net/
-$Id: reqViewVersions.tpl,v 1.15 2010/03/22 17:53:09 asimon83 Exp $
+$Id: reqViewVersions.tpl,v 1.17 2010/09/08 13:21:53 mx-julian Exp $
 Purpose: view requirement with version management
          Based on work tcViewer.tpl
 
 rev:
+  20100906 - franciscom - BUGID 2877 - Custom Fields linked to Requirement Versions
   20100319 - asimon - BUGID 1748, added requirement relations display
 *}
 
@@ -129,7 +130,7 @@ var pF_delete_req_relation = delete_req_relation;
 
 <body onLoad="viewElement(document.getElementById('other_versions'),false);{$gui->bodyOnLoad}" onUnload="{$gui->bodyOnUnload}">
 {* fixed a little bug, here $gui->pageTitle was called instead of $gui->main_descr *}
-<h1 class="title">{$gui->main_descr|escape}{if $gui->show_match_count} - {$labels.match_count}: {$gui->match_count}{/if}
+<h1 class="title">{$gui->main_descr|escape}{if isset($gui->show_match_count)} - {$labels.match_count}: {$gui->match_count}{/if}
 </h1>
 {if !isset($refresh_tree) }
   {assign var="refresh_tree" value=false}
@@ -138,7 +139,7 @@ var pF_delete_req_relation = delete_req_relation;
 
 <div class="workBack">
 
-{if $gui->current_version}
+{if isset($gui->current_version)}
 {section name=idx loop=$gui->current_version}
 
 	{assign var="reqID" value=$gui->current_version[idx][0].id}
@@ -179,7 +180,7 @@ var pF_delete_req_relation = delete_req_relation;
 		         args_frozen_version=$frozen_version
 		         args_show_version=true
 		         args_show_title=$gui->show_title
-		         args_cf=$gui->cfields[idx] 
+		         args_cf=$gui->cfields_current_version[idx] 
 		         args_tproject_name=$gui->tproject_name
 		         args_reqspec_name=$gui->current_version[idx][0]['req_spec_title']}
 		
@@ -194,7 +195,6 @@ var pF_delete_req_relation = delete_req_relation;
     {/if} 
 		         
 	{* BUGID 1748 - req relations *}
-	
 	{if $gui->req_cfg->relations->enable} {* show this part only if relation feature is enabled *}
 	
 		{* form to enter a new relation *}
@@ -221,9 +221,9 @@ var pF_delete_req_relation = delete_req_relation;
 				</select>
 		
 				<input type="text" name="relation_destination_req_doc_id" id="relation_destination_req_doc_id"
-						value="{$labels.relation_destination_doc_id}" 
-				size="{#REQ_DOCID_SIZE#}" maxlength="{#REQ_DOCID_MAXLEN#}" 
-				onclick="javascript:this.value=''" />
+						   value="{$labels.relation_destination_doc_id}" 
+				       size="{#REQ_DOCID_SIZE#}" maxlength="{#REQ_DOCID_MAXLEN#}" 
+				       onclick="javascript:this.value=''" />
 			
 				{* show input for testproject only if cross-project linking is enabled *}
 				{if $gui->req_cfg->relations->interproject_linking}
@@ -320,7 +320,7 @@ var pF_delete_req_relation = delete_req_relation;
                
         <div id="vers_{$vid}" class="workBack">
         
-  	    {foreach from=$gui->other_versions[idx] item=my_req }
+  	    {foreach from=$gui->other_versions[idx] item=my_req key=rdx}
             {assign var="version_num" value=$my_req.version}
             {assign var="title" value="$labels.version}
             {assign var="title" value="$title $version_num"}
@@ -331,11 +331,11 @@ var pF_delete_req_relation = delete_req_relation;
             {assign var="memstatus_id" value=mem_$div_id}
            
            	{* is this version frozen? *}
-    		{if $my_req.is_open}
-        		{assign var="frozen_version" value=false}
-    		{else}
-        		{assign var="frozen_version" value=true}
-    		{/if}
+    		    {if $my_req.is_open}
+        		  {assign var="frozen_version" value=false}
+    		    {else}
+        		  {assign var="frozen_version" value=true}
+    		    {/if}
            
             {include file="inc_show_hide_mgmt.tpl" 
                      show_hide_container_title=$title
@@ -356,7 +356,7 @@ var pF_delete_req_relation = delete_req_relation;
                        args_frozen_version=$frozen_version
                        args_show_version=false 
                        args_show_title=false
-                       args_cf=$gui->cfields[idx]}
+                       args_cf=$gui->cfields_other_versions[idx][$rdx]}
   	         </div>
   	         <br />
   	         

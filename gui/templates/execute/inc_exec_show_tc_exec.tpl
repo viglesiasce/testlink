@@ -1,10 +1,11 @@
 {* 
 TestLink Open Source Project - http://testlink.sourceforge.net/
-$Id: inc_exec_show_tc_exec.tpl,v 1.27 2010/07/09 08:43:18 mx-julian Exp $
+$Id: inc_exec_show_tc_exec.tpl,v 1.28 2010/10/08 07:17:48 mx-julian Exp $
 Purpose: 
 Author: franciscom
 
 Rev:
+	20101008 - Julian - avoid warnings on event viewer
 	20100708 - Julian - BUGID 3587 - executions of closed builds cannot be deleted anymore
 	                               - bugs cannot be added or deleted if build is closed
 	                               - new greyed icons used
@@ -377,7 +378,7 @@ Rev:
   			</tr>
 
         {* Execution Bugs (if any) *}
-        {if $gui->bugs[$execID] neq ""}
+        {if isset($gui->bugs[$execID])}
 		<tr style="background-color: {$bg_color}">
    			<td colspan="{$my_colspan}">
    				{*BUGID 3587*}
@@ -410,17 +411,14 @@ Rev:
              args_tcAttachments=$gui->tcAttachments
 	           args_req_details=$gui->req_details
 	           args_cfg=$cfg}
-     
-
- {* I REMOVED THIS CHECK BECAUSE I WANT ANYBODY TO BE ABLE TO EXECUTE ANY TESTCASE REGARDLESS OF ASSIGNMENT
-	if $tc_exec.can_be_executed *}
+    {if $tc_exec.can_be_executed}
       {include file="execute/inc_exec_controls.tpl"
                args_save_type='single'
                args_input_enable_mgmt=$input_enabled_disabled
                args_tcversion_id=$tcversion_id
                args_webeditor=$gui->exec_notes_editors[$tc_id]
                args_labels=$labels}
-	  {* THIS IS THEN END OF THE IF /if *} 
+	  {/if}
  	  {if $tc_exec.active eq 0}
  	   <h1 class="title"><center>{$labels.testcase_version_is_inactive_on_exec}</center></h1>
  	  {/if}

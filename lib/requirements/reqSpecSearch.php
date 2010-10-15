@@ -7,27 +7,41 @@
  * @package 	TestLink
  * @author		asimon
  * @copyright 	2005-2009, TestLink community 
- * @version    	CVS: $Id: reqSpecSearch.php,v 1.1 2010/01/12 20:03:19 franciscom Exp $
+ * @version    	CVS: $Id: reqSpecSearch.php,v 1.10 2010/10/05 09:03:13 asimon83 Exp $
  * @link 		http://www.teamst.org/index.php
  *
  * This page presents the search results for requirement specifications.
  *
  * @internal Revisions:
+ * 20101005 - asimon - replaced linked req spec title by linked icon
+ * 20100929 - asimon - added req doc id to result table
+ * 20100920 - Julian - BUGID 3793 - use exttable for search result
  */
 
 require_once("../../config.inc.php");
 require_once("common.php");
+require_once('exttable.class.php');
 testlinkInitPage($db);
 
 $templateCfg = templateConfiguration();
+$tpl = 'reqSpecSearchResults.tpl';
+
 $tproject_mgr = new testproject($db);
 
 $req_cfg = config_get('req_cfg');
-$gui = new stdClass();
+$charset = config_get('charset');
+
+$commandMgr = new reqSpecCommands($db);
+$gui = $commandMgr->initGuiBean();
+
+$edit_label = lang_get('requirement_spec');
+$edit_icon = TL_THEME_IMG_DIR . "edit_icon.png";
+
 $gui->main_descr = lang_get('caption_search_form_req_spec');
 $gui->warning_msg = '';
 $gui->path_info = null;
 $gui->resultSet = null;
+$gui->tableSet = null;
 
 $map = null;
 $args = init_args();
@@ -72,7 +86,7 @@ if ($args->tprojectID)
                                      " AND CFD.value like '%{$args->custom_field_value}%' ";
     }
 
-    $sql = " SELECT NH.id AS id,NH.name as name " .
+    $sql = " SELECT NH.id AS id,NH.name as name,RS.doc_id " .
 		   " FROM {$tables['nodes_hierarchy']} NH, " . 
 		   " {$tables['req_specs']} RS {$from['by_custom_field']} " .
            " WHERE NH.id = RS.id " .
@@ -87,15 +101,15 @@ if ($args->tprojectID)
 
 $smarty = new TLSmarty();
 $gui->row_qty=count($map);
-if($gui->row_qty)
+if($gui->row_qty > 0)
 {
-	$tpl = 'reqSpecSearchResults.tpl';
-	$gui->pageTitle = $gui->main_descr . " - " . lang_get('match_count') . ": " . $gui->row_qty;
+
 	$gui->resultSet=$map;
 	if($gui->row_qty <= $req_cfg->search->max_qty_for_display)
 	{
 		$req_set=array_keys($map);
-		$gui->path_info=$tproject_mgr->tree_manager->get_full_path_verbose($req_set);
+		$options = array('output_format' => 'path_as_string');
+		$gui->path_info=$tproject_mgr->tree_manager->get_full_path_verbose($req_set, $options);
 	}
 	else
 	{
@@ -104,14 +118,66 @@ if($gui->row_qty)
 }
 else
 {
-	$the_tpl = config_get('tpl');
-	$gui->pageTitle = $gui->main_descr;
-	$tpl = isset($the_tpl['reqSpecSearchView']) ? $the_tpl['reqSpecSearchView'] : 'reqSpecView.tpl';
-	$gui->type = "rec_spec";
+	$gui->warning_msg=lang_get('no_records_found');
 }
 
+$table = buildExtTable($gui, $charset, $edit_icon, $edit_label);
+
+if (!is_null($table)) {
+	$gui->tableSet[] = $table;
+}
+
+$gui->pageTitle = $gui->main_descr . " - " . lang_get('match_count') . ": " . $gui->row_qty;
 $smarty->assign('gui',$gui);
 $smarty->display($templateCfg->template_dir . $tpl);
+
+
+function buildExtTable($gui, $charset, $edit_icon, $edit_label) {
+	$table = null;
+	if(count($gui->resultSet) > 0) {
+		$labels = array('req_spec' => lang_get('req_spec'));
+		$columns = array();
+		$columns[] = array('title' => $labels['req_spec'], 'type' => 'text', 'groupable' => 'false', 
+		                   'hideable' => 'false');
+	
+		// Extract the relevant data and build a matrix
+		$matrixData = array();
+		
+		foreach($gui->resultSet as $result) {
+			$rowData = array();
+			$path = ($gui->path_info[$result['id']]) ? $gui->path_info[$result['id']] . " / " : "";
+			// use html comment to properly sort by full path
+			// build req spec link
+//			$rowData[] = "<!-- " . htmlentities($path, ENT_QUOTES, $charset) . htmlentities($result['name'], ENT_QUOTES, $charset) ." -->" .
+//			             htmlentities($path, ENT_QUOTES, $charset) .
+//			             "<a href=\"lib/requirements/reqSpecView.php?item=req_spec&req_spec_id={$result['id']}\">" .
+//			             htmlentities($result['doc_id'], ENT_QUOTES, $charset) . ":" .
+//			             htmlentities($result['name'], ENT_QUOTES, $charset);
+
+			$edit_link = "<a href=\"javascript:openLinkedReqSpecWindow(" . $result['id'] . ")\">" .
+						 "<img title=\"{$edit_label}\" src=\"{$edit_icon}\" /></a> ";
+			$title = htmlentities($result['doc_id'], ENT_QUOTES, $charset) . ":" .
+			         htmlentities($result['name'], ENT_QUOTES, $charset);
+			$link = $edit_link . $title;
+			$rowData[] = $link;
+
+			$matrixData[] = $rowData;
+		}
+
+		$table = new tlExtTable($columns, $matrixData, 'tl_table_req_spec_search');
+		
+		$table->setSortByColumnName($labels['req_spec']);
+		$table->sortDirection = 'ASC';
+		
+		$table->showToolbar = false;
+		
+		$table->addCustomBehaviour('text', array('render' => 'columnWrap'));
+		
+		// dont save settings for this table
+		$table->storeTableState = false;
+	}
+	return($table);
+}
 
 /*
  function:

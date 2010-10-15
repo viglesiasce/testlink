@@ -2,7 +2,7 @@
 $Revision: 1.1 $
 $Date: 2007/08/28 23:06:34 $
 $Author: asielb $
-$Name: testlink_1_9_beta6 $
+$Name:  $
 */
 
 # already have a unique index for these fields

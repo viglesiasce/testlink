@@ -6,9 +6,11 @@
  * @package TestLink
  * @author Andreas Simon
  * @copyright 2010, TestLink community
- * @version CVS: $Id: build_progress.class.php,v 1.6 2010/08/22 09:26:38 asimon83 Exp $
+ * @version CVS: $Id: build_progress.class.php,v 1.9 2010/09/29 09:56:44 asimon83 Exp $
  * 
  * @internal revisions:
+ * 20100929 - asimon - corrected values for multiple platforms
+ * 20100927 - asimon - corrected count of not run test cases
  * 20100821 - asimon - BUGID 3682
  * 20100820 - asimon - added last missing comments, little refactorization for table prefix
  * 20100731 - asimon - initial commit		
@@ -170,7 +172,7 @@ class build_progress extends tlObjectWithDB {
 		       "        TPTCV.platform_id AS platform_id, " .
 		       "        E.status AS status, E.id as execution_id, E.tester_id as tester_id " .
 		       " FROM {$this->tables['user_assignments']} UA " .
-		       " LEFT OUTER JOIN {$this->tables['testplan_tcversions']} TPTCV " . 
+		       " LEFT OUTER JOIN {$this->tables['testplan_tcversions']} TPTCV " .
 		       "                 ON UA.feature_id = TPTCV.id " .
 		       " LEFT OUTER JOIN {$this->tables['executions']} E " . 
 		       "                 ON TPTCV.tcversion_id = E.tcversion_id " . 
@@ -258,9 +260,12 @@ class build_progress extends tlObjectWithDB {
 	 * @param int $user_id
 	 * @param array $map
 	 * @uses assignment_mgr
+	 *
+	 * @internal revisions:
+	 * 20100929 - asimon - corrected values for multiple platforms
 	 */
 	private function compute_results($build_id, $user_id, $map) {
-		
+
 		$counters = array();
 		
 		if ($user_id == TL_NO_USER) {
@@ -269,17 +274,27 @@ class build_progress extends tlObjectWithDB {
 		} else {
 			$counters['total'] = $this->tplan_mgr->assignment_mgr->get_count_of_assignments_for_build_id(
 			                                                       $build_id, false, $user_id);
-			$nr_count = $this->tplan_mgr->assignment_mgr->get_not_run_tc_count_per_build($build_id, 
-			                                                                             false, 
-			                                                                             $user_id);
+			// workaround for incorrect not run value
+			//$nr_count = $this->tplan_mgr->assignment_mgr->get_not_run_tc_count_per_build($build_id,
+			//                                                                             false,
+			//                                                                             $user_id);
+			$nr_count = $counters['total'];
 		}
 		
 		$temp = array();
 		
 		foreach ($map as $tcversion_id => $execution_info) {
 			// latest execution is always at index 0 because of ordered SQL statement
-			$code = $execution_info[0]['status'];
-			$temp[$code] = isset($temp[$code]) ? $temp[$code] + 1 : 1;
+
+			// 20100929 - asimon - corrected values for multiple platforms
+			$platforms = array();
+			foreach($execution_info as $key => $info) {
+				if (!in_array($info['platform_id'], $platforms)) {
+					$code = $info['status'];
+					$temp[$code] = isset($temp[$code]) ? $temp[$code] + 1 : 1;
+					$platforms[] = $info['platform_id'];
+				}
+			}
 		}
 		
 		foreach ($this->status_map as $status => $code) {
@@ -291,7 +306,11 @@ class build_progress extends tlObjectWithDB {
 			
 			if (isset($temp[$code])) {
 				$counters[$status]['count'] = $temp[$code];
-				
+
+				if ($user_id != TL_NO_USER) {
+					$nr_count = $nr_count - $temp[$code];
+				}
+
 				if ($counters[$status]['count'] != 0
 				&& is_numeric($counters['total']) && $counters['total'] != 0) {
 					$percent = $counters[$status]['count'] / $counters['total'] * 100;

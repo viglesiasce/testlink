@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 11:02:41
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:52:50
          compiled from inc_filter_panel.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'inc_filter_panel.tpl', 23, false),array('function', 'config_load', 'inc_filter_panel.tpl', 35, false),array('function', 'html_options', 'inc_filter_panel.tpl', 86, false),array('function', 'html_radios', 'inc_filter_panel.tpl', 196, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'inc_filter_panel.tpl', 25, false),array('function', 'config_load', 'inc_filter_panel.tpl', 37, false),array('function', 'html_options', 'inc_filter_panel.tpl', 90, false),array('function', 'html_radios', 'inc_filter_panel.tpl', 210, false),)), $this); ?>
 
 <?php echo lang_get_smarty(array('var' => 'labels','s' => 'caption_nav_settings, caption_nav_filters, platform, test_plan,
                         build,filter_tcID,filter_on,filter_result,
@@ -13,7 +13,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 
                         btn_bulk_update_to_latest_version, priority, tc_title,
                         custom_field, search_type_like,
                         document_id, req_expected_coverage, title,
-                        status, req_type, req_spec_type, th_tcid, has_relation_type'), $this);?>
+                        status, req_type, req_spec_type, th_tcid, has_relation_type,btn_export_testplan_tree'), $this);?>
 
 
 <?php echo smarty_function_config_load(array('file' => "input_dimensions.conf",'section' => 'treeFilterForm'), $this);?>
@@ -22,9 +22,11 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 
 <form method="post" id="filter_panel_form" name="filter_panel_form">
 
 <?php if (isset ( $this->_tpl_vars['control']->form_token )): ?>
-<input type="hidden" name="form_token" value="<?php echo $this->_tpl_vars['control']->form_token; ?>
+  <input type="hidden" name="form_token" value="<?php echo $this->_tpl_vars['control']->form_token; ?>
 ">
 <?php endif; ?>
+
+<?php $this->assign('platformID', 0); ?>
 
 <?php if ($this->_tpl_vars['control']->draw_tc_unassign_button): ?>
 	<input type="button" 
@@ -82,6 +84,7 @@ unset($_smarty_tpl_vars);
 			<?php endif; ?>
 
 			<?php if ($this->_tpl_vars['control']->settings['setting_platform']): ?>
+			  <?php $this->assign('platformID', $this->_tpl_vars['control']->settings['setting_platform']['selected']); ?>
 				<tr>
 					<th><?php echo $this->_tpl_vars['labels']['platform']; ?>
 </th>
@@ -127,6 +130,17 @@ unset($_smarty_tpl_vars);
 		  		</tr>
 			<?php endif; ?>
 
+			<?php if ($this->_tpl_vars['control']->draw_export_testplan_button && FALSE): ?> 				<tr>
+		   			<td colspan="2">
+	          <input type="button" id="doTestPlanExport" name="doTestPlanExport" value="<?php echo $this->_tpl_vars['labels']['btn_export_testplan_tree']; ?>
+"
+         	         onclick="javascript: openExportTestPlan('export_testplan','<?php echo $this->_tpl_vars['control']->settings['setting_testplan']['selected']; ?>
+',
+         	                                                 '<?php echo $this->_tpl_vars['platformID']; ?>
+');" />
+            </td>
+		  		</tr>
+			<?php endif; ?>
 			</table>
 		</div> 	</div> <?php endif; ?> 
 <?php if ($this->_tpl_vars['control']->display_filters): ?>

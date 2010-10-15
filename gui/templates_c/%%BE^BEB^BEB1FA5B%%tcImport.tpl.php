@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 13:23:14
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:26:38
          compiled from testcases/tcImport.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'testcases/tcImport.tpl', 11, false),array('function', 'config_load', 'testcases/tcImport.tpl', 18, false),array('function', 'html_options', 'testcases/tcImport.tpl', 37, false),array('modifier', 'basename', 'testcases/tcImport.tpl', 17, false),array('modifier', 'replace', 'testcases/tcImport.tpl', 17, false),array('modifier', 'escape', 'testcases/tcImport.tpl', 25, false),)), $this); ?>

@@ -8,13 +8,21 @@
  * @package TestLink
  * @author	Martin Havlat <havlat@users.sourceforge.net>
  * @copyright 2007-2009, TestLink community 
- * @version $Id: print.inc.php,v 1.106 2010/08/04 03:08:24 amkhullar Exp $
+ * @version $Id: print.inc.php,v 1.118 2010/09/24 11:24:48 mx-julian Exp $
  * @uses printDocument.php
  *
  *
  * @internal 
  *
  * Revisions:
+ *  20100923 - franciscom  - BUGID 3804 - contribution
+ *	20100920 - franciscom -  renderTestCaseForPrinting() - changed key on $cfieldFormatting
+ *  20100914 - franciscom - BUGID 437: TC version not visible in generated test specification
+ *  20100913 - Julian - BUGID 3754
+ *	20100908 - Julian - BUGID 2877 - Custom Fields linked to Req versions
+ *	20100905 - franciscom - BUGID 3431 - Custom Field values at Test Case VERSION Level
+ *							renderTestCaseForPrinting()
+ *
  *  20100803 - amitkhullar - Added condition check for null req. custom fields @line 230/346  
  *  20100723 - asimon - BUGID 3459: added platform ID to renderTestCaseForPrinting(),
  *                                  renderTestSpecTreeForPrinting() and
@@ -87,6 +95,11 @@
 /** uses get_bugs_for_exec() */
 require_once("exec.inc.php");
 
+if (config_get('interface_bugs') != 'NO')
+{
+  require_once(TL_ABS_PATH. 'lib' . DIRECTORY_SEPARATOR . 'bugtracking' .
+               DIRECTORY_SEPARATOR . 'int_bugtracking.php');
+}
 
 /**
  * render a requirement as HTML code for printing
@@ -226,7 +239,8 @@ function renderRequirementNodeForPrinting(&$db,$node, &$printingOptions, $tocPre
 	
 	if ($printingOptions['req_cf']) 
 	{
-		$linked_cf = $req_mgr->get_linked_cfields($req['id']);
+		//BUGID 2877 - Custom Fields linked to Req versions
+		$linked_cf = $req_mgr->get_linked_cfields($req['id'], $req['version_id']);
 		if ($linked_cf)
 		{
 			foreach ($linked_cf as $key => $cf) 
@@ -509,9 +523,10 @@ function renderFirstPage($doc_info)
     
 	if ($docCfg->company_logo != '' )
 	{
+		// BUGID 3804 - contribution
 		$output .= '<p style="text-align: center;"><img alt="TestLink logo" ' .
-		           'title="configure using $tlCfg->company->logo_image"'.
-        	     ' src="' . $_SESSION['basehref'] . TL_THEME_IMG_DIR . $docCfg->company_logo . '" /></p>';
+           		   'title="configure using $tlCfg->document_generator->company_logo" style="height: 53px;"'.
+           		   ' src="' . $_SESSION['basehref'] . TL_THEME_IMG_DIR . $docCfg->company_logo . '" />';
 	}
 	$output .= "</div>\n";
 	$output .= '<div class="doc_title"><p>' . $doc_info->title . '</p>';
@@ -594,7 +609,6 @@ function renderTestSpecTreeForPrinting(&$db,&$node,$item_type,&$printingOptions,
 		case 'testproject':
 		    if($tplan_id != 0)
 		    {
-		        // 20090330 - franciscom
 		        // we are printing a test plan, get it's custom fields
                 $cfieldFormatting=array('table_css_style' => 'class="cf"');
                 if ($printingOptions['cfields'])
@@ -613,7 +627,7 @@ function renderTestSpecTreeForPrinting(&$db,&$node,$item_type,&$printingOptions,
 		break;
 
 		case 'testcase':
-			// 3459 - added $platform_id
+			// BUGID 3459 - added $platform_id
 			$code .= renderTestCaseForPrinting($db, $node, $printingOptions, $level,
 			                                   $tplan_id, $tcPrefix, $tprojectID, $platform_id);
 	    break;
@@ -638,7 +652,7 @@ function renderTestSpecTreeForPrinting(&$db,&$node,$item_type,&$printingOptions,
 			{
 			    $tsCnt++;
 			}
-			// 3459 - added $platform_id
+			// BUGID 3459 - added $platform_id
 			$code .= renderTestSpecTreeForPrinting($db, $current, $item_type, $printingOptions,
 			                                       $tocPrefix, $tsCnt, $level+1, $user_id,
 			                                       $tplan_id, $tcPrefix, $tprojectID, $platform_id);
@@ -701,13 +715,16 @@ function gendocGetUserName(&$db, $userId)
  * 
  * @param $integer db DB connection identifier 
  * @return string generated html code
- * @internal 
- *      20100724 - asimon - BUGID 3459 - added platform ID
- *      20100723 - asimon - BUGID 3451 and related finally solved
- *      20090517 - havlatm - fixed execution layot; added tester name
- *      20080819 - franciscom - removed mysql only code
- *      20071014 - franciscom - display test case version
- *      20070509 - franciscom - added Contribution
+ *
+ * @internal revisions
+ * 20100920 - franciscom - changed key on $cfieldFormatting
+ * 20100905 - franciscom - BUGID 3431 - Custom Field values at Test Case VERSION Level
+ * 20100724 - asimon - BUGID 3459 - added platform ID
+ * 20100723 - asimon - BUGID 3451 and related finally solved
+ * 20090517 - havlatm - fixed execution layot; added tester name
+ * 20080819 - franciscom - removed mysql only code
+ * 20071014 - franciscom - display test case version
+ * 20070509 - franciscom - added Contribution
  */
 function renderTestCaseForPrinting(&$db, &$node, &$printingOptions, $level, $tplan_id = 0,
                                    $prefix = null, $tprojectID = 0, $platform_id = 0)
@@ -730,7 +747,6 @@ function renderTestCaseForPrinting(&$db, &$node, &$printingOptions, $level, $tpl
 	$tcInfo = null;
     $tcResultInfo = null;
     $tcase_pieces = null;
-	$cfieldFormatting = array('td_css_style' => '','add_table' => false);
     
     // init static elements
     $id = $node['id'];
@@ -748,8 +764,14 @@ function renderTestCaseForPrinting(&$db, &$node, &$printingOptions, $level, $tpl
 	    }
 	    $tcase_prefix .= $cfg['testcase']->glue_character;
 	}
+
+	// 20100920 - franciscom
+	$cspan = ' colspan = "' . ($cfg['tableColspan']-1) . '" ';
+	$cfieldFormatting = array('label_css_style' => '',  'add_table' => false, 'value_css_style' => $cspan );
+
 	$versionID = isset($node['tcversion_id']) ? $node['tcversion_id'] : testcase::LATEST_VERSION;
     $tcInfo = $tc_mgr->get_by_id($id,$versionID);
+    
     if ($tcInfo)
     {
     	$tcInfo = $tcInfo[0];
@@ -762,6 +784,7 @@ function renderTestCaseForPrinting(&$db, &$node, &$printingOptions, $level, $tpl
 	// $versionID was used in the following "dirty" SQL statement, but was still set to "-1" 
 	//(the value to load all tc versions) instead of a real testcase version ID.
 	$versionID = $tcInfo['id'];
+	
 	// This still does not change the fact that this marked SQL statement below
 	// should be removed and replaced by existing functions.
 	// ----- BUGID 3451 and related ---------------------------------------
@@ -772,21 +795,23 @@ function renderTestCaseForPrinting(&$db, &$node, &$printingOptions, $level, $tpl
   	if ($printingOptions['cfields'])
 	{
 		if (!$locationFilters)
+		{
         	$locationFilters = $tc_mgr->buildCFLocationMap();
-		// 20090719 - franciscom - cf location
+        }	
      	foreach($locationFilters as $fkey => $fvalue)
 		{ 
+			// BUGID 3431 - Custom Field values at Test Case VERSION Level
 			$cfields['specScope'][$fkey] = 
 					$tc_mgr->html_table_of_custom_field_values($id,'design',$fvalue,null,$tplan_id,
-			                                               $tprojectID,$cfieldFormatting);
-		}	                                               
+			                                                   $tprojectID,$cfieldFormatting,$tcInfo['id']);             
+		}           
 	}
 
-/** 
- * @TODO THIS IS NOT THE WAY TO DO THIS IS ABSOLUTELY WRONG AND MUST BE REFACTORED, 
- * using existent methods - franciscom - 20090329 
- * Need to get CF with execution scope
- */
+	/** 
+	 * @TODO THIS IS NOT THE WAY TO DO THIS IS ABSOLUTELY WRONG AND MUST BE REFACTORED, 
+	 * using existent methods - franciscom - 20090329 
+	 * Need to get CF with execution scope
+	 */
 	$exec_info = null;
 	$bGetExecutions = false;
 	if ($printingOptions["docType"] != DOC_TEST_SPEC)
@@ -794,7 +819,7 @@ function renderTestCaseForPrinting(&$db, &$node, &$printingOptions, $level, $tpl
 	if ($bGetExecutions)
 	{
 		$sql =  " SELECT E.id AS execution_id, E.status, E.execution_ts, E.tester_id," .
-		        " E.notes, E.build_id, E.tcversion_id,E.tcversion_number,E.testplan_id,E.has_attach," .
+		        " E.notes, E.build_id, E.tcversion_id,E.tcversion_number,E.testplan_id," .
 		        " B.name AS build_name " .
 		        " FROM {$tables['executions']} E, {$tables['builds']} B" .
 		        " WHERE E.build_id= B.id " . 
@@ -825,12 +850,12 @@ function renderTestCaseForPrinting(&$db, &$node, &$printingOptions, $level, $tpl
  	$code .= '<tr><th colspan="' . $cfg['tableColspan'] . '">' . $labels['test_case'] . " " . 
  			htmlspecialchars($external_id) . ": " . $name;
 
-    
-	// add test case version
-	if($cfg['doc']->tc_version_enabled && isset($node['version'])) 
+	// add test case version 
+	$version_number = isset($node['version']) ? $node['version'] : $tcInfo['version'];
+	if($cfg['doc']->tc_version_enabled)
 	{
-		$code .= '&nbsp;<span style="font-size: 80%;"' . $cfg['gui']->role_separator_open . 
-        	   	$labels['version'] . $cfg['gui']->title_separator_1 .  $node['version'] . 
+		$code .= '&nbsp;<span style="font-size: 80%;">' . $cfg['gui']->role_separator_open . 
+        	   	$labels['version'] . $cfg['gui']->title_separator_1 .  $version_number . 
            		$cfg['gui']->role_separator_close . '</span>';
   	}
    	$code .= "</th></tr>\n";
@@ -918,7 +943,7 @@ function renderTestCaseForPrinting(&$db, &$node, &$printingOptions, $level, $tpl
 	{
 		if ($exec_info) 
 		{
-			$code .= buildTestExecResults($db,$cfg,$labels,$exec_info);
+			$code .= buildTestExecResults($db,$cfg,$labels,$exec_info,$cfg['tableColspan']-1);
 		}
 		else
 		{
@@ -1209,7 +1234,7 @@ function initRenderTestCaseCfg(&$tcaseMgr)
 
     // 20100306 - contribution by romans
 	// BUGID 0003235: Printing Out Test Report Shows empty Column Headers for "Steps" and "Step Actions"
-    $labelsKeys=array('last_exec_result', 'testnotes', 'none', 'reqs','author', 'summary',
+    $labelsKeys=array('last_exec_result', 'title_execution_notes', 'none', 'reqs','author', 'summary',
                       'steps', 'expected_results','build', 'test_case', 'keywords','version', 
                       'test_status_not_run', 'not_aplicable', 'bugs','tester','preconditions',
                       'step_number', 'step_actions', 'last_edit');
@@ -1226,30 +1251,30 @@ function initRenderTestCaseCfg(&$tcaseMgr)
  * 
  *
  */
-function buildTestExecResults(&$dbHandler,$cfg,$labels,$exec_info)
+function buildTestExecResults(&$dbHandler,$cfg,$labels,$exec_info,$colspan)
 {
 	$out='';
 	$testStatus = $cfg['status_labels'][$exec_info[0]['status']];
 	$testerName = gendocGetUserName($dbHandler, $exec_info[0]['tester_id']);
 	$executionNotes = $exec_info[0]['notes'];
-	if( $exec_info[0]['has_attach'] == 1){
-	$has_attach = "Yes";
+
+	$td_colspan = '';
+	if( !is_null($colspan) ) {
+		$td_colspan .= ' colspan="' . $colspan . '" '; 
 	}
-	else{
-	$has_attach = "No";
-	}
+	    
 	$out .= '<tr><td width="20%" valign="top">' .
 			'<span class="label">' . $labels['last_exec_result'] . ':</span></td>' .
-			'<td><b>' . $testStatus . "</b> Attachments:" . $has_attach  .  "</td></tr>\n" .
+			'<td '  .$td_colspan . '><b>' . $testStatus . "</b></td></tr>\n" .
     		'<tr><td width="' . $cfg['firstColWidth'] . '" valign="top">' . $labels['build'] .'</td>' . 
-    		'<td>' . htmlspecialchars($exec_info[0]['build_name']) . "</b></td></tr>\n" .
+    		'<td '  .$td_colspan . '>' . htmlspecialchars($exec_info[0]['build_name']) . "</b></td></tr>\n" .
     		'<tr><td width="' . $cfg['firstColWidth'] . '" valign="top">' . $labels['tester'] .'</td>' . 
-    		'<td>' . $testerName . "</b></td></tr>\n";
+    		'<td '  .$td_colspan . '>' . $testerName . "</b></td></tr>\n";
 
     if ($executionNotes != '') // show exection notes is not empty
     {
-		$out .= '<tr><td width="' . $cfg['firstColWidth'] . '" valign="top">'.$labels['testnotes'] . '</td>' .
-			    '<td>' . nl2br($executionNotes)  . "</td></tr>\n"; 
+		$out .= '<tr><td width="' . $cfg['firstColWidth'] . '" valign="top">'.$labels['title_execution_notes'] . '</td>' .
+			    '<td '  .$td_colspan . '>' . nl2br($executionNotes)  . "</td></tr>\n"; 
     }
 
 	$bug_interface = config_get('bugInterface');
@@ -1264,9 +1289,8 @@ function buildTestExecResults(&$dbHandler,$cfg,$labels,$exec_info)
 			{
 				$bugString .= $bugInfo['link_to_bts']."<br />";
 			}
-			$out .= '<tr><td colspan="' .  $cfg['tableColspan'] . 
-			        '" width="' . $cfg['firstColWidth'] . '" valign="top">' . 
-			        $labels['bugs'] . '</td><td>' . $bugString ."</td></tr>\n"; 
+			$out .= '<tr><td width="' . $cfg['firstColWidth'] . '" valign="top">' . 
+			        $labels['bugs'] . '</td><td ' . $td_colspan . '>' . $bugString ."</td></tr>\n"; 
 					
 		}
 	}

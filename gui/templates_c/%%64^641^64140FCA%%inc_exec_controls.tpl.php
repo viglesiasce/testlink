@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:50:41
+<?php /* Smarty version 2.6.26, created on 2010-10-12 13:53:12
          compiled from execute/inc_exec_controls.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'execute/inc_exec_controls.tpl', 37, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'execute/inc_exec_controls.tpl', 46, false),)), $this); ?>
 	
       <?php $this->assign('ResultsStatusCode', $this->_tpl_vars['tlCfg']->results['status_code']); ?>
       <?php if ($this->_tpl_vars['args_save_type'] == 'bulk'): ?>
@@ -23,6 +23,25 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 
 </div>
     				
     				<div class="resultBox">
+			Command<br />
+			<input type="text" name="collect_command_<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+" id="collect_command_<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+" size="16"  maxlength="255" value="show version" onkeypress="return disableEnterKey(event)"><br />
+                        IP<br />
+			<input type="text" name="collect_ip_<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+" id="collect_ip_<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+" size="16"  maxlength="255" value="" onkeypress="return disableEnterKey(event)"><br />
+			<input type="submit" name="save_and_collect[<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+]"
+                                                    <?php echo $this->_tpl_vars['args_input_enable_mgmt']; ?>
+
+                        onclick="document.getElementById('save_button_clicked').value=<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+;return checkCollectForStatus(document.getElementById('collect_ip_<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+').value, <?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+, document.getElementById('collect_command_<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+').value)"  value="Collect Info" />
+                        <HR>
+
                 <?php $_from = $this->_tpl_vars['tlCfg']->results['status_label_for_exec_ui']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['verbose_status'] => $this->_tpl_vars['locale_status']):
 ?>
@@ -48,7 +67,7 @@ _<?php echo $this->_tpl_vars['ResultsStatusCode'][$this->_tpl_vars['verbose_stat
     					  <br />		
     		 			
     		 			  <?php if ($this->_tpl_vars['args_save_type'] == 'single'): ?>
-    		 			      <input type="submit" name="save_results[<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
+			    <input type="submit" name="save_results[<?php echo $this->_tpl_vars['args_tcversion_id']; ?>
 ]" 
     		 			            <?php echo $this->_tpl_vars['args_input_enable_mgmt']; ?>
 
@@ -66,8 +85,7 @@ _<?php echo $this->_tpl_vars['ResultsStatusCode'][$this->_tpl_vars['verbose_stat
 ;return checkSubmitForStatus('<?php echo $this->_tpl_vars['ResultsStatusCode']['not_run']; ?>
 ')"
     		 			            value="<?php echo $this->_tpl_vars['args_labels']['btn_save_exec_and_movetonext']; ?>
-" />
-
+" /><br />
     		 			  <?php else: ?>
      	    	        <input type="submit" id="do_bulk_save" name="do_bulk_save"
       	    	             value="<?php echo $this->_tpl_vars['args_labels']['btn_save_tc_exec_results']; ?>

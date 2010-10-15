@@ -4,10 +4,16 @@
  *
  * Filename $RCSfile: execSetResults.php,v $
  *
- * @version $Revision: 1.166 $
- * @modified $Date: 2010/08/21 16:32:59 $ $Author: franciscom $
+ * @version $Revision: 1.170 $
+ * @modified $Date: 2010/09/27 08:19:33 $ $Author: asimon83 $
  *
  * rev:
+ *  20100927 - asimon - avoid warning in event log
+ *	20100926 - franciscom - BUGID 3421: Test Case Execution feature - Add Export All test Case in TEST SUITE button
+ *							added $gui->tcversionSet
+ *	
+ *  20100922 - asimon - let this page be functional withouth a form token too, changed init_args()
+ *	20100821 - franciscom - BUGID 3431 - Custom Field values at Test Case VERSION Level
  *	20100821 - franciscom - code layout refactoring
  *  20100812 - asimon - BUGID 3672
  *  20100709 - asimon - BUGID 3590, BUGID 3574: build_id set to 0 as default instead of null
@@ -97,7 +103,6 @@ if ($do_show_instructions)
     show_instructions('executeTest');
     exit();
 }
-
 
 // ---------------------------------------------------------
 // Testplan executions and result archiving. Checks whether execute cases button was clicked
@@ -192,6 +197,11 @@ if(!is_null($linked_tcversions))
         list($tcase_id,$tcversion_id) = processTestSuite($db,$gui,$args,$linked_tcversions,
                                                          $tree_mgr,$tcase_mgr,$attachmentRepository);
     }
+
+	// 20100927 - asimon - check if value is an array before calling implode
+	// to avoid warnings in event log
+   	$gui->tcversionSet = is_array($tcversion_id) ? implode(',',$tcversion_id) : $tcversion_id;
+
     // will create a record even if the testcase version has not been executed (GET_NO_EXEC)
     $gui->map_last_exec = getLastExecution($db,$tcase_id,$tcversion_id,$gui,$args,$tcase_mgr);
     
@@ -356,6 +366,7 @@ $smarty->display($templateCfg->template_dir . $templateCfg->default_template);
   returns: 
   
   rev:
+    20100922 - asimon - let this page be functional withouth a form token too
 	20100625 - asimon - fixed a little bug in platform id initializing when no platform is used
 	                    (now number 0 instead of value null)
 	20090913 - franciscom - fixed bug on filter_status initialization
@@ -384,6 +395,10 @@ function init_args($cfgObj)
 	foreach($key2null as $key => $sessionKey)
 	{
 		$args->$key = isset($session_data[$sessionKey]) ? $session_data[$sessionKey] : null;
+		// let this page be functional withouth a form token too (when called from testcases assigned to me)
+		if (is_null($args->$key)) {
+			$args->$key = isset($_REQUEST[$sessionKey]) ? $_REQUEST[$sessionKey] : null;
+		}
 	}
 
 	if (is_null($args->build_id)) {
@@ -1149,6 +1164,9 @@ function initializeGui(&$dbHandler,&$argsObj,&$cfgObj,&$tplanMgr,&$tcaseMgr)
     { 
     	$gui->platform_info = $platformMgr->getByID($argsObj->platform_id);
     }
+    
+    
+    $gui->node_id = $argsObj->id;
     return $gui;
 }
 
@@ -1188,11 +1206,12 @@ function processTestCase($tcase,&$guiObj,&$argsObj,&$cfgObj,$linked_tcversions,
 
 	foreach($locationFilters as $locationKey => $filterValue)
 	{
-		// 20090718 - franciscom
+
+		// BUGID 3431 - Custom Field values at Test Case VERSION Level
 		$finalFilters=$cf_filters+$filterValue;
     	$guiObj->design_time_cfields[$tcase_id][$locationKey] = 
-  		         $tcaseMgr->html_table_of_custom_field_values($tcase_id,'design',$finalFilters,
-  		                                                      null,null,$argsObj->tproject_id);
+  		         $tcaseMgr->html_table_of_custom_field_values($tcase_id,'design',$finalFilters,null,null,
+  		         											  $argsObj->tproject_id,null,$tcversion_id);
     	
     	// 20090718 - franciscom - TO BE refactored
     	$guiObj->testplan_design_time_cfields[$tcase_id] = 
@@ -1212,7 +1231,7 @@ function processTestCase($tcase,&$guiObj,&$argsObj,&$cfgObj,$linked_tcversions,
 	$guiObj->tSuiteAttachments[$tc_info['parent_id']] = getAttachmentInfos($docRepository,$tc_info['parent_id'],
 		                                                                   'nodes_hierarchy',true,1);
 
-		                                                                      
+
     return array($tcase_id,$tcversion_id);
 }
 
@@ -1321,7 +1340,7 @@ function processTestSuite(&$dbHandler,&$guiObj,&$argsObj,$linked_tcversions,
                           &$treeMgr,&$tcaseMgr,&$docRepository)
 {
     $locationFilters=$tcaseMgr->buildCFLocationMap();
-    $testSet=new stdClass();
+    $testSet = new stdClass();
     $cf_filters=array('show_on_execution' => 1); // BUGID 1650 (REQ)    
     
     $tsuite_mgr=new testsuite($dbHandler); 
@@ -1370,6 +1389,7 @@ function processTestSuite(&$dbHandler,&$guiObj,&$argsObj,$linked_tcversions,
 	            	                               			 null,null,$argsObj->tproject_id);
 		
 		$guiObj->execution_time_cfields[$index] = $execution_time_cfields;
+        $gdx=0;
         foreach($testSet->tcase_id as $testcase_id)
         {
             $path_f = $treeMgr->get_path($testcase_id,null,'full');
@@ -1385,8 +1405,15 @@ function processTestSuite(&$dbHandler,&$guiObj,&$argsObj,$linked_tcversions,
 	            	foreach($locationFilters as $locationKey => $filterValue)
 	            	{
                         $finalFilters=$cf_filters+$filterValue;
+                        
+                        // 
+						// BUGID 3431 - Custom Field values at Test Case VERSION Level
+            			// $guiObj->design_time_cfields[$testcase_id][$locationKey] = 
+            			// 	$tcaseMgr->html_table_of_custom_field_values($testcase_id,'design',$finalFilters);
             			$guiObj->design_time_cfields[$testcase_id][$locationKey] = 
-            				$tcaseMgr->html_table_of_custom_field_values($testcase_id,'design',$finalFilters);
+            				$tcaseMgr->html_table_of_custom_field_values($testcase_id,'design',$finalFilters,null,null,
+  		         											             $argsObj->tproject_id,null,$testSet->tcversion_id[$gdx]);
+
                 		$guiObj->testplan_design_time_cfields[$testcase_id] = 
   	            		        $tcaseMgr->html_table_of_custom_field_values($testcase_id,'testplan_design',$cf_filters,
   	            		                                                     null,null,$argsObj->tproject_id);
@@ -1413,7 +1440,8 @@ function processTestSuite(&$dbHandler,&$guiObj,&$argsObj,$linked_tcversions,
             	   		getAttachmentInfos($docRepository,$path_elem['id'],'nodes_hierarchy',true,1);
             	}
             	   
-             } //foreach($path_f as $key => $path_elem) 
+            } //foreach($path_f as $key => $path_elem) 
+            $gdx++;
         }  
     }
 

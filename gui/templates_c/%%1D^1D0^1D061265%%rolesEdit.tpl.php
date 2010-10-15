@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:25:43
+<?php /* Smarty version 2.6.26, created on 2010-10-14 16:20:31
          compiled from usermanagement/rolesEdit.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'usermanagement/rolesEdit.tpl', 28, false),array('function', 'config_load', 'usermanagement/rolesEdit.tpl', 65, false),array('modifier', 'basename', 'usermanagement/rolesEdit.tpl', 64, false),array('modifier', 'replace', 'usermanagement/rolesEdit.tpl', 64, false),array('modifier', 'escape', 'usermanagement/rolesEdit.tpl', 98, false),)), $this); ?>

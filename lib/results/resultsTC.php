@@ -1,14 +1,17 @@
 <?php
 /** 
 * TestLink Open Source Project - http://testlink.sourceforge.net/ 
-* $Id: resultsTC.php,v 1.69 2010/08/30 21:11:29 erikeloff Exp $ 
+* $Id: resultsTC.php,v 1.74 2010/10/07 12:00:15 asimon83 Exp $ 
 *
 * @author	Martin Havlat <havlat@users.sourceforge.net>
 * @author 	Chad Rosen
 * 
 * Show Test Report by individual test case.
 *
-* @author 
+* @author
+* 20101007 - asimon - BUGID 3857: Replace linked icons in reports if reports get sent by e-mail
+* 20100930 - asimon - added icons for testcase editing and execution
+* 20100923 - eloff - refactored to use improved table interface
 * 20100828 - eloff - adapt to rendering of status column
 * 20100823 - Julian - table now uses a unique table id per test project and test plan
 * 20100816 - Julian - changed default column width
@@ -47,6 +50,10 @@ $gui->title = lang_get('title_test_report_all_builds');
 $gui->printDate = '';
 $gui->matrixCfg  = config_get('resultMatrixReport');
 $gui->matrixData = array();
+
+$labels = init_labels(array('design' => null, 'execution' => null));
+$exec_img = TL_THEME_IMG_DIR . "exec_icon.png";
+$edit_img = TL_THEME_IMG_DIR . "edit_icon.png";
 
 $buildIDSet = null;
 $buildQty = 0;
@@ -143,19 +150,20 @@ if ($lastResultMap != null)
 				
 				// BUGID 3590: crash when clicking testcase link
 				$buildId = $tcase['buildIdLastExecuted'] ? $tcase['buildIdLastExecuted'] : $last_build;
-				
-				$link = '<a href="' . $_SESSION['basehref'] . 'lib/execute/execSetResults.php?' .
-				        'level=testcase' .
-				        '&build_id=' . $buildId .
-				        '&id=' . $testCaseId .
-				        '&version_id=' . $tcase['tcversion_id'] .
-				        '&tplan_id=' . $args->tplan_id .
-				        '&platform_id=' . $platformId .'">' .
-				        htmlspecialchars("{$external_id}:{$name}",ENT_QUOTES) . '</a>';
+
+			    $tc_name = htmlspecialchars("{$external_id}:{$name}",ENT_QUOTES);
+
+				// create linked icons
+				$edit_link = "<a href=\"javascript:openTCEditWindow({$testCaseId});\">" .
+							 "<img title=\"{$labels['design']}\" src=\"{$edit_img}\" /></a> ";
+			    // 20101007 - asimon - BUGID 3857
+			    $mail_link = "<a href=\"javascript:openTCEditWindow({$testCaseId});\">{$tc_name}</a> ";
+			    $tcLink = $edit_link . $tc_name;
 
 				$rowArray = null;
 				$rowArray[$cols['tsuite']] = $suiteName;
-				$rowArray[$cols['link']] = $link;
+			    // 20101007 - asimon - BUGID 3857
+				$rowArray[$cols['link']] = $args->format == FORMAT_MAIL_HTML ? $mail_link : $tcLink;
 				if ($show_platforms)
 				{
 					$rowArray[$cols['platform']] = $gui->platforms[$platformId];
@@ -196,6 +204,13 @@ if ($lastResultMap != null)
 					// entries that match current:
 					// test case id,build id ,platform id
 					$qta_suites=sizeOf($suiteExecutions);
+
+					// build icon for execution link
+					$exec_link = "<a href=\"javascript:openExecutionWindow(" .
+					             "{$testCaseId}, {$tcase['tcversion_id']}, {$buildId}, " .
+					             "{$args->tplan_id}, {$platformId});\">" .
+					             "<img title=\"{$labels['execution']}\" src=\"{$exec_img}\" /></a> ";
+
 					for ($jdx = 0; $jdx < $qta_suites; $jdx++) 
 					{
 						$execution_array = $suiteExecutions[$jdx];
@@ -206,9 +221,10 @@ if ($lastResultMap != null)
 							$status = $execution_array['status'];
 							$resultsForBuildText = $map_tc_status_code_langet[$status];
 							$resultsForBuildText .= sprintf($versionTag,$execution_array['version']);
+
 							$resultsForBuild = array(
 								"value" => $status,
-								"text" => $resultsForBuildText,
+								"text" => $exec_link . $resultsForBuildText,
 								"cssClass" => $gui->map_status_css[$status]);
 
 							$lastStatus = $execution_array['status'];
@@ -220,9 +236,10 @@ if ($lastResultMap != null)
 						$cssClass = $gui->map_status_css[$resultsCfg['status_code']['not_run']]; 
 						$resultsForBuildText = $not_run_label;
 						$resultsForBuildText .= sprintf($versionTag,$linkedTCVersion);
+
 						$resultsForBuild = array(
 							"value" => $resultsCfg['status_code']['not_run'],
-							"text" => $resultsForBuildText,
+							"text" => $exec_link . $resultsForBuildText,
 							"cssClass" => $cssClass);
 					}
 					
@@ -295,17 +312,17 @@ function checkRights(&$db,&$user)
  */
 function buildMatrix($buildSet, $dataSet, $format, $show_platforms, &$args)
 {
-	$columns = array(array('title' => lang_get('title_test_suite_name'), 'width' => 100),
-		             array('title' => lang_get('title_test_case_title'), 'width' => 150));
+	$columns = array(array('title_key' => 'title_test_suite_name', 'width' => 100),
+	                 array('title_key' => 'title_test_case_title', 'width' => 150));
 	if ($show_platforms)
 	{
-		$columns[] = array('title' => lang_get('platform'), 'width' => 60);
+		$columns[] = array('title_key' => 'platform', 'width' => 60);
 	}
 	
 	// BUGID 3418: check if test priority is enabled
 	if($_SESSION['testprojectOptions']->testPriorityEnabled) 
 	{
-		$columns[] = array('title' => lang_get('priority'), 'type' => 'priority', 'width' => 40);
+		$columns[] = array('title_key' => 'priority', 'type' => 'priority', 'width' => 40);
 	}
 	
 	foreach ($buildSet as $build) 
@@ -315,9 +332,8 @@ function buildMatrix($buildSet, $dataSet, $format, $show_platforms, &$args)
 	
 	if ($format == FORMAT_HTML) 
 	{
-		//create unique table id for each project and each test plan (build columns differ)
-		$table_id = 'tl_'.$args->tproject_id. '_' .$args->tplan_id.'_table_results_tc';
-		$matrix = new tlExtTable($columns, $dataSet, $table_id);
+		
+		$matrix = new tlExtTable($columns, $dataSet, 'tl_table_results_tc');
 		
 		//if platforms feature is enabled group by platform otherwise group by test suite
 		$group_name = ($show_platforms) ? lang_get('platform') : lang_get('title_test_suite_name');

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:50:41
+<?php /* Smarty version 2.6.26, created on 2010-10-14 16:51:22
          compiled from execute/inc_exec_show_tc_exec.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'execute/inc_exec_show_tc_exec.tpl', 45, false),array('function', 'localize_timestamp', 'execute/inc_exec_show_tc_exec.tpl', 131, false),array('function', 'localize_tc_status', 'execute/inc_exec_show_tc_exec.tpl', 144, false),array('function', 'cycle', 'execute/inc_exec_show_tc_exec.tpl', 204, false),array('modifier', 'escape', 'execute/inc_exec_show_tc_exec.tpl', 94, false),array('modifier', 'replace', 'execute/inc_exec_show_tc_exec.tpl', 138, false),)), $this); ?>
@@ -462,13 +462,14 @@ $this->_smarty_include(array('smarty_include_tpl_file' => "execute/inc_exec_test
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
-    <?php if ($this->_tpl_vars['tc_exec']['can_be_executed']): ?>
-      <?php $_smarty_tpl_vars = $this->_tpl_vars;
+     
+
+       <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "execute/inc_exec_controls.tpl", 'smarty_include_vars' => array('args_save_type' => 'single','args_input_enable_mgmt' => $this->_tpl_vars['input_enabled_disabled'],'args_tcversion_id' => $this->_tpl_vars['tcversion_id'],'args_webeditor' => $this->_tpl_vars['gui']->exec_notes_editors[$this->_tpl_vars['tc_id']],'args_labels' => $this->_tpl_vars['labels'])));
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
-	  <?php endif; ?>
+	   
  	  <?php if ($this->_tpl_vars['tc_exec']['active'] == 0): ?>
  	   <h1 class="title"><center><?php echo $this->_tpl_vars['labels']['testcase_version_is_inactive_on_exec']; ?>
 </center></h1>

@@ -1,9 +1,14 @@
 {* 
 TestLink Open Source Project - http://testlink.sourceforge.net/ 
-$Id: tc_exec_assignment.tpl,v 1.29 2010/08/22 17:46:28 franciscom Exp $
+$Id: tc_exec_assignment.tpl,v 1.32 2010/09/27 20:01:02 franciscom Exp $
 generate the list of TC that can be removed from a Test Plan 
 
 rev :
+     20100927 - franciscom - Added ext-js extension to transform tables in ext-js grid
+                             BUGID 3668: Test Case EXECUTION Assignment Page not displayed properly
+                             <div id="header-wrap" -> added height:110px;
+                             added z-index to avoid problems with scrolling when using EXT-JS and header-wrap
+     20100926 - franciscom - HTML improvements using <thead>,<tbody>
      20100822 - franciscom - BUGID 3698
      20100709 - asimon - BUGID 3406 - changed assignment logic to operate on build 
                                       instead of testplan level
@@ -30,6 +35,7 @@ rev :
 	var alert_box_title = "{$labels.warning}";
 {literal}
 
+loop2do=0;   // needed for the convert grid logic
 function check_action_precondition(container_id,action)
 {
 	if(checkbox_count_checked(container_id) <= 0)
@@ -39,6 +45,21 @@ function check_action_precondition(container_id,action)
 	}
 	return true;
 }
+
+// 20100927 - franciscom
+Ext.onReady(function()
+{
+  // create the grid
+  var idx=0;
+  var gridSet = new Array();
+  for(idx=1; idx <= loop2do; idx++)
+  {
+    gridSet[idx] = new Ext.ux.grid.TableGrid("the-table-"+idx, {
+                       stripeRows: true // stripe alternate rows
+                   });
+    gridSet[idx].render();
+  }
+});
 
 {/literal}
 </script>
@@ -51,7 +72,8 @@ function check_action_precondition(container_id,action)
 <form id='tc_exec_assignment' name='tc_exec_assignment' method='post'>
 
   {* --------------------------------------------------------------------------------------------------------------- *}
-  <div id="header-wrap"> <!-- header-wrap -->
+  {* added z-index to avoid problems with scrolling when using EXT-JS *}
+  <div id="header-wrap" style="z-index:999;height:110px;"> <!-- header-wrap -->
 	<h1 class="title">{$gui->main_descr|escape}</h1>
   {if $gui->has_tc}
     {include file="inc_update.tpl" result=$sqlResult refresh="yes"}
@@ -91,6 +113,7 @@ function check_action_precondition(container_id,action)
 
   {if $gui->has_tc}
    <div class="workBack">
+	  {assign var=table_counter value=0}
 	  {assign var=top_level value=$gui->items[0].level}
 	  {foreach from=$gui->items item=ts key=idx name="div_drawing"}
 	    {assign var="ts_id" value=$ts.testsuite.id}
@@ -110,30 +133,33 @@ function check_action_precondition(container_id,action)
 
     	  {if $ts.write_buttons eq 'yes'}
           {if $ts.testcase_qty gt 0}
-            <table cellspacing="0" style="font-size:small;" width="100%">
+	          {assign var="table_counter" value=$table_counter+1}
+            <table cellspacing="0" style="font-size:small;" width="100%" id="the-table-{$table_counter}">
             {* ---------------------------------------------------------------------------------------------------- *}
 			      {* Heading *}
+			      <thead>
 			      <tr style="background-color:#059; font-weight:bold; color:white">
-			      	<td width="5" align="center">
+			      	<th width="5" align="center">
 			          <img class="clickable" src="{$smarty.const.TL_THEME_IMG_DIR}/toggle_all.gif"
 			               onclick='cs_all_checkbox_in_div("{$div_id}","{$add_cb}_{$ts_id}_","add_value_{$ts_id}");'
                      title="{$labels.check_uncheck_all_checkboxes}" />
-			      	</td>
-              <td class="tcase_id_cell">{$labels.th_id}</td> 
-              <td>{$labels.th_test_case}&nbsp;{$gsmarty_gui->role_separator_open}
-              	{$labels.version}{$gsmarty_gui->role_separator_close}</td>
+			      	</th>
+              <th class="tcase_id_cell">{$labels.th_id}</th> 
+              <th>{$labels.th_test_case}&nbsp;{$gsmarty_gui->role_separator_open}
+              	{$labels.version}{$gsmarty_gui->role_separator_close}</th>
               	
               {if $gui->platforms != ''}
-			      	  <td>{$labels.platform}</td>
+			      	  <th>{$labels.platform}</th>
               {/if}	
 			      	{if $session['testprojectOptions']->testPriorityEnabled}
-			      	  <td align="center">{$labels.priority}</td>
+			      	  <th align="center">{$labels.priority}</th>
 			      	{/if}
-              <td align="center">&nbsp;&nbsp;{$labels.assigned_to}</td>
-              <td align="center">&nbsp;&nbsp;{$labels.assign_to}</td>
+              <th align="center">&nbsp;&nbsp;{$labels.assigned_to}</th>
+              <th align="center">&nbsp;&nbsp;{$labels.assign_to}</th>
             </tr>
+			      </thead>
             {* ---------------------------------------------------------------------------------------------------- *}
-      
+            <tbody>  
             {foreach from=$ts.testcases item=tcase}
               {* loop over platforms *}
               {foreach from=$tcase.feature_id key=platform_id item=feature}
@@ -187,11 +213,15 @@ function check_action_precondition(container_id,action)
                     </td>
                   </tr>
                   {/if}		
-              {/foreach}            
+              {/foreach}   
+              {*
+              removed to use ext-js         
               {if $gui->platforms != ''}
                 <td colspan="8"><hr></td>
               {/if}
+              *}
             {/foreach} {* {foreach from=$ts.testcases item=tcase} *}
+            </tbody>
           </table>
           {/if}
       {/if} {* write buttons*}
@@ -210,7 +240,14 @@ function check_action_precondition(container_id,action)
     
     {/if} {* $ts_id != '' *}
 	{/foreach}
+
 	</div>
+  
+  <script type="text/javascript">
+  // needed for the convert grid logic
+  loop2do={$table_counter};
+  </script>
+
   {/if}
   
 </form>

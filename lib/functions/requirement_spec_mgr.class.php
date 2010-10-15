@@ -5,13 +5,16 @@
  *
  * Filename $RCSfile: requirement_spec_mgr.class.php,v $
  *
- * @version $Revision: 1.82 $
- * @modified $Date: 2010/05/11 18:36:26 $ by $Author: franciscom $
+ * @version $Revision: 1.87 $
+ * @modified $Date: 2010/09/19 17:43:52 $ by $Author: franciscom $
  * @author Francisco Mancardi
  *
  * Manager for requirement specification (requirement container)
  *
  * @internal revision:  
+ *	20100908 - franciscom - BUGID 3762 Import Req Spec - custom fields values are ignored
+ *							createFromXML()
+ * 
  *	20100320 - franciscom - xmlToMapReqSpec() added attributes: type,total_req 
  *	20100311 - franciscom - fixed bug due to missed isset() control
  *  20100307 - amitkhullar - small bug fix for Requirements based report.
@@ -972,13 +975,9 @@ function exportReqSpecToXML($id,$tproject_id,$optExport=array())
 	               "\n<type><![CDATA[{$containerData['type']}]]></type>\n" .
 	               "\n<node_order><![CDATA[{$containerData['node_order']}]]></node_order>\n" .
 	               "\n<total_req><![CDATA[{$containerData['total_req']}]]></total_req>\n" .
-	               "<scope><![CDATA[{$containerData['scope']}]]> \n</scope>{$cfXML}";
+	               "<scope>\n<![CDATA[{$containerData['scope']}]]>\n</scope>\n{$cfXML}";
 	}
-	// else
-	// {
-	// 	$xmlData = "<requirement>";
-	// }
-  
+ 
 	$req_spec = $this->getReqTree($id);
 	$childNodes = isset($req_spec['childNodes']) ? $req_spec['childNodes'] : null ;
 	if( !is_null($childNodes) )
@@ -998,7 +997,6 @@ function exportReqSpecToXML($id,$tproject_id,$optExport=array())
 	    	  	{
 	    	      $req_mgr = new requirement_mgr($this->db);
 	    		}
-	    		$reqXMLData = $req_mgr->exportReqToXML($cNode['id'],$tproject_id);
 	    		$xmlData .= $req_mgr->exportReqToXML($cNode['id'],$tproject_id);
 	    	}
 	    }
@@ -1007,10 +1005,6 @@ function exportReqSpecToXML($id,$tproject_id,$optExport=array())
 	{
 		$xmlData .= "</req_spec>";
 	}
-	// else
-	// {
-	// 	$xmlData .= "</requirement>";
-	// }
 	return $xmlData;
 }
 
@@ -1183,13 +1177,12 @@ function xmlToMapReqSpec($xml_item,$level=0)
 */
 function get_linked_cfields($id,$tproject_id=null)
 {
-	$enabled = 1;
 	if (!is_null($id) && $id > 0)
 	{
 		$req_spec_info = $this->get_by_id($id);
 		$tproject_id = $req_spec_info['testproject_id'];
 	}
-	$cf_map = $this->cfield_mgr->get_linked_cfields_at_design($tproject_id,$enabled,null,
+	$cf_map = $this->cfield_mgr->get_linked_cfields_at_design($tproject_id,cfield_mgr::CF_ENABLED,null,
 	                                                          'requirement_spec',$id);
 	return $cf_map;
 }
@@ -1333,13 +1326,13 @@ function html_table_of_custom_field_values($id,$tproject_id)
   */
  function customFieldValuesAsXML($id,$tproject_id)
  {
-    $xml = null;
-    $cfMap=$this->get_linked_cfields($id,$tproject_id);
-		if( !is_null($cfMap) && count($cfMap) > 0 )
-	  {
-        $xml = $this->cfield_mgr->exportValueAsXML($cfMap);
-    }
-    return $xml;
+	$xml = null;
+	$cfMap = $this->get_linked_cfields($id,$tproject_id);
+	if( !is_null($cfMap) && count($cfMap) > 0 )
+	{
+		$xml = $this->cfield_mgr->exportValueAsXML($cfMap);
+	}
+	return $xml;
  }
 
 
@@ -1347,30 +1340,52 @@ function html_table_of_custom_field_values($id,$tproject_id)
   * create a req spec tree on system from $xml data
   *
   *
-  *  
+  * @internal revisions
+  * 20100908 - franciscom - BUGID 3762 Import Req Spec - custom fields values are ignored 
   */
 function createFromXML($xml,$tproject_id,$parent_id,$author_id,$filters = null,$options=null)
 {
+	static $req_mgr;
+	static $labels;
+    static $missingCfMsg;
+	static $linkedCF;
+	static $messages;
+	static $doProcessCF = false;
+	
+	// init static items
+	if( is_null($labels) )
+	{
+		$labels = array('import_req_spec_created' => '', 'import_req_spec_skipped' => '',
+						'import_req_spec_updated' => '', 'import_req_spec_ancestor_skipped' => '',
+						'import_req_created' => '','import_req_skipped' =>'', 'import_req_updated' => '');
+		foreach($labels as $key => $dummy)
+		{
+			$labels[$key] = lang_get($key);
+		}
+
+		$messages = array();
+  		$messages['cf_warning'] = lang_get('no_cf_defined_can_not_import');
+  		$messages['cfield'] = lang_get('cf_value_not_imported_missing_cf_on_testproject');
+
+    	$linkedCF = $this->cfield_mgr->get_linked_cfields_at_design($tproject_id,cfield_mgr::CF_ENABLED,null,
+    															 	'requirement_spec',null,'name');
+		$doProcessCF = true;
+	}
+	
 	$user_feedback = null;
-	$items = $this->xmlToMapReqSpec($xml);
-    $req_mgr = new requirement_mgr($this->db);
     $copy_reqspec = null;
     $copy_req = null;
 	$getOptions = array('output' => 'minimun');
-    $has_filters = !is_null($filters);
-	$my['options'] = array( 'actionOnDuplicate' => "update");
+	$my['options'] = array('skipFrozenReq' => true);
 	$my['options'] = array_merge($my['options'], (array)$options);
 
-	$labels = array('import_req_spec_created' => '', 'import_req_spec_skipped' => '',
-					'import_req_spec_updated' => '', 'import_req_spec_ancestor_skipped' => '',
-					'import_req_created' => '','import_req_skipped' =>'', 'import_req_updated' => '');
-	foreach($labels as $key => $dummy)
-	{
-		$labels[$key] = lang_get($key);
-	}
+	// echo __CLASS__ . ' ' . __FUNCTION__;
+	// new dBug($options);
+	// new dBug($my['options']);
 
-
+	$items = $this->xmlToMapReqSpec($xml);
     
+    $has_filters = !is_null($filters);
     if($has_filters)
     {
         if(!is_null($filters['requirements']))
@@ -1438,6 +1453,38 @@ function createFromXML($xml,$tproject_id,$parent_id,$author_id,$filters = null,$
         }
         $user_feedback[] = array('doc_id' => $rspec['doc_id'],'title' => $rspec['title'],
                                  'import_status' => sprintf($labels[$msgID],$rspec['doc_id']));
+
+
+        // 20100908 - Custom Fields
+        if( $result['status_ok'] && $doProcessCF && 
+        	isset($rspec['custom_fields']) && !is_null($rspec['custom_fields']) )
+        {	
+    			$cf2insert = null;
+    			foreach($rspec['custom_fields'] as $cfname => $cfvalue)
+    			{
+    				$cfname = trim($cfname);
+    		   		if( isset($linkedCF[$cfname]) )
+    		   		{
+    		       		$cf2insert[$linkedCF[$cfname]['id']]=array('type_id' => $linkedCF[$cfname]['type'],
+    		                                                        'cf_value' => $cfvalue);         
+    		   		}
+    		   		else
+    		   		{
+    		       		if( !isset($missingCfMsg[$cfname]) )
+    		       		{
+    		           		$missingCfMsg[$cfname] = sprintf($messages['cfield'],$cfname,$labels['requirement']);
+    		       		}
+    					$user_feedback[] = array('doc_id' => $rspec['docid'],'title' => $rspec['title'], 
+    						 	                 'import_status' => $missingCfMsg[$cfname]);
+    		   		}
+    			}  
+ 				if( !is_null($cf2insert) )
+ 				{
+    				$this->cfield_mgr->design_values_to_db($cf2insert,$result['id'],null,'simple');
+    			}	
+		}
+        
+        
         if($result['status_ok'])
         {
         	$skip_level = -1;
@@ -1446,53 +1493,20 @@ function createFromXML($xml,$tproject_id,$parent_id,$author_id,$filters = null,$
             $create_req = (!$has_filters || isset($copy_req[$idx])) && !is_null($reqSet);
             if($create_req)
             {
+    			if(is_null($req_mgr))
+    			{
+    				$req_mgr =  new requirement_mgr($this->db);
+    			}
+                
                 $items_qty = isset($copy_req[$idx]) ? count($copy_req[$idx]) : count($reqSet);
                 $keys2insert = isset($copy_req[$idx]) ? $copy_req[$idx] : array_keys($reqSet);
                 for($jdx = 0;$jdx < $items_qty; $jdx++)
                 {
                     $req = $reqSet[$keys2insert[$jdx]];
-                    
-                    // Check:
-                    // If item with SAME DOCID exists inside container
-					// If there is a hit
-					//	   We will follow user option: update,create new version
-					//
-					// If do not exist check must be repeated, but on WHOLE test project
-					// 	If there is a hit -> we can not create
-					//		else => create
-					// 
-                    // 
-                    // 20100321 - we do not manage yet user option
-					$msgID = 'import_req_skipped';
-					$check_in_reqspec = $req_mgr->getByDocID($req['docid'],$tproject_id,$reqSpecID,$getOptions);
-     				if(is_null($check_in_reqspec))
-					{
-						$check_in_tproject = $req_mgr->getByDocID($req['docid'],$tproject_id,null,$getOptions);
-						if(is_null($check_in_tproject))
-						{
-                    		$req_mgr->create($result['id'],$req['docid'],$req['title'],$req['description'],
-                            		         $author_id,$req['status'],$req['type'],$req['expected_coverage'],
-                            		         $req['node_order']);
-  				     		$msgID = 'import_req_created';
-                       }             		 
-                    }
-                    else
-                    {
-                    	// function update($id,$version_id,$reqdoc_id,$title, $scope, $user_id, $status, $type,
-                		// 				   $expected_coverage,$node_order=null,$skip_controls=0)
-                		//
-						// Need to get Last Version no matter active or not.
-						// What to do if is Frozen ??? -> now ignore and update anyway
-						$reqID = key($check_in_reqspec);
-						$last_version = $req_mgr->get_last_version_info($reqID);
-						$result = $req_mgr->update($reqID,$last_version['id'],$req['docid'],$req['title'],$req['description'],
-												   $author_id,$req['status'],$req['type'],$req['expected_coverage'],
-												   $req['node_order']);
-			     		$msgID = 'import_req_updated';
-                    }               		 
+                    $dummy = $req_mgr->createFromMap($req,$tproject_id,$reqSpecID,$author_id,
+                    								 null,$my['options']);
+					$user_feedback = array_merge($user_feedback,$dummy);
                 } 
-        		$user_feedback[] = array('doc_id' => $req['docid'],'title' => $req['title'], 
-        								 'import_status' => sprintf($labels[$msgID],$req['docid']));
             }  // if($create_req)   
         } // if($result['status_ok'])
     }    
@@ -1630,7 +1644,7 @@ function getByDocID($doc_id,$tproject_id=null,$parent_id=null,$options=null)
 			$subtree = $this->tree_mgr->get_subtree($id,$my['filters']);
 			if (!is_null($subtree))
 			{
-				$this->reqMgr =  new requirement_mgr($this->db);
+				$reqMgr =  new requirement_mgr($this->db);
 				$parent_decode=array();
 			  	$parent_decode[$id]=$new_item['id'];
 				foreach($subtree as $the_key => $elem)
@@ -1640,7 +1654,7 @@ function getByDocID($doc_id,$tproject_id=null,$parent_id=null,$options=null)
 					switch ($elem['node_type_id'])
 					{
 						case $this->node_types_descr_id['requirement']:
-							$ret = $this->reqMgr->copy_to($elem['id'],$the_parent_id,$user_id,
+							$ret = $reqMgr->copy_to($elem['id'],$the_parent_id,$user_id,
 							                              $tproject_id,$my['options']['copy_also']);
 							$op['status_ok'] = $ret['status_ok'];    
 							$op['mappings'] += $ret['mappings'];

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 11:02:41
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:26:33
          compiled from inc_filter_panel_js.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'inc_filter_panel_js.tpl', 130, false),)), $this); ?>

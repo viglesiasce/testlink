@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 13:45:21
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:41:39
          compiled from cfields/cfieldsView.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'basename', 'cfields/cfieldsView.tpl', 11, false),array('modifier', 'replace', 'cfields/cfieldsView.tpl', 11, false),array('modifier', 'escape', 'cfields/cfieldsView.tpl', 49, false),array('function', 'config_load', 'cfields/cfieldsView.tpl', 12, false),array('function', 'lang_get', 'cfields/cfieldsView.tpl', 23, false),)), $this); ?>

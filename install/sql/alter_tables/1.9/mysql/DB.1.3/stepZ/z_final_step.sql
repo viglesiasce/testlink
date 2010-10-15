@@ -2,7 +2,7 @@
 $Revision: 1.5 $
 $Date: 2010/03/05 10:57:13 $
 $Author: asimon83 $
-$Name: testlink_1_9_beta6 $
+$Name:  $
 
 z_final_step.sql
 MySQL

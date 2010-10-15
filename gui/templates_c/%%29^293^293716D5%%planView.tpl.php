@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-29 10:49:26
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:27:36
          compiled from plan/planView.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'basename', 'plan/planView.tpl', 16, false),array('modifier', 'replace', 'plan/planView.tpl', 16, false),array('modifier', 'escape', 'plan/planView.tpl', 48, false),array('modifier', 'strip_tags', 'plan/planView.tpl', 83, false),array('modifier', 'strip', 'plan/planView.tpl', 83, false),array('modifier', 'truncate', 'plan/planView.tpl', 83, false),array('function', 'config_load', 'plan/planView.tpl', 17, false),array('function', 'lang_get', 'plan/planView.tpl', 26, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'basename', 'plan/planView.tpl', 17, false),array('modifier', 'replace', 'plan/planView.tpl', 17, false),array('modifier', 'escape', 'plan/planView.tpl', 51, false),array('modifier', 'strip_tags', 'plan/planView.tpl', 87, false),array('modifier', 'strip', 'plan/planView.tpl', 87, false),array('modifier', 'truncate', 'plan/planView.tpl', 87, false),array('function', 'config_load', 'plan/planView.tpl', 18, false),array('function', 'lang_get', 'plan/planView.tpl', 28, false),)), $this); ?>
 <?php $this->assign('cfg_section', ((is_array($_tmp=((is_array($_tmp='plan/planView.tpl')) ? $this->_run_mod_handler('basename', true, $_tmp) : basename($_tmp)))) ? $this->_run_mod_handler('replace', true, $_tmp, ".tpl", "") : smarty_modifier_replace($_tmp, ".tpl", ""))); ?>
 <?php echo smarty_function_config_load(array('file' => "input_dimensions.conf",'section' => $this->_tpl_vars['cfg_section']), $this);?>
 
@@ -10,12 +10,14 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'basename', 
 <?php $this->assign('editAction', ($this->_tpl_vars['managerURL'])."?do_action=edit&amp;tplan_id="); ?>
 <?php $this->assign('deleteAction', ($this->_tpl_vars['managerURL'])."?do_action=do_delete&tplan_id="); ?>
 <?php $this->assign('createAction', ($this->_tpl_vars['managerURL'])."?do_action=create"); ?>
+<?php $this->assign('exportAction', "lib/plan/planExport.php?tplan_id="); ?>
 
 
 <?php echo lang_get_smarty(array('var' => 'labels','s' => 'testplan_title_tp_management,testplan_txt_empty_list,sort_table_by_column,
           testplan_th_name,testplan_th_notes,testplan_th_active,testplan_th_delete,
           testplan_alt_edit_tp,alt_active_testplan,testplan_alt_delete_tp,public,
-          btn_testplan_create,th_id,error_no_testprojects_present'), $this);?>
+          btn_testplan_create,th_id,error_no_testprojects_present,btn_export_import,
+          export_import,export'), $this);?>
 
 
 
@@ -82,6 +84,9 @@ var del_action=fRoot+'<?php echo $this->_tpl_vars['deleteAction']; ?>
 			<th class="<?php echo $this->_tpl_vars['noSortableColumnClass']; ?>
 "><?php echo $this->_tpl_vars['labels']['testplan_th_delete']; ?>
 </th>
+			<th class="<?php echo $this->_tpl_vars['noSortableColumnClass']; ?>
+"><?php echo $this->_tpl_vars['labels']['export']; ?>
+</th>
 		</tr>
 		<?php $_from = $this->_tpl_vars['gui']->tplans; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['testplan']):
@@ -146,6 +151,17 @@ var del_action=fRoot+'<?php echo $this->_tpl_vars['deleteAction']; ?>
 ');"
 				     src="<?php echo $this->_tpl_vars['delete_img']; ?>
 "/>
+			</td>
+			<td class="clickable_icon">
+			    <a href="<?php echo $this->_tpl_vars['exportAction']; ?>
+<?php echo $this->_tpl_vars['testplan']['id']; ?>
+"> 
+				  <img style="border:none;cursor: pointer;" alt="<?php echo $this->_tpl_vars['labels']['export']; ?>
+" title="<?php echo $this->_tpl_vars['labels']['export']; ?>
+" 
+				       src="<?php echo $this->_tpl_vars['tlImages']['export']; ?>
+"/>
+				  </a>     
 			</td>
 		</tr>
 		<?php endforeach; endif; unset($_from); ?>

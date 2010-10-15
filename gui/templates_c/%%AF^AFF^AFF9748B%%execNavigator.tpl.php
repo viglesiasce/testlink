@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:26:25
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:36:26
          compiled from execute/execNavigator.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'execute/execNavigator.tpl', 27, false),array('function', 'config_load', 'execute/execNavigator.tpl', 90, false),array('modifier', 'escape', 'execute/execNavigator.tpl', 68, false),array('modifier', 'basename', 'execute/execNavigator.tpl', 88, false),array('modifier', 'replace', 'execute/execNavigator.tpl', 88, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'execute/execNavigator.tpl', 28, false),array('function', 'config_load', 'execute/execNavigator.tpl', 105, false),array('modifier', 'escape', 'execute/execNavigator.tpl', 83, false),array('modifier', 'basename', 'execute/execNavigator.tpl', 103, false),array('modifier', 'replace', 'execute/execNavigator.tpl', 103, false),)), $this); ?>
 
 <?php echo lang_get_smarty(array('var' => 'labels','s' => "filter_result,caption_nav_filter_settings,filter_owner,test_plan,filter_on,
              platform,exec_build,btn_apply_filter,build,keyword,filter_tcID,execution_type,
@@ -45,6 +45,20 @@ unset($_smarty_tpl_vars);
 			applyTo: \'filter_panel\'
 		});
 	});
+
+/**
+ * 
+ *
+ * internal revisions
+ * BUGID 3270 - Export Test Plan in XML Format
+ */
+function openExportTestPlan(windows_title,tplan_id,platform_id) 
+{
+  args = "tplanID=" + tplan_id + "&platformID=" + platform_id + "&exportContent=tree";
+	wref = window.open(fRoot+"lib/plan/planExport.php?"+args,
+	                   windows_title,"menubar=no,width=650,height=500,toolbar=no,scrollbars=yes");
+	wref.focus();
+}
 </script>
 '; ?>
 

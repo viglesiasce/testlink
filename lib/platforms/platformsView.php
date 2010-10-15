@@ -5,10 +5,11 @@
  *
  * Filename $RCSfile: platformsView.php,v $
  *
- * @version $Revision: 1.5 $
- * @modified $Date: 2010/08/21 14:22:11 $ by $Author: franciscom $
+ * @version $Revision: 1.7 $
+ * @modified $Date: 2010/09/12 15:16:09 $ by $Author: franciscom $
  *
  * allows users to manage platforms. 
+ * @internal revisions
  */
 require_once("../../config.inc.php");
 require_once("common.php");
@@ -21,6 +22,7 @@ $platform_mgr = new tlPlatform($db, $args->testproject_id);
 
 $gui = new stdClass();
 $gui->platforms = $platform_mgr->getAll(array('include_linked_count' => true));
+
 $gui->canManage = $args->currentUser->hasRight($db,"platform_management");
 $gui->user_feedback = null;
 

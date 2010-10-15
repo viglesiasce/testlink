@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-28 13:22:13
+<?php /* Smarty version 2.6.26, created on 2010-10-12 11:56:04
          compiled from mainPageCenter.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'mainPageCenter.tpl', 14, false),)), $this); ?>
@@ -45,7 +45,7 @@ Ext.ux.IFrameComponent = Ext.extend(Ext.BoxComponent, {
      // layout to fit child component
      layout:\'fit\', 
      // add iframe as the child component
-     items: [ new Ext.ux.IFrameComponent({ id: \'iFrame2\', url: \'https://10.2.32.20/testlink_test/lib/testcases/tcAssignedToUser.php\' }) ]
+     items: [ new Ext.ux.IFrameComponent({ id: \'iFrame2\', url: \'https://testlink.occamnetworks.com/lib/testcases/tcAssignedToUser.php\' }) ]
    }); 
 
    var tabs2 = new Ext.TabPanel({

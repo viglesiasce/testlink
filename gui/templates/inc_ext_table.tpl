@@ -1,6 +1,6 @@
 {* 
 Testlink Open Source Project - http://testlink.sourceforge.net/
-$Id: inc_ext_table.tpl,v 1.41 2010/08/30 21:11:29 erikeloff Exp $
+$Id: inc_ext_table.tpl,v 1.44 2010/09/24 11:12:00 asimon83 Exp $
 Purpose: rendering of Ext Js table
 
 @internal Revisions:
@@ -146,11 +146,11 @@ Ext.onReady(function() {
 			reader: new Ext.data.ArrayReader({ldelim}{rdelim},
 				fields['{$tableID}'])
 				{if $matrix->groupByColumn >= 0}
-					,groupField: 'idx{$matrix->groupByColumn}'
+					,groupField: '{$matrix->groupByColumn}'
 				{/if}
 				// 20100816 - asimon - enable sorting by a default column
-				{if $matrix->sortByColumn >= 0}
-					,sortInfo:{ldelim}field:'idx{$matrix->sortByColumn}',direction:'{$matrix->sortDirection}'{rdelim}
+				{if !is_null($matrix->sortByColumn)}
+					,sortInfo:{ldelim}field:'{$matrix->sortByColumn}',direction:'{$matrix->sortDirection}'{rdelim}
 				{/if}
 			{rdelim});
 		store['{$tableID}'].loadData(tableData['{$tableID}']);
@@ -216,10 +216,10 @@ Ext.onReady(function() {
 					{rdelim}
 				{/if} //end plugins for multisort
 			{rdelim}), //END tbar
-			{/if} 
+			{/if} //ENDIF showtoolbar
 			
 			listeners: {ldelim}
-			{if $matrix->allowMultiSort}
+			{if $matrix->allowMultiSort && $matrix->showToolbar}
 				scope: this,
 				render: function() {ldelim}
 					dragProxy = grid['{$tableID}'].getView().columnDrag;
@@ -308,6 +308,14 @@ Ext.onReady(function() {
 			{rdelim});
 		{/if}
 		
+		//Export Button
+		{if $matrix->showExportButton && $matrix->showToolbar}
+			tbar.add(new Ext.ux.Exporter.Button({ldelim}
+				component: grid['{$tableID}'],
+				store: store['{$tableID}']
+			{rdelim}));
+		{/if}
+
 		//MULTISORT
 		{if $matrix->allowMultiSort && $matrix->showToolbar}
 			

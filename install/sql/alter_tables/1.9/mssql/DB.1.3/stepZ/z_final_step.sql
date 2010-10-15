@@ -2,7 +2,7 @@
 $Revision: 1.2 $
 $Date: 2010/02/13 23:00:49 $
 $Author: havlat $
-$Name: testlink_1_9_beta6 $
+$Name:  $
 */
 
 INSERT INTO /*prefix*/rights (id,description) VALUES (24,'platform_management');

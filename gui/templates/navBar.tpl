@@ -23,7 +23,7 @@
 <body style="min-width: 800px;">
 <div style="float:left; height: 100%;">
 	<a href="index.php" target="_parent">
-	<img alt="Company logo"	title="logo" style="width: 130px; height: 50px;" 
+	<img alt="Company logo"	title="logo" style="width: 115px; height: 53px;" 
 	src="{$smarty.const.TL_THEME_IMG_DIR}{$tlCfg->company_logo}" /></a>
 </div>
 	

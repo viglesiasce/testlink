@@ -21,7 +21,6 @@
 {include file="inc_ext_js.tpl"}
 
 <script language="JavaScript" src="{$basehref}gui/niftycube/niftycube.js" type="text/javascript"></script>
-
 {literal}
 <script type="text/javascript">
 window.onload=function()
@@ -48,7 +47,7 @@ window.onload=function()
     }
 
     display_left_block_5();
-//    display_center_block_1();
+
     if( typeof display_right_block_1 != 'undefined')
     {
         display_right_block_1();
@@ -73,11 +72,11 @@ window.onload=function()
 {if $gui->securityNotes}
     {include file="inc_msg_from_array.tpl" array_of_msg=$gui->securityNotes arg_css_class="warning"}
 {/if}
-{*------ Right Space ------------- *}
+
+{* ----- Right Column ------------- *}
 {include file="mainPageRight.tpl"}
-{* ----- Center Column ------------- *}
+
+{* ----- Left Column -------------- *}
 {include file="mainPageLeft.tpl"}
-{* ----- Right Column -------------- *}
-{include file="mainPageCenter.tpl"}
 </body>
 </html>

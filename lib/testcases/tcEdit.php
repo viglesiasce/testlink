@@ -8,11 +8,13 @@
  * @package 	TestLink
  * @author 		TestLink community
  * @copyright 	2007-2009, TestLink community 
- * @version    	CVS: $Id: tcEdit.php,v 1.157 2010/08/31 14:19:26 asimon83 Exp $
+ * @version    	CVS: $Id: tcEdit.php,v 1.164 2010/09/10 19:21:48 franciscom Exp $
  * @link 		http://www.teamst.org/index.php
  *
  *
  *	@internal revisions
+ * 	20100910 - franciscom - some refactoring
+ * 	20100901 - franciscom - work on insert step
  *  20100831 - asimon - BUGID 3532
  * 	20100828 - franciscom - BUGID 3156 tinymce problems - OK Internet Explorer 8, Firefox
  *  20100810 - asimon - BUGID 3579: solved tree refreshing problems
@@ -44,13 +46,7 @@ require_once("web_editor.php");
 $cfg = getCfg();
 testlinkInitPage($db);
 $optionTransferName = 'ot';
-$args = init_args($cfg->spec,$optionTransferName);
-
-// BUGID 3532
-if ($args->doAction == "editStep" || $args->doAction == "createStep" || $args->doAction == "doCreateStep") {
-	$cfg->webEditorCfg=getWebEditorCfg('steps_design');
-}
-
+$args = init_args($cfg,$optionTransferName);
 require_once(require_web_editor($cfg->webEditorCfg['type']));
 
 $tcase_mgr = new testcase($db);
@@ -85,6 +81,7 @@ if($args->do_activate_this)
 }
 
 $doRender = false;
+
 $pfn = $args->doAction;
 switch($args->doAction)
 {
@@ -110,6 +107,7 @@ switch($args->doAction)
     case "doUpdateStep":
     case "doDeleteStep":
     case "doReorderSteps":
+    case "doInsertStep":
         $op = $commandMgr->$pfn($args,$_REQUEST);
         $doRender = true;
     break;
@@ -126,7 +124,8 @@ if($args->delete_tc_version)
 {
 	$status_quo_map = $tcase_mgr->get_versions_status_quo($args->tcase_id);
 	$exec_status_quo = $tcase_mgr->get_exec_status($args->tcase_id);
-    
+    $gui->delete_mode = 'single'; 
+
     $msg = '';
 	$sq = null;
 	if(!is_null($exec_status_quo))
@@ -331,7 +330,7 @@ if ($show_newTC_form)
   returns:
 
 */
-function init_args($spec_cfg,$otName)
+function init_args(&$cfgObj,$otName)
 {
     $tc_importance_default=config_get('testcase_importance_default');
     
@@ -359,46 +358,28 @@ function init_args($spec_cfg,$otName)
     $args->importance = isset($_REQUEST['importance']) ? $_REQUEST['importance'] : $tc_importance_default;
     
     $args->doAction = isset($_REQUEST['doAction']) ? $_REQUEST['doAction'] : '';
-    
-    $edit_tc = isset($_REQUEST['edit_tc']) ? 1 : 0;
-    $delete_tc = isset($_REQUEST['delete_tc']) ? 1 : 0;
-    $do_delete = isset($_REQUEST['do_delete']) ? 1 : 0;
-    $create_tc = isset($_REQUEST['create_tc']) ? 1 : 0;
-    $do_create = isset($_REQUEST['do_create']) ? 1 : 0;
 
-    if( $edit_tc )
-    {
-    	$args->doAction = 'edit';
-    }
-    if( $delete_tc )
-    {
-    	$args->doAction = 'delete';
-    }
-    if( $do_delete )
-    {
-    	$args->doAction = 'doDelete';
-    }
-    if( $create_tc )
-    {
-    	$args->doAction = 'create';
-    }
+	$key2loop = array('edit_tc' => 'edit', 'delete_tc' => 'delete','do_delete' => 'doDelete',
+					  'create_tc' => 'create','do_create' => 'doCreate');
+	foreach($key2loop as $key => $action)
+	{
+		if( isset($_REQUEST[$key]) )
+		{
+			$args->doAction = $action;
+			break;
+		}
+	}
+	
+   
+	$key2loop = array('move_copy_tc','delete_tc_version','do_move','do_copy',
+					  'do_create_new_version','do_delete_tc_version');
+	foreach($key2loop as $key)
+	{
+		$args->$key = isset($_REQUEST[$key]) ? 1 : 0;
+	}
 
-    if( $do_create )
-    {
-    	$args->doAction = 'doCreate';
-    }
-
-    
-    
-    $args->move_copy_tc = isset($_REQUEST['move_copy_tc']) ? 1 : 0;
-    $args->delete_tc_version = isset($_REQUEST['delete_tc_version']) ? 1 : 0;
-    $args->do_move   = isset($_REQUEST['do_move']) ? 1 : 0;
-    $args->do_copy   = isset($_REQUEST['do_copy']) ? 1 : 0;
-    $args->do_create_new_version = isset($_REQUEST['do_create_new_version']) ? 1 : 0;
-    $args->do_delete_tc_version = isset($_REQUEST['do_delete_tc_version']) ? 1 : 0;
     $args->do_activate_this = isset($_REQUEST['activate_this_tcversion']) ? 1 : 0;
     $args->do_deactivate_this = isset($_REQUEST['deactivate_this_tcversion']) ? 1 : 0;
-
     $args->target_position = isset($_REQUEST['target_position']) ? $_REQUEST['target_position'] : 'bottom';
     
     // BUGID 2316
@@ -423,9 +404,8 @@ function init_args($spec_cfg,$otName)
     $args->testproject_id = $_SESSION['testprojectID'];
     $args->user_id = $_SESSION['userID'];
 
-    // 3579
-	$args->refreshTree = isset($_SESSION['setting_refresh_tree_on_action']) ?
-                         $_SESSION['setting_refresh_tree_on_action'] : 0;
+    // BUGID 3579
+	$args->refreshTree = isset($_SESSION['setting_refresh_tree_on_action']) ? $_SESSION['setting_refresh_tree_on_action'] : 0;
     
 	$args->opt_requirements = null;
 	if( isset($_SESSION['testprojectOptions']) )
@@ -436,6 +416,16 @@ function init_args($spec_cfg,$otName)
 	$args->basehref = $_SESSION['basehref'];
 
     $args->goback_url=isset($_REQUEST['goback_url']) ? $_REQUEST['goback_url'] : null;
+
+
+	// BUGID 3532
+	$action2check = array("editStep" => true,"createStep" => true, "doCreateStep" => true,
+						  "doUpdateStep" => true, "doInsertStep" => true);
+	if( isset($action2check[$args->doAction]) )
+	{
+		$cfgObj->webEditorCfg = getWebEditorCfg('steps_design');	
+	}   
+
     return $args;
 }
 
@@ -611,7 +601,8 @@ function renderGui(&$argsObj,$guiObj,$opObj,$templateCfg,$cfgObj)
                              'createStep' => 'doCreateStep', 'doCreateStep' => 'doCreateStep',
                              'doCopyStep' => 'doUpdateStep',
                              'editStep' => 'doUpdateStep', 'doUpdateStep' => 'doUpdateStep',  
-                             'doDeleteStep' => '', 'doReorderSteps' => '');
+                             'doDeleteStep' => '', 'doReorderSteps' => '',
+                             'doInsertStep' => 'doUpdateStep');
 
 	
 	$key2work = 'initWebEditorFromTemplate';
@@ -644,6 +635,7 @@ function renderGui(&$argsObj,$guiObj,$opObj,$templateCfg,$cfgObj)
   			
     	    case "create":
 			case "doCreateStep":
+  			case "doInsertStep":
   			default:	
   				$initWebEditorFromTemplate = true;
   			break;
@@ -683,6 +675,7 @@ function renderGui(&$argsObj,$guiObj,$opObj,$templateCfg,$cfgObj)
         case "doDeleteStep":
         case "doReorderSteps":
         case "doCopyStep":
+        case "doInsertStep":
             $renderType = 'template';
             
             // Document !!!!

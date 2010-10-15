@@ -9,9 +9,10 @@
  * @package 	TestLink
  * @author 		Martin Havlat
  * @copyright 	2009, TestLink community 
- * @version    	CVS: $Id: installDbInput.php,v 1.3 2010/07/22 14:14:45 asimon83 Exp $
+ * @version    	CVS: $Id: installDbInput.php,v 1.7 2010/10/02 18:02:30 franciscom Exp $
  *
  * @internal Revisions:
+ * 20101002 - franciscom - BUGID 3083	
  * 20100705 - asimon - added warning regarding user assignments migration
  * 20090603 - franciscom - added table prefix management
  * 
@@ -25,10 +26,7 @@ if( !isset($_SESSION) )
 }
 
 $msg='';
-$inst_phase = 'dbaccess';
-//$inst_type = $_GET['installationType'];
-//$isUpgrade = ($inst_type == "upgrade") ? TRUE: FALSE;
-
+$inst_phase = 'dbaccess';  // global variable -> absolutely wrong use as usual, used on installHead.inc	
 include 'installHead.inc';
 ?>
 <div class="tlStory">
@@ -44,7 +42,7 @@ include 'installHead.inc';
 			// 20060215 - franciscom
 			if( f.databasename.value.indexOf('/') >= 0 ||
 			    f.databasename.value.indexOf('\\') >= 0 ||
-          f.databasename.value.indexOf('.') >= 0 )
+          		f.databasename.value.indexOf('.') >= 0 )
 			{
 				alert('Database name contains forbbiden characters!');
 				return false;
@@ -70,7 +68,25 @@ include 'installHead.inc';
 				return false;
 			}
 
-			
+			// 20101002 - franciscom (using code attached on BUGID 3083)
+			if(f.tableprefix.value != "") 
+			{
+				if( f.tableprefix.value.search(/^[A-Za-z0-9_]*$/) == -1)
+				{
+					alert('Table prefix must contain only letters,numbers and underscore!');
+					return false;
+				}
+				
+				// Check max len, after trim, really not needed because
+				// first check woth regexp does not allow spaces
+				// f.tableprefix.value.replace(/^\s*/, "").replace(/\s*$/, "");
+				if( f.tableprefix.value.length > 8 )  // Sorry by MAGIC NUMBER
+				{
+					alert('Table prefix lenght <= 8!');
+					return false;
+				}
+			}
+		
 			/*
 			if(f.cmsadmin.value=="") {
 				alert('You need to enter a username for the TestLink admin account!');
@@ -124,9 +140,10 @@ include 'installHead.inc';
 		<select id="databasetype" name="databasetype">
 			<option value="mysql" selected>MySQL (5.0 and later)</option>
 			<option value="postgres" >Postgres (8.0 and later)</option>
+			<option value="mssql" >Microsoft SQL Server 2000/2500</option>
 			<!--- 
 			20100124 - franciscom - Not ready => disabled
-			<option value="mssql" >Microsoft SQL Server 2000</option> --->
+			<option value="mssql" >Microsoft SQL Server 2000/2500</option> --->
 		</select>	
 		</p>
 		<p>
@@ -159,7 +176,7 @@ include 'installHead.inc';
 		<?php } ?>
 		<p>
 	    <div class="labelHolder"><label for="tableprefix">Table prefix</label></div>
-	    <input type="text" id="tableprefix" name="tableprefix" style="width:200px" value="">
+	    <input type="text" id="tableprefix" name="tableprefix" size="8" maxlength="8" value="">
 	    (optional)
 		</p>
 		<?php if($_SESSION['isNew']){ ?>

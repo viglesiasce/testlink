@@ -8,11 +8,14 @@
  * @package 	TestLink
  * @author 		Martin Havlat
  * @copyright 	2007-2009, TestLink community 
- * @version    	CVS: $Id: requirements.inc.php,v 1.110 2010/08/28 13:36:17 franciscom Exp $
+ * @version    	CVS: $Id: requirements.inc.php,v 1.114 2010/09/19 15:56:20 franciscom Exp $
  * @link 		http://www.teamst.org/index.php
  *
  * @internal Revisions:
  *
+ * 20100919 - franciscom - importReqDataFromCSV() refactoring
+ *						   importReqDataFromDocBook() added missing keys on generated map	
+ * 20100904 - franciscom - BUGID 0003745: CSV Requirements Import Updates Frozen Requirement
  * 20100828 - franciscom - deprecated functions removed
  * 20100508 - franciscom - BUGID 3447: CVS Import - add new column type 
  * 20100301 - asimon - modified req_link_replace()
@@ -67,13 +70,13 @@ function executeImportedReqs(&$db,$arrImportSource, $map_cur_reqdoc_id,$conflict
 	
 	foreach ($arrImportSource as $data)
 	{
-		$docID = trim_and_limit($data['req_doc_id'],$field_size->req_docid);
+		$docID = trim_and_limit($data['docid'],$field_size->req_docid);
 		$title = trim_and_limit($data['title'],$field_size->req_title);
 		$scope = $data['description'];
 		$type = $data['type'];
 		$status = $data['status'];
 		$expected_coverage = $data['expected_coverage'];
-		$node_order = $data['order'];
+		$node_order = $data['node_order'];
 	
 		if (($emptyScope == 'on') && empty($scope))
 		{
@@ -92,11 +95,20 @@ function executeImportedReqs(&$db,$arrImportSource, $map_cur_reqdoc_id,$conflict
 				{
 					$item = current($req_mgr->getByDocID($docID,$tprojectID));
 					$last_version = $req_mgr->get_last_version_info($item['id']);
-					$op = $req_mgr->update($item['id'],$last_version['id'],$docID,$title,$scope,$userID,
-						                   $status,$type,$expected_coverage,$node_order,SKIP_CONTROLS);
-					if( $op['status_ok']) 
+					
+					// BUGID 0003745: CSV Requirements Import Updates Frozen Requirement
+					if( $last_version['is_open'] == 1 )
 					{
-						$import_status['msg'] = lang_get('req_import_result_overwritten');
+						$op = $req_mgr->update($item['id'],$last_version['id'],$docID,$title,$scope,$userID,
+							                   $status,$type,$expected_coverage,$node_order,SKIP_CONTROLS);
+						if( $op['status_ok']) 
+						{
+							$import_status['msg'] = lang_get('req_import_result_overwritten');
+						}
+					}	
+					else
+					{
+						$import_status['msg'] = lang_get('req_import_result_skipped_is_frozen');
 					}
 				}
 				elseif ($conflictSolution == 'skip') 
@@ -156,10 +168,10 @@ function compareImportedReqs(&$dbHandler,$arrImportSource,$tprojectID,$reqSpecID
 			// 
             // 
             // 20100321 - we do not manage yet user option
-			$check_in_reqspec = $reqMgr->getByDocID($req['req_doc_id'],$tprojectID,$reqSpecID,$getOptions);
+			$check_in_reqspec = $reqMgr->getByDocID($req['docid'],$tprojectID,$reqSpecID,$getOptions);
      		if(is_null($check_in_reqspec))
 			{
-				$check_in_tproject = $reqMgr->getByDocID($req['req_doc_id'],$tprojectID,null,$getOptions);
+				$check_in_tproject = $reqMgr->getByDocID($req['docid'],$tprojectID,null,$getOptions);
 				if(!is_null($check_in_tproject))
 				{
 					$msgID = 'import_req_conflicts_other_branch';	
@@ -186,7 +198,7 @@ function compareImportedReqs(&$dbHandler,$arrImportSource,$tprojectID,$reqSpecID
 				}
 			}
 			
-			$arrImport[] = array('req_doc_id' => $req['req_doc_id'], 'title' => trim($req['title']),
+			$arrImport[] = array('req_doc_id' => $req['docid'], 'title' => trim($req['title']),
 			                     'scope' => $req['description'], 'type' => $verbose['type'], 
 			                     'status' => $verbose['status'], 'expected_coverage' => $req['expected_coverage'],
 			                     'node_order' => $req['order'], 'check_status' => $messages[$msgID]);
@@ -232,10 +244,6 @@ function loadImportedReq($fileName, $importType)
 			$pfn = "importReqDataFromCSVDoors";
 			break;
 			
-		case 'XML':
-			$pfn = "importReqDataFromXML";
-			break;
-
 		case 'DocBook':
 			$pfn = "importReqDataFromDocBook";
 			break;
@@ -254,23 +262,47 @@ function loadImportedReq($fileName, $importType)
  */
 function importReqDataFromCSV($fileName)
 {
-  	$field_size=config_get('field_size');
   	
   	// CSV line format
-	$fieldMappings = array("req_doc_id","title","description","type","status","expected_coverage","order");
+	// $fieldMappings = array("req_doc_id","title","description","type","status","expected_coverage","order");
+	$fieldMappings = array("docid","title","description","type","status","expected_coverage","node_order");
+  	
+
 	$options = array('delimiter' => ',' , 'fieldQty' => count($fieldMappings));
 	$reqData = importCSVData($fileName,$fieldMappings,$options);
 
 	if($reqData)
 	{
   		// lenght will be adjusted to these values
-  		$field_length = array("req_doc_id" => $field_size->req_docid, "title" => $field_size->req_title);
-		foreach($reqData as $key => $value)
+  		$field_size=config_get('field_size');
+  		$fieldLength = array("docid" => $field_size->req_docid, "title" => $field_size->req_title);
+
+		$reqCfg = config_get('req_cfg');
+  		$fieldDefault = array("type" => array('check' => 'type_labels', 'value' => TL_REQ_TYPE_FEATURE), 
+  							  "status" => array('check' => 'status_labels' , 'value' => TL_REQ_STATUS_VALID));
+	
+		$loop2do = count($reqData);
+		for($ddx=0; $ddx < $loop2do; $ddx++)
 		{
-	     	foreach($field_length as $fkey => $len)
-		   	{
-	       		$reqData[$key][$fkey]=trim_and_limit($reqData[$key][$fkey],$len);
-		   	}
+			foreach($reqData[$ddx] as $fieldKey => &$fieldValue)
+			{
+				// Adjust Lenght 
+				if( isset($fieldLength[$fieldKey]) )
+				{
+	       			// $reqData[$ddx][$fieldKey] = trim_and_limit($reqData[$ddx][$fieldKey],$fieldLength[$fieldKey]);
+	       			$fieldValue = trim_and_limit($fieldValue,$fieldLength[$fieldKey]);
+				}
+				else if(isset($fieldDefault[$fieldKey]))
+				{
+					// Assign default value
+					$checkKey = $fieldDefault[$fieldKey]['check'];
+					$checkObj = &$reqCfg->$checkKey;
+					if( !isset($checkObj[$fieldValue]) )
+					{
+						$fieldValue = $fieldDefault[$fieldKey]['value'];
+					}
+				}
+			}
 		}
 	}
 	return $reqData;
@@ -375,25 +407,14 @@ function getDocBookTableAsHtmlString($docTable,$parseCfg)
  * Imports data from DocBook XML
  *
  * 20081103 - sisajr
+ *
+ * @return array of map
+ *
  */
 function importReqDataFromDocBook($fileName)
 {
 	$req_cfg = config_get('req_cfg');
 	$docbookCfg = $req_cfg->importDocBook;
-	// $docbookCfg->requirement= "sect3";
-	// $docbookCfg->title= "title";
-	// $docbookCfg->paragraph= "para";
-	// $docbookCfg->ordered_list="orderedlist";
-	// $docbookCfg->list_item="listitem";
-	// $docbookCfg->table="informaltable";
-	// $docbookCfg->table_group="tgroup";
-	// $docbookCfg->table_head="thead";
-	// $docbookCfg->table_body="tbody";
-	// $docbookCfg->table_row="row";
-	// $docbookCfg->table_entry="entry";
-	// $docbookCfg->list_item_children = array('para','title');
-	// $docbookCfg->table_entry_children = array('para');
-
 	$xmlReqs = null;
 	$xmlData = null;
   	$field_size=config_get('field_size');  
@@ -405,30 +426,21 @@ function importReqDataFromDocBook($fileName)
 	foreach($simpleXMLObj->sect1 as $xmlReq)
 	{
 		// get all child elements of this requirement
-		// $title = (string)$xmlReq->title;
-		// echo $title . '<br>'; 
 		$title = "";
 		$description = "";
 		$children = $xmlReq->children();
 		foreach ($children as $child)
 		{                        
 			$nodeName = $child->getName();
-			// echo 'node name:' . $nodeName .'<br>';
-
 			if ($nodeName == $docbookCfg->title )
 			{
-				// echo 'INSIDE::' . $nodeName . '<br>';
 				$title = (string)$child;
-				// echo '$title:' . $title .'<br>';
-				
 			}	
 			else if ($nodeName == $docbookCfg->ordered_list)
 			{
-				// echo 'INSIDE' . $nodeName . '<br>';
 				$list = "";
 				foreach( $child->children() as $item )
 				{
-					// echo 'xxx' . $item->getName() . '<br>';
 					if( $item->getName() == $docbookCfg->list_item )
 					{
 						if( $item->count() == 0 )
@@ -451,7 +463,6 @@ function importReqDataFromDocBook($fileName)
 			}
 			else if ($nodeName == $docbookCfg->table)
 			{
-				// echo 'INSIDE: ' . $nodeName . '<br>';
 				$description .= getDocBookTableAsHtmlString($child,$docbookCfg);
 			}
 			else if ($nodeName == $docbookCfg->paragraph)
@@ -465,14 +476,10 @@ function importReqDataFromDocBook($fileName)
 
 
 		}
-
-		// echo '$description:' . '<xmp>' . $description . '</xmp>' . '<br>';
-
 		$xmlData[$idx]['description'] = $description; 
 		$xmlData[$idx]['title'] = trim_and_limit($title,$field_size->req_title);
     	
 		// parse Doc ID from requirement title
-    	
 		// first remove any weird characters before the title. This could be probably omitted
 		$xmlData[$idx]['title'] = preg_replace("/^[^a-zA-Z_0-9]*/","",$xmlData[$idx]['title']);
     	
@@ -501,12 +508,17 @@ function importReqDataFromDocBook($fileName)
 				$counter[$index] = 0;
 			}
 			$counter[$index]++;
-			$xmlData[$idx]['req_doc_id'] = $matches[0] . " " . $counter[$index];
+			$xmlData[$idx]['docid'] = $matches[0] . " " . $counter[$index];
 		}
+
+		// 20100919 - to refactor in future
+		$xmlData[$idx]['node_order'] = $idx;
+		$xmlData[$idx]['expected_coverage'] = 0;
+		$xmlData[$idx]['type'] = TL_REQ_TYPE_FEATURE;
+		$xmlData[$idx]['status'] = TL_REQ_STATUS_VALID;
+
 		$idx++;
 	}
-	
-	new dBug($xmlData);	
 	return $xmlData;
 }
 
@@ -780,13 +792,6 @@ function check_syntax_xml($fileName)
   $ret=array();
   $ret['status_ok']=1;
   $ret['msg']='ok';
-
-  //@ -> shhhh!!!! silence please
-  // if (!$dom = @domxml_open_file($fileName))
-  // {
-  //   $ret['status_ok']=0;
-  //   $ret['msg']=lang_get('file_is_not_xml');
-  // }
   return($ret);
 }
 

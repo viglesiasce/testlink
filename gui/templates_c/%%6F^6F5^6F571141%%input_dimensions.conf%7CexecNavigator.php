@@ -9,4 +9,6 @@
   'STEP_NUMBER_MAXLEN' => '2',
   'SCOPE_TRUNCATE' => '100',
   'SCOPE_SHORT_TRUNCATE' => '30',
+  'FILENAME_MAXLEN' => '50',
+  'FILENAME_SIZE' => '50',
 ); ?>

@@ -8,11 +8,14 @@
  * @package 	TestLink
  * @author 		TestLink community
  * @copyright 	2007-2009, TestLink community 
- * @version    	CVS: $Id: tcSearch.php,v 1.15 2010/08/14 15:48:50 franciscom Exp $
+ * @version    	CVS: $Id: tcSearch.php,v 1.22 2010/10/05 09:03:12 asimon83 Exp $
  * @link 		http://www.teamst.org/index.php
  *
  *
  *	@internal revisions
+ *  20101005 - asimon - replaced linked test case title by linked icon for editing
+ *	20100920 - Julian - BUGID 3793 - use exttable to display search results
+ *	20100908 - Julian - BUGID 2877 - Custom Fields linked to TC versions
  *	20100814 - franciscom - improvements on logic and feedback when user fill in test case id filter
  *	20100609 - franciscom - BUGID 1627: Search Test Case by Date of Creation
  *  20100526 - Julian - BUGID 3490 - Search Test Cases based on requirements
@@ -27,13 +30,19 @@
  **/
 require_once("../../config.inc.php");
 require_once("common.php");
+require_once('exttable.class.php');
 testlinkInitPage($db);
 
 $templateCfg = templateConfiguration();
+$tpl = 'tcSearchResults.tpl';
 $tproject_mgr = new testproject($db);
 
 $tcase_cfg = config_get('testcase_cfg');
+$charset = config_get('charset');
 $args = init_args();
+
+$edit_label = lang_get('design');
+$edit_icon = TL_THEME_IMG_DIR . "edit_icon.png";
 
 $gui = initializeGui($args);
 $map = null;
@@ -134,7 +143,8 @@ if ($args->tprojectID)
         $args->custom_field_id = $db->prepare_string($args->custom_field_id);
         $args->custom_field_value = $db->prepare_string($args->custom_field_value);
         $from['by_custom_field']= " JOIN {$tables['cfield_design_values']} CFD " .
-                                  " ON CFD.node_id=NH_TC.id ";
+                                  //BUGID 2877 - Custom Fields linked to TC versions
+                                  " ON CFD.node_id=NH_TCV.id ";
         $filter['by_custom_field'] = " AND CFD.field_id={$args->custom_field_id} " .
                                      " AND CFD.value like '%{$args->custom_field_value}%' ";
     }
@@ -207,24 +217,85 @@ if ($args->tprojectID)
 
 $smarty = new TLSmarty();
 if($gui->row_qty > 0)
-{
-	$tpl = 'tcSearchResults.tpl';
-	$gui->pageTitle .= " - " . lang_get('match_count') . " : " . $gui->row_qty;
+{	
 	if ($map)
 	{
 		$tcase_mgr = new testcase($db);   
 	    $tcase_set = array_keys($map);
-	    $gui->path_info = $tproject_mgr->tree_manager->get_full_path_verbose($tcase_set);
+	    $options = array('output_format' => 'path_as_string');
+	    $gui->path_info = $tproject_mgr->tree_manager->get_full_path_verbose($tcase_set, $options);
 		$gui->resultSet = $map;
 	}
 }
 else
 {
-	$the_tpl = config_get('tpl');
-    $tpl = isset($the_tpl['tcSearchView']) ? $the_tpl['tcSearchView'] : 'tcView.tpl'; 
+	$gui->warning_msg=lang_get('no_records_found');
 }
+
+$table = buildExtTable($gui, $charset, $edit_icon, $edit_label);
+
+if (!is_null($table)) {
+	$gui->tableSet[] = $table;
+}
+
+$gui->pageTitle .= " - " . lang_get('match_count') . " : " . $gui->row_qty;
 $smarty->assign('gui',$gui);
 $smarty->display($templateCfg->template_dir . $tpl);
+
+/**
+ * 
+ *
+ */
+function buildExtTable($gui, $charset, $edit_icon, $edit_label) {
+	$table = null;
+	if(count($gui->resultSet) > 0) {
+		$labels = array('test_suite' => lang_get('test_suite'), 'test_case' => lang_get('test_case'));
+		$columns = array();
+		
+		$columns[] = array('title' => $labels['test_suite']);
+		$columns[] = array('title' => $labels['test_case'], 'type' => 'text');
+	
+		// Extract the relevant data and build a matrix
+		$matrixData = array();
+		
+		$titleSeperator = config_get('gui_title_separator_1');
+		
+		foreach($gui->resultSet as $result) {
+			$rowData = array();
+			$rowData[] = htmlentities($gui->path_info[$result['testcase_id']], ENT_QUOTES, $charset);
+			
+			// build test case link
+//			$rowData[] = "<a href=\"lib/testcases/archiveData.php?edit=testcase&id={$result['testcase_id']}\">" .
+//			             htmlentities($gui->tcasePrefix, ENT_QUOTES, $charset) . $result['tc_external_id'] . $titleSeperator .
+//			             htmlentities($result['name'], ENT_QUOTES, $charset);
+			$edit_link = "<a href=\"javascript:openTCEditWindow({$result['testcase_id']});\">" .
+						 "<img title=\"{$edit_label}\" src=\"{$edit_icon}\" /></a> ";
+			$tcaseName = htmlentities($gui->tcasePrefix, ENT_QUOTES, $charset) . $result['tc_external_id'] . $titleSeperator .
+			             htmlentities($result['name'], ENT_QUOTES, $charset);
+		    $tcLink = $edit_link . $tcaseName;
+			$rowData[] = $tcLink;
+
+			$matrixData[] = $rowData;
+		}
+		
+		$table = new tlExtTable($columns, $matrixData, 'tl_table_test_case_search');
+		
+		$table->setGroupByColumnName($labels['test_suite']);
+		$table->setSortByColumnName($labels['test_case']);
+		$table->sortDirection = 'DESC';
+		
+		$table->showToolbar = true;
+		$table->allowMultiSort = false;
+		$table->toolbarRefreshButton = false;
+		$table->toolbarShowAllColumnsButton = false;
+		
+		$table->addCustomBehaviour('text', array('render' => 'columnWrap'));
+		
+		// dont save settings for this table
+		$table->storeTableState = false;
+	}
+	return($table);
+}
 
 
 /**
@@ -303,6 +374,7 @@ function initializeGui(&$argsObj)
 	$gui->tcasePrefix = '';
 	$gui->path_info = null;
 	$gui->resultSet = null;
+	$gui->tableSet = null;
 	$gui->bodyOnLoad = null;
 	$gui->bodyOnUnload = null;
 	$gui->refresh_tree = false;

@@ -41,10 +41,7 @@ if ($args->bPostBack)
 			if ($gui->uploaded)
 			{
 				logAuditEvent(TLS("audit_attachment_created",$args->title,$fInfo['name']),"CREATE",$id,"attachments");
-				//THIS IS WHEN I WANT TO UPDATE THE has_attach parameter in the executions db
-				$db->exec_query("UPDATE executions e SET has_attach=true WHERE e.id=" . $id);
-			}
-	
+			}	
 		}
 		else
 		{

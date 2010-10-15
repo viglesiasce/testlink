@@ -4,19 +4,18 @@
  * This script is distributed under the GNU General Public License 2 or later. 
  *  
  * @filesource $RCSfile: reqImport.php,v $
- * @version $Revision: 1.23 $
- * @modified $Date: 2010/05/11 18:36:26 $ by $Author: franciscom $
+ * @version $Revision: 1.28 $
+ * @modified $Date: 2010/09/19 17:43:52 $ by $Author: franciscom $
  * @author Martin Havlat
  * 
  * Import ONLY requirements to a req specification. 
  * Supported: simple CSV, Doors CSV, XML, DocBook
- * 
+ *
+ * 20100914 - franciscom - manage option skip frozen requirements
+ * 20100908 - asimon -  BUGID 3761: requirement tree refresh after requirement import
  * 20100321 - franciscom - work on import child requirements XML format - not finished
  * 20081103 - sisajr - DocBook XML extension
  * 20080504 - franciscom - removed tmp file after import
- * 20061014 - franciscom - added check on file mime type
- *                         using check_valid_ftype()
- *
  *
  */
 require_once("../../config.inc.php");
@@ -29,48 +28,27 @@ testlinkInitPage($db,false,false,"checkRights");
 
 $templateCfg = templateConfiguration();
 $req_spec_mgr = new requirement_spec_mgr($db);
+$req_mgr = new requirement_mgr($db);
+
 
 $args = init_args();
-$gui = initializeGui($db,$args,$_SESSION,$req_spec_mgr);
-
+$gui = initializeGui($db,$args,$_SESSION,$req_spec_mgr,$req_mgr);
 switch($args->doAction)
 {
     case 'uploadFile':
-        $dummy = doUploadFile($db,$gui->fileName,$gui->scope,$args,$req_spec_mgr);
-
-        $gui->items = $dummy->items;
-        $gui->items_qty = is_null($gui->items) ? 0 : count($gui->items);
-        $gui->has_items = $gui->items_qty > 0;
-        $gui->support_array = $gui->has_items ? array_keys($gui->items): array();  // do know is if really needed
-        $gui->file_check = $dummy->file_check;
-        if($gui->file_check['status_ok'] == 0)
-        {
-            $gui->doAction = 'askFileName';
-        }
-    break;
-    
-    case 'executeImport':
-        $dummy = doExecuteImport($db,$gui->fileName,$args,$req_spec_mgr);
+        $dummy = doExecuteImport($gui->fileName,$args,$req_spec_mgr,$req_mgr);
 		$gui->items = $dummy->items;        
+		$gui->file_check = $dummy->file_check;        
         $gui->importResult = lang_get('import_done');
+        
+        // BUGID 3761: requirement tree refresh after requirement import
+        $gui->refreshTree = $args->refreshTree && $gui->file_check['status_ok'];	
+        
     break;
 }
 
-// need to understand if has any sense
-switch($args->scope)
-{
-	case 'tree':
-		$req_spec = '';
-	break;
-
-	case 'branch':
-	default:
-		$req_spec = $req_spec_mgr->get_by_id($args->req_spec_id);
-	break;
-}
-
+   
 $smarty = new TLSmarty;
-
 $smarty->assign('gui',$gui);
 $smarty->display($templateCfg->template_dir . $templateCfg->default_template);
 
@@ -80,51 +58,56 @@ $smarty->display($templateCfg->template_dir . $templateCfg->default_template);
  * doExecuteImport
  *
  */
-function doExecuteImport(&$dbHandler,$fileName,&$argsObj,&$reqSpecMgr)
+function doExecuteImport($fileName,&$argsObj,&$reqSpecMgr,&$reqMgr)
 {
     $retval = new stdClass();
-    $retval->items = null;
+    $retval->items = array();
     $retval->msg = '';
-    
-	if($argsObj->importType == 'XML')
-	{
-		$xml = simplexml_load_file($fileName);
-	    
-	    // if achecked_req is null => user has not selected any requirement, anyway we are going to create reqspec tree
-	    $filter['requirements'] = $argsObj->achecked_req;
-	    $retval->items = array();
+    $retval->file_check=array('status_ok' => 1, 'msg' => 'ok');
 
-    	$isReqSpec = property_exists($xml,'req_spec');
-		if($isReqSpec)
+    $context = new stdClass();
+    $context->tproject_id = $argsObj->tproject_id;
+    $context->req_spec_id =  $argsObj->req_spec_id;
+    $context->user_id = $argsObj->user_id;
+	$context->importType = $argsObj->importType;
+
+    $opts = array();
+    $opts['skipFrozenReq'] = ($argsObj->skip_frozen_req ? true : false);
+    $opts['hitCriteria'] = $argsObj->hitCriteria;
+    $opts['actionOnHit'] = $argsObj->actionOnHit;
+    
+	// manage file upload process
+    $source = isset($_FILES['uploadedFile']['tmp_name']) ? $_FILES['uploadedFile']['tmp_name'] : null;
+	if (($source != 'none') && ($source != '' ))
+	{ 
+    	if (move_uploaded_file($source, $fileName))
 		{
-        	foreach($xml->req_spec as $xkm)
-    		{
-    			$dummy = $reqSpecMgr->createFromXML($xkm,$argsObj->tproject_id,$argsObj->req_spec_id,$argsObj->user_id);
-    			$retval->items = array_merge($retval->items,$dummy);
-    		}
-    	}   
-    	else
-    	{
-    		$selectedKeys = array_keys($argsObj->achecked_req[0]);
-    		if( count($selectedKeys) > 0 )
-    		{
-   	    		$reqMgr = new requirement_mgr($dbHandler);
-    			$retval->items = null;
-        		foreach($selectedKeys as $kdx)
-        		{
-        			$retval->items[] = $reqMgr->createFromXML($xml->requirement[$kdx],$argsObj->tproject_id,
-        			                                          $argsObj->req_spec_id,$argsObj->user_id);
-        		}
-        	}
-    	}
-	}
-	else
+        	if( strcasecmp($argsObj->importType,'XML') == 0 )
+			{
+    	    	$retval->file_check['status_ok']=!(($xml=simplexml_load_file($fileName)) === FALSE);
+			}
+		}	
+    }
+    else
 	{
-	    $retval->items = doReqImport($dbHandler,$argsObj->tproject_id,$argsObj->user_id,$argsObj->req_spec_id,$fileName,
- 	    				             $argsObj->importType,$argsObj->emptyScope,$argsObj->conflictSolution,true);
+		$retval->file_check=array('status_ok' => 0, 'msg' => lang_get('please_choose_req_file'));
+	}	
+	// ----------------------------------------------------------------------------------------------
+	
+	if($retval->file_check['status_ok'])
+	{
+
+		if($argsObj->importType == 'XML')
+		{
+    		$retval->items = doReqImportFromXML($reqSpecMgr,$reqMgr,$xml,$context,$opts);
+		}
+		else
+		{
+		    $retval->items = doReqImportOther($reqMgr,$fileName,$context,$opts);
+		}
+		unlink($fileName);
+		$retval->msg = lang_get('req_import_finished');
 	}
-	unlink($fileName);
-	$retval->msg = lang_get('req_import_finished');
     return $retval;    
 }
 
@@ -145,6 +128,14 @@ function init_args()
     $args = new stdClass();
     $request = strings_stripSlashes($_REQUEST);
    
+   
+    $key='actionOnHit';
+    $args->$key = isset($_REQUEST[$key]) ? $_REQUEST[$key] : 'update_last_version';
+
+    $key='hitCriteria';
+    $args->$key = isset($_REQUEST[$key]) ? $_REQUEST[$key] : 'docid';
+   
+   
     $args->req_spec_id = isset($request['req_spec_id']) ? $request['req_spec_id'] : null;
     $args->importType = isset($request['importType']) ? $request['importType'] : null;
     $args->emptyScope = isset($request['noEmpty']) ? $request['noEmpty'] : null;
@@ -153,6 +144,8 @@ function init_args()
     
     // useRecursion: used when you want to work on test project or req. spec
     $args->useRecursion = isset($request['useRecursion']) ? 1 : 0;
+    $args->skip_frozen_req = isset($request['skip_frozen_req']) ? 1 : 0;
+
     
     $args->doAction='askFileName';
     $action_keys = array('uploadFile','executeImport');
@@ -165,76 +158,29 @@ function init_args()
         }    
     }
     
-    $args->achecked_req=isset($request['achecked_req']) ? $request['achecked_req'] : null;
+    $args->achecked_req = isset($request['achecked_req']) ? $request['achecked_req'] : null;
     $args->tproject_id = $_SESSION['testprojectID'];
     $args->tproject_name = $_SESSION['testprojectName'];
     $args->user_id = isset($_SESSION['userID']) ? $_SESSION['userID'] : 0;
    	$args->scope = isset($_REQUEST['scope']) ? $_REQUEST['scope'] : 'items';
-    
+
+    // BUGID 3761: requirement tree refresh after requirement import
+	$args->refreshTree = isset($_SESSION['setting_refresh_tree_on_action']) ? 
+						 $_SESSION['setting_refresh_tree_on_action'] : 0;
+
     return $args;
 }
 
 
 
 
-/*
-  function: 
-
-  args :
-  
-  returns: 
-
-*/
-function check_valid_ftype($upload_info,$import_type)
-{
-	$ret = array();
-	$ret['status_ok'] = 0;
-	$ret['msg'] = 'ok';
-	
-	$mime_types = array();
-	$import_type = strtoupper($import_type);
-	
-	$mime_types['check_ext'] = array('application/octet-stream' => 'csv');                        
-	
-	$mime_import_types['text/plain'] = array('CSV' => 'CSV', 'CSV_DOORS' => 'CSV_DOORS');
-	$mime_import_types['application/octet-stream'] = array('CSV' => 'CSV');
-	$mime_import_types['text/xml'] = array('XML' => 'XML');
-	$mime_import_types['text/xml'] = array('DocBook' => 'XML');
-	
-	if(isset($mime_import_types[$upload_info['type']])) 
-	{
-		if(isset($mime_import_types[$upload_info['type']][$import_type]))
-		{
-			$ret['status_ok'] = 1;
-			if(isset($mime_types['check_ext'][$upload_info['type']]))
-			{
-				$path_parts = pathinfo($upload_info['name']);
-				if($path_parts['extension'] != $mime_types['check_ext'][$upload_info['type']])
-				{
-					$status_ok = 0;    
-					$ret['msg'] = lang_get('file_is_not_text');
-				}
-			}
-		}
-		else
-		{
-			$ret['msg'] = lang_get('file_is_not_ok_for_import_type');
-		}
-	}
-	else
-	{
-		$ret['msg'] = lang_get('file_is_not_text');
-	}
-	
-	return $ret;
-}
 
 /**
  * initializeGui()
  * create object that will be used by Smarty template
  *
  */
-function initializeGui(&$dbHandler,&$argsObj,$session,&$reqSpecMgr)
+function initializeGui(&$dbHandler,&$argsObj,$session,&$reqSpecMgr,&$reqMgr)
 {
     $gui=new stdClass();
     $gui->file_check = array('status_ok' => 1, 'msg' => 'ok');
@@ -264,7 +210,6 @@ function initializeGui(&$dbHandler,&$argsObj,$session,&$reqSpecMgr)
     	case 'items':
 			$gui->req_spec = $reqSpecMgr->get_by_id($argsObj->req_spec_id);
     		$gui->main_descr = sprintf(lang_get('reqspec_import_requirements'),$gui->req_spec['title']);
-   		    $reqMgr = new requirement_mgr($dbHandler);
     		$gui->importTypes = $reqMgr->get_import_file_types();
     	break;
     }
@@ -281,6 +226,10 @@ function initializeGui(&$dbHandler,&$argsObj,$session,&$reqSpecMgr)
     $gui->importFileGui->maxFileSize=round(strval($file_size_limit)/1024);
     $gui->importFileGui->fileSizeLimitMsg=sprintf(lang_get('max_file_size_is'), $gui->importFileGui->maxFileSize  . ' KB ');
     
+
+    $gui->importFileGui->skip_frozen_req_checked = $argsObj->skip_frozen_req ? ' checked="checked" ' : '';
+    
+    
     $gui->importFileGui->return_to_url=$session['basehref'];
     if( is_null($argsObj->req_spec_id) )
     {
@@ -290,6 +239,15 @@ function initializeGui(&$dbHandler,&$argsObj,$session,&$reqSpecMgr)
     {
         $gui->importFileGui->return_to_url .= "lib/requirements/reqSpecView.php?req_spec_id=$argsObj->req_spec_id";
     } 
+    
+    //'generate_new' => lang_get('generate_new_requirement'),
+    $gui->actionOptions=array('update_last_version' => lang_get('update_last_requirement_version'),
+                              'create_new_version' => lang_get('create_new_requirement_version'));
+	
+	$gui->hitOptions=array('docid' => lang_get('same_docid'),'title' => lang_get('same_title'));
+
+	$gui->duplicate_criteria_verbose = lang_get('duplicate_req_criteria');
+
     return $gui;    
 }
 
@@ -303,106 +261,57 @@ function checkRights(&$db,&$user)
 	return ($user->hasRight($db,'mgt_view_req') && $user->hasRight($db,'mgt_modify_req'));
 }
 
+
 /**
- * doUploadFile
+ * 
  *
  */
-function doUploadFile(&$dbHandler,$fileName,$importScope,&$argsObj,&$reqSpecMgr)
+function doReqImportFromXML(&$reqSpecMgr,&$reqMgr,&$simpleXMLObj,$importContext,$importOptions)
 {
-    $retval=new stdClass();
-    $retval->items=null;
-    $retval->file_check=array('status_ok' => 1, 'msg' => 'ok');
-    
-    $source = isset($_FILES['uploadedFile']['tmp_name']) ? $_FILES['uploadedFile']['tmp_name'] : null;
-	if (($source != 'none') && ($source != '' ))
-	{ 
-		if($retval->file_check['status_ok'])
+	$items = array();
+	$isReqSpec = property_exists($simpleXMLObj,'req_spec');
+	if($isReqSpec)
+	{
+		foreach($simpleXMLObj->req_spec as $xkm)
 		{
-            if (move_uploaded_file($source, $fileName))
-			{
-			    // Must be recoded - $file_check = check_syntax($gui->fileName,$args->importType);
-			    if($retval->file_check['status_ok'])
-			    {
-			        if( strcasecmp($argsObj->importType,'XML') == 0 )
-			        {
-    	                $retval->file_check['status_ok']=!(($xml=simplexml_load_file($fileName)) === FALSE);
-    	                if($retval->file_check['status_ok'])
-    	                { 
-    	                	
-    	                	$retval->items = array();
-    	                	
-    	                	// New simple check on file contents
-    	                	$isReqSpec = property_exists($xml,'req_spec');
-    	                	
-    	                	$fileFormatOK = ($isReqSpec && $importScope != 'items') ||
-    	                					(!$isReqSpec && $importScope == 'items');  
-    	                	
-    	                	// if($isReqSpec)
-    	                	// 
-    	                	// switch($importScope)
-    	                	// {
-    	                	// 	case 'branch':
-    	                	// 	case 'tree':
-    	                	// 		$fileFormatOK = property_exists($xml,'req_spec');
-    	                	// 	break;
-    	                	// 	
-    	                	// 	case 'items':
-    	                	// 	
-    	                	// 	break;
-    	                	// 
-    	                	// }
-    	                	
-    	                	// we can have two types of files:
-    	                	// 1. req. specs + requirements
-    	                	// 2. just requirements
-    	                	if( $isReqSpec )
-    	                	{ 
-    	                		foreach($xml->req_spec as $xkm)
-    	                		{
-    	                			$retval->items = array_merge($retval->items,$reqSpecMgr->xmlToMapReqSpec($xkm));
-    	                		}
-    	                	}
-    	                	else
-    	                	{
-   	                		    $reqMgr = new requirement_mgr($dbHandler);
-    	                		$loop2do = count($xml->requirement);
-    	                		$items = null;
-        						for($zdx=0; $zdx <= $loop2do; $zdx++)
-        						{
-        						    $xml_req=$reqMgr->xmlToMapRequirement($xml->requirement[$zdx]);
-        						    if(!is_null($xml_req))
-        						    { 
-        						        $items[]=$xml_req;
-        						    }    
-        						}    
-								if($loop2do > 0)
-								{
-        						    // IMPORTANT NOTICE
-        						    // this keys must be same that returned by $reqSpecMgr->xmlToMapReqSpec
-        						    // because are used at GUI to draw
-     						        $retval->items[]=array('requirements' => $items, 'req_spec' => null, 'level' => 0);
-								}
-    	                	}
-	                    }
-	                    else
-	                    {
-	                        $retval->file_check['msg']=lang_get('xml_load_file_failed');
-	                    }    
-		    	    }
-                    else
-					{
-					    $retval->items = doReqImport($dbHandler,$argsObj->tproject_id,$argsObj->user_id,$argsObj->req_spec_id,
-					    							 $fileName,$argsObj->importType,$argsObj->emptyScope,
- 					   				                 $argsObj->conflictSolution,false);
-					}
-			   }
-			}
+			$dummy = $reqSpecMgr->createFromXML($xkm,$importContext->tproject_id,$importContext->req_spec_id,
+												$importContext->user_id,null,$importOptions);
+			$items = array_merge($items,$dummy);
 		}
-	}
+	}   
 	else
 	{
-		$retval->file_check=array('status_ok' => 0, 'msg' => lang_get('please_choose_req_file'));
-	}	
-    return $retval;    
+		$loop2do = count($simpleXMLObj->requirement);
+		for($kdx=0; $kdx < $loop2do; $kdx++)
+		{		
+			$dummy = $reqMgr->createFromXML($simpleXMLObj->requirement[$kdx],$importContext->tproject_id,
+		                                    $importContext->req_spec_id,$importContext->user_id,null,$importOptions);
+			$items = array_merge($items,$dummy);
+		}
+	}
+    return $items;
 }
+
+
+/**
+ * 
+ *
+ */
+function doReqImportOther(&$reqMgr,$fileName,$importContext,$importOptions)
+{
+	$reqSet = loadImportedReq($fileName, $importContext->importType);
+	$items = array();
+	if( ($loop2do=count($reqSet)) )
+	{
+		for($kdx=0; $kdx < $loop2do; $kdx++)
+		{		
+			$dummy = $reqMgr->createFromMap($reqSet[$kdx],$importContext->tproject_id,$importContext->req_spec_id,
+											$importContext->user_id,null,$importOptions);
+			$items = array_merge($items,$dummy);
+		}
+	}
+	return $items;
+}
+
+
 ?>

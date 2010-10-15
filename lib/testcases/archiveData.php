@@ -2,7 +2,7 @@
 /** 
  * 	TestLink Open Source Project - http://testlink.sourceforge.net/
  * 
- * 	@version 	$Id: archiveData.php,v 1.75 2010/08/14 15:54:44 franciscom Exp $
+ * 	@version 	$Id: archiveData.php,v 1.78 2010/10/08 11:15:27 asimon83 Exp $
  * 	@author 	Martin Havlat
  * 
  * 	Allows you to show test suites, test cases.
@@ -10,6 +10,8 @@
  *	Also called when search option on Navigation Bar is used
  *
  *	@internal revision
+ *  20101008 - asimon - BUGID 3311
+ *  20100916 - amitkhullar - BUGID 3639
  *  20100628 - asimon - BUGID 3406: removed old logic from BUGID 3049,
  *                      functionality will be changed because of user assigments per build
  *  20100628 - asimon - removal of constants from filter control class
@@ -40,6 +42,10 @@ switch($args->feature)
 		$item_mgr = new $args->feature($db);
 		$gui->attachments = getAttachmentInfosFrom($item_mgr,$args->id);
 		$gui->id = $args->id;
+		
+		$lblkey = config_get('testcase_reorder_by') == 'NAME' ? '_alpha' : '_externalid';
+		$gui->btn_reorder_testcases = lang_get('btn_reorder_testcases' . $lblkey);
+
 		if($args->feature == 'testproject')
 		{
 			$item_mgr->show($smarty,$gui,$templateCfg->template_dir,$args->id);
@@ -63,6 +69,8 @@ switch($args->feature)
 		$gui->attachments = null;
 		$gui->direct_link = null;
 		$gui->steps_results_layout = config_get('spec_cfg')->steps_results_layout;
+		// 20101008 - asimon - BUGID 3311
+		$gui->bodyOnUnload = 'storeWindowSize(\'TCEditPopup\')';
     	
    		// has been called from a test case search
 		if(!is_null($args->targetTestCase) && strcmp($args->targetTestCase,$args->tcasePrefix) != 0)

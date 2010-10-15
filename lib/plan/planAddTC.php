@@ -7,11 +7,16 @@
  *
  * @package 	TestLink
  * @copyright 	2007-2009, TestLink community 
- * @version    	CVS: $Id: planAddTC.php,v 1.102 2010/08/10 21:55:39 erikeloff Exp $
+ * @version    	CVS: $Id: planAddTC.php,v 1.106 2010/10/09 08:47:40 franciscom Exp $
  * @filesource	http://testlink.cvs.sourceforge.net/viewvc/testlink/testlink/lib/functions/object.class.php?view=markup
  * @link 		http://www.teamst.org/index.php
  * 
  * @internal Revisions:
+ * 20101009 - franciscom - fixing event viewer warnings created for missing initialization of required
+ *						   properties of gui object
+ *	
+ * 20101004 - asimon - adapted to new interface of getTestersForHtmlOptions
+ * 20100927 - asimon - refresh tree only when action is done
  * 20100721 - asimon - BUGID 3406: assign users per build when adding testcases to plan,
  *                                 added init_build_selector()
  * 20100628 - asimon - removal of constants from filter control class
@@ -43,7 +48,7 @@ $templateCfg = templateConfiguration();
 $args = init_args();
 $gui = initializeGui($db,$args,$tplan_mgr,$tcase_mgr);
 
-// 3406
+// BUGID 3406
 $gui->build = init_build_selector($tplan_mgr, $args);
 
 $keywordsFilter = null;
@@ -121,7 +126,7 @@ switch($args->doAction)
 					    $features2['add'][$feature_id]['creation_ts'] = $db_now;
 					    $features2['add'][$feature_id]['platform_name'] = $platformSet[$platform_id];
 					    
-					    // 3406 
+					    // BUGID 3406 
 					    $features2['add'][$feature_id]['build_id'] = $args->build_id;
 					}
             	}
@@ -265,7 +270,20 @@ if($do_display)
     
     // This has to be done ONLY AFTER has all data needed => after gen_spec_view() call
 	setAdditionalGuiData($gui);
-    
+
+	// 20100927 - asimon - refresh tree only when action is done
+	switch ($args->doAction) {
+		case 'doReorder':
+		case 'doSavePlatforms':
+		case 'doSaveCustomFields':
+		case 'doAddRemove':
+			$gui->refreshTree = $args->refreshTree;
+		break;
+		
+		default:
+			$gui->refreshTree = false;
+		break;	
+	}
     
 	$smarty->assign('gui', $gui);
 	$smarty->display($templateCfg->template_dir .  'planAddTC_m1.tpl');
@@ -297,15 +315,15 @@ function init_args()
 	$args->testcases2remove = isset($_REQUEST['remove_checked_tc']) ? $_REQUEST['remove_checked_tc'] : null;
 
 	// BUGID 3516
-//	// Can be a list (string with , (comma) has item separator), that will be trasformed in an array.
-//	$keywordSet = isset($_REQUEST['keyword_id']) ? $_REQUEST['keyword_id'] : null;
-//	
-//	$args->keyword_id = 0;  
-//	if(!is_null($keywordSet))
-//	{
-//		$args->keyword_id = explode(',',$keywordSet);  
-//	}
-//	$args->keywordsFilterType = isset($_REQUEST['keywordsFilterType']) ? $_REQUEST['keywordsFilterType'] : 'OR';
+	//	// Can be a list (string with , (comma) has item separator), that will be trasformed in an array.
+	//	$keywordSet = isset($_REQUEST['keyword_id']) ? $_REQUEST['keyword_id'] : null;
+	//	
+	//	$args->keyword_id = 0;  
+	//	if(!is_null($keywordSet))
+	//	{
+	//		$args->keyword_id = explode(',',$keywordSet);  
+	//	}
+	//	$args->keywordsFilterType = isset($_REQUEST['keywordsFilterType']) ? $_REQUEST['keywordsFilterType'] : 'OR';
 
 	$args->testcases2order = isset($_REQUEST['exec_order']) ? $_REQUEST['exec_order'] : null;
 	$args->linkedOrder = isset($_REQUEST['linked_exec_order']) ? $_REQUEST['linked_exec_order'] : null;
@@ -318,14 +336,14 @@ function init_args()
     $args->send_mail = isset($_REQUEST['send_mail']) ? $_REQUEST['send_mail'] : false;
 
     // BUGID 3516
-//	// BUGID 2797 - filter by test case execution type
-//	// 0 -> Any, but has to be converter to null to be used on call to other functions
-//	$args->executionType = isset($_REQUEST['executionType']) ? intval($_REQUEST['executionType']) : 0;
-//	$args->executionType = ($args->executionType > 0) ? $args->executionType : null;
-//
-//	// 0 -> Any, but has to be converter to null to be used on call to other functions
-//	$args->importance = isset($_REQUEST['importance']) ? intval($_REQUEST['importance']) : 0;
-//	$args->importance = ($args->importance > 0) ? $args->importance : null;
+	//	// BUGID 2797 - filter by test case execution type
+	//	// 0 -> Any, but has to be converter to null to be used on call to other functions
+	//	$args->executionType = isset($_REQUEST['executionType']) ? intval($_REQUEST['executionType']) : 0;
+	//	$args->executionType = ($args->executionType > 0) ? $args->executionType : null;
+	//
+	//	// 0 -> Any, but has to be converter to null to be used on call to other functions
+	//	$args->importance = isset($_REQUEST['importance']) ? intval($_REQUEST['importance']) : 0;
+	//	$args->importance = ($args->importance > 0) ? $args->importance : null;
 
 	// BUGID 3516
 	// For more information about the data accessed in session here, see the comment
@@ -362,7 +380,7 @@ function init_args()
 		$args->keywordsFilterType = $session_data[$ft];
 	}
 	
-	// 3406
+	// BUGID 3406
 	$args->build_id = isset($_REQUEST['build_id']) ? intval($_REQUEST['build_id']) : 0;
 	
 	return $args;
@@ -479,7 +497,12 @@ function initializeGui(&$dbHandler,$argsObj,&$tplanMgr,&$tcaseMgr)
     $gui->testPlanName = $tplan_info['name'];
     $gui->pageTitle = lang_get('test_plan') . $title_separator . $gui->testPlanName;
     $gui->refreshTree = $argsObj->refreshTree;
-    $gui->testers = getTestersForHtmlOptions($dbHandler,$argsObj->tplan_id,$argsObj->tproject_id);
+
+	// 20101004 - asimon - adapted to new interface of getTestersForHtmlOptions
+    $tproject_mgr = new testproject($dbHandler);
+    $tproject_info = $tproject_mgr->get_by_id($argsObj->tproject_id);
+
+    $gui->testers = getTestersForHtmlOptions($dbHandler,$argsObj->tplan_id, $tproject_info);
     $gui->testerID = $argsObj->testerID;
     $gui->send_mail = $argsObj->send_mail;
     $gui->send_mail_checked = '';

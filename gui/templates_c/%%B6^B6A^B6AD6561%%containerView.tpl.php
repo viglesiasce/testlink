@@ -1,12 +1,13 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 12:59:47
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:26:36
          compiled from testcases/containerView.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'testcases/containerView.tpl', 23, false),array('modifier', 'escape', 'testcases/containerView.tpl', 72, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'testcases/containerView.tpl', 25, false),array('modifier', 'escape', 'testcases/containerView.tpl', 75, false),)), $this); ?>
 <?php echo lang_get_smarty(array('var' => 'labels','s' => 'th_product_name,edit_testproject_basic_data,th_notes,test_suite,details,none,
              keywords,alt_del_testsuite, alt_edit_testsuite, alt_move_cp_testcases, alt_move_cp_testsuite, 
              btn_new_testsuite, btn_reorder,btn_execute_automatic_testcases,
 	           btn_edit_testsuite,btn_del_testsuite,btn_move_cp_testsuite,
-	           btn_del_testsuites_bulk,
+	           btn_del_testsuites_bulk,btn_delete_testcases,btn_reorder_testcases_alpha,
+	           btn_reorder_testcases_externalid,btn_reorder_testsuites_alpha,
 	           btn_export_testsuite, btn_export_all_testsuites, btn_import_testsuite, 
 	           btn_new_tc,btn_move_cp_testcases, btn_import_tc, btn_export_tc, th_testplan_name'), $this);?>
 
@@ -77,6 +78,11 @@ unset($_smarty_tpl_vars);
 " />
 		<input type="button" onclick="location='<?php echo $this->_tpl_vars['tsuiteExportAction']; ?>
 '" value="<?php echo $this->_tpl_vars['labels']['btn_export_all_testsuites']; ?>
+" />
+
+		<input type="submit" name="reorder_testproject_testsuites_alpha" value="<?php echo $this->_tpl_vars['labels']['btn_reorder_testsuites_alpha']; ?>
+"
+				     title="<?php echo $this->_tpl_vars['labels']['btn_reorder_testsuites_alpha']; ?>
 " />
 
     
@@ -153,13 +159,19 @@ unset($_smarty_tpl_vars);
 "
 				     title="<?php echo $this->_tpl_vars['labels']['alt_move_cp_testsuite']; ?>
 " />
+		  <input type="submit" name="reorder_testsuites_alpha" value="<?php echo $this->_tpl_vars['labels']['btn_reorder_testsuites_alpha']; ?>
+"
+				     title="<?php echo $this->_tpl_vars['labels']['btn_reorder_testsuites_alpha']; ?>
+" />
 
+      <br />
 			<input type="button" onclick="location='<?php echo $this->_tpl_vars['importToTSuiteAction']; ?>
 '" value="<?php echo $this->_tpl_vars['labels']['btn_import_testsuite']; ?>
 " />
 			<input type="button" onclick="location='<?php echo $this->_tpl_vars['tsuiteExportAction']; ?>
 '" value="<?php echo $this->_tpl_vars['labels']['btn_export_testsuite']; ?>
 " />
+
 		</form>
 	    </div>
 
@@ -176,7 +188,6 @@ unset($_smarty_tpl_vars);
 			<input type="button" onclick="location='<?php echo $this->_tpl_vars['exportTestCasesAction']; ?>
 '" value="<?php echo $this->_tpl_vars['labels']['btn_export_tc']; ?>
 " />
-
 		</form>
 		</span>
 		<form method="post" action="lib/testcases/containerEdit.php">
@@ -187,6 +198,15 @@ unset($_smarty_tpl_vars);
 	    <input type="submit" name="move_testcases_viewer" value="<?php echo $this->_tpl_vars['labels']['btn_move_cp_testcases']; ?>
 "
          		 title="<?php echo $this->_tpl_vars['labels']['alt_move_cp_testcases']; ?>
+" />
+			<input type="submit" name="delete_testcases" value="<?php echo $this->_tpl_vars['labels']['btn_delete_testcases']; ?>
+"
+				     title="<?php echo $this->_tpl_vars['labels']['btn_delete_testcases']; ?>
+" />
+			<br />
+			<input type="submit" name="reorder_testcases" value="<?php echo $this->_tpl_vars['gui']->btn_reorder_testcases; ?>
+"
+				     title="<?php echo $this->_tpl_vars['gui']->btn_reorder_testcases; ?>
 " />
 		</form>
 

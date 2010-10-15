@@ -6,11 +6,14 @@
  * @package 	TestLink
  * @author 		franciscom
  * @copyright 	2005-2009, TestLink community 
- * @version    	CVS: $Id: testsuite.class.php,v 1.98 2010/07/15 16:45:41 franciscom Exp $
+ * @version    	CVS: $Id: testsuite.class.php,v 1.104 2010/09/20 19:04:38 franciscom Exp $
  * @link 		http://www.teamst.org/index.php
  *
  * @internal Revisions:
  *
+ * 20100920 - franciscom - html_table_of_custom_field_values() changed keys on $formatOptions
+ * 20100904 - franciscom - BUGID 3571 - get_by_name() interface changes
+ *						   update() - interface changes	
  * 20100602 - franciscom - BUGID 3498 - get_by_name() - missing JOIN
  * 20100328 - franciscom - get_by_id() interface and return set changes
  *						   get_children() - new method - contribution - BUGID 2645
@@ -239,8 +242,10 @@ class testsuite extends tlObjectWithAttachments
 	/**
 	 * update
 	 *
+	 * @internal Revisions
+	 * 20100904 - franciscom - added node_order
 	 */
-	function update($id, $name, $details, $parent_id=null)
+	function update($id, $name, $details, $parent_id=null, $node_order=null)
 	{
 		$debugMsg = 'Class:' . __CLASS__ . ' - Method: ' . __FUNCTION__;
 	  	$ret['status_ok']=0;
@@ -255,8 +260,13 @@ class testsuite extends tlObjectWithAttachments
 	  		
 			if ($result)
 			{
-				$sql = "/* $debugMsg */ UPDATE {$this->tables['nodes_hierarchy']}  SET name='" . 
-					   $this->db->prepare_string($name) . "' WHERE id= {$id}";
+				$sql = "/* $debugMsg */ UPDATE {$this->tables['nodes_hierarchy']} " .
+					   " SET name='" .  $this->db->prepare_string($name) . "' ";
+				if( !is_null($node_order) && intval($node_order) > 0 )
+				{
+					$sql .= ', node_order=' . $this->db->prepare_int(intval($node_order)); 	   
+				}	   
+				$sql .=	" WHERE id= {$id}";
 				$result = $this->db->exec_query($sql);
 			}
 			
@@ -334,15 +344,21 @@ class testsuite extends tlObjectWithAttachments
 	           name: testsuite name
 	
 	  @internal Revisions
+	  20100904 - added parent_id
 	  20100602 - BUGID 3498	
 	*/
-	function get_by_name($name)
+	function get_by_name($name, $parent_id=null)
 	{
 		$sql = " SELECT TS.*, NH.name, NH.parent_id " .
 			   " FROM {$this->tables['testsuites']} TS " .
 			   " JOIN {$this->tables['nodes_hierarchy']} NH " .
 			   " ON NH.id = TS.id " .
 			   " WHERE NH.name = '" . $this->db->prepare_string($name) . "'";
+		
+		if( !is_null($parent_id) )
+		{
+			$sql .= " AND NH.parent_id = " . $this->db->prepare_int($parent_id);	
+		}
 		
 		$recordset = $this->db->get_recordset($sql);
 		return $recordset;
@@ -427,7 +443,6 @@ class testsuite extends tlObjectWithAttachments
 		$gui->cf = '';
 	    $gui->sqlResult = '';
 		$gui->sqlAction = '';
-		// 20100314 - franciscom 
 		$gui->refreshTree = property_exists($gui,'refreshTree') ? $gui->refreshTree : false;
 
         // BUGID 0003233: After test suite edit, display of Test suite do not 
@@ -1045,12 +1060,14 @@ class testsuite extends tlObjectWithAttachments
 	function exportTestSuiteDataToXML($container_id,$tproject_id,$optExport = array())
 	{
 		static $keywordMgr;
+		static $getLastVersionOpt = array('output' => 'minimun');
+		static $tcase_mgr;
+		
 		if(is_null($keywordMgr))
 		{
   	    	$keywordMgr = new tlKeyword();      
 		}	
 		
-		// echo __FUNCTION__ . '<br>';
 		$xmlTC = null;
 		$doRecursion = isset($optExport['RECURSIVE']) ? $optExport['RECURSIVE'] : 0;
 		if($doRecursion)
@@ -1058,7 +1075,7 @@ class testsuite extends tlObjectWithAttachments
 		    $cfXML = null;
 			$kwXML = null;
 			$tsuiteData = $this->get_by_id($container_id);
-			if (@$optExport['KEYWORDS'])
+			if(@$optExport['KEYWORDS'])
 			{
 				$kwMap = $this->getKeywords($container_id);
 				if ($kwMap)
@@ -1068,15 +1085,10 @@ class testsuite extends tlObjectWithAttachments
 			}
 			if ($optExport['CFIELDS'])
 		    {
-				// 20090106 - franciscom - custom fields
-	        	$cfMap=$this->get_linked_cfields_at_design($container_id,null,null,$tproject_id);
-				if( !is_null($cfMap) && count($cfMap) > 0 )
+	        	$cfMap = (array)$this->get_linked_cfields_at_design($container_id,null,null,$tproject_id);
+				if( count($cfMap) > 0 )
 		    	{
-	        	    $cfRootElem = "<custom_fields>{{XMLCODE}}</custom_fields>";
-		    	    $cfElemTemplate = "\t" . '<custom_field><name><![CDATA[' . "\n||NAME||\n]]>" . "</name>" .
-		    	  	                         '<value><![CDATA['."\n||VALUE||\n]]>".'</value></custom_field>'."\n";
-		    	    $cfDecode = array ("||NAME||" => "name","||VALUE||" => "value");
-		    	    $cfXML = exportDataToXML($cfMap,$cfRootElem,$cfElemTemplate,$cfDecode,true);
+		    	    $cfXML = $this->cfield_mgr->exportValueAsXML($cfMap);
 		    	} 
 		    }
 	        $xmlTC = "<testsuite name=\"" . htmlspecialchars($tsuiteData['name']). '" >' .
@@ -1256,12 +1268,16 @@ class testsuite extends tlObjectWithAttachments
 	                                           $tproject_id = null,$formatOptions=null) 
 	{
 	    $filters=array('show_on_execution' => $show_on_execution);    
-	    $td_style='class="labelHolder"' ;
+	    $label_css_style=' class="labelHolder" ' ;
+   		$value_css_style = ' ';
+
 	    $add_table=true;
 	    $table_style='';
 	    if( !is_null($formatOptions) )
 	    {
-	        $td_style=isset($formatOptions['td_css_style']) ? $formatOptions['td_css_style'] : $td_style;
+	        $label_css_style = isset($formatOptions['label_css_style']) ? $formatOptions['label_css_style'] : $label_css_style;
+			$value_css_style = isset($formatOptions['value_css_style']) ? $formatOptions['value_css_style'] : $value_css_style;
+
 	        $add_table=isset($formatOptions['add_table']) ? $formatOptions['add_table'] : true;
 	        $table_style=isset($formatOptions['table_css_style']) ? $formatOptions['table_css_style'] : $table_style;
 	    } 
@@ -1290,7 +1306,8 @@ class testsuite extends tlObjectWithAttachments
 	        {
 	          // true => do not create input in audit log
 	          $label=str_replace(TL_LOCALIZE_TAG,'',lang_get($cf_info['label'],null,true));
-	          $cf_smarty .= "<tr><td {$td_style} >" . htmlspecialchars($label) . "</td><td>" .
+	          $cf_smarty .= "<tr><td {$label_css_style} >" . htmlspecialchars($label) . "</td>" .
+							"<td {$value_css_style}>" .
 	                        $this->cfield_mgr->string_custom_field_value($cf_info,$id) .
 	                        "</td></tr>\n";
 	        }

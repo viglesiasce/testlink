@@ -5,12 +5,13 @@
  * 
  * @package 	TestLink
  * @copyright 	2007-2009, TestLink community 
- * @version    	CVS: $Id: tlUser.class.php,v 1.11 2010/07/04 16:33:39 franciscom Exp $
+ * @version    	CVS: $Id: tlUser.class.php,v 1.13 2010/09/17 18:27:49 franciscom Exp $
  * @filesource	http://testlink.cvs.sourceforge.net/viewvc/testlink/testlink/lib/functions/user.class.php?view=markup
  * @link 		http://www.teamst.org/index.php
  *
  * @internal Revisions:
  *	
+ *	20100917 - Julian - getAccessibleTestPlans() - BUGID 3724 - new option "active"
  *	20100704 - franciscom - getAccessibleTestPlans() - BUGID 3526
  *	20100522 - franciscom - getAccessibleTestPlans() - added arguments options
  *	20100427 - franciscom - BUGID 3396 - writePasswordToDB() method
@@ -597,10 +598,13 @@ class tlUser extends tlDBObject
 		$tplans_role = $this->tplanRoles;
 		$effective_role = $this->globalRole;
 		if(!is_null($tplans_role) && isset($tplans_role[$tplan_id]))
+		{
 			$effective_role = $tplans_role[$tplan_id];  
+		}
 		else if(!is_null($tprojects_role) && isset($tprojects_role[$tproject_id]))
+		{
 			$effective_role = $tprojects_role[$tproject_id];  
-		
+		}
 		return $effective_role;
 	}
 
@@ -795,6 +799,9 @@ class tlUser extends tlDBObject
      * 							'output' => null -> get numeric array
      *									 => map => map indexed by testplan id
      *									 => combo => map indexed by testplan id and only returns name
+     *							'active' => ACTIVE (get active test plans)
+     *									 => INACTIVE (get inactive test plans)
+     *									 => TP_ALL_STATUS (get all test plans)
      *
      * @return array if 0 accessible test plans => null
      */
@@ -802,7 +809,7 @@ class tlUser extends tlDBObject
 	{
 		$debugTag = 'Class:' .  __CLASS__ . '- Method:' . __FUNCTION__ . '-';
 		
-		$my['options'] = array( 'output' => null);
+		$my['options'] = array( 'output' => null, 'active' => ACTIVE);
 	    $my['options'] = array_merge($my['options'], (array)$options);
 		
 		$fields2get = ' NH.id, NH.name ';
@@ -815,9 +822,13 @@ class tlUser extends tlDBObject
 		       " JOIN {$this->tables['testplans']} TPLAN ON NH.id=TPLAN.id  " .
 		       " LEFT OUTER JOIN {$this->tables['user_testplan_roles']} USER_TPLAN_ROLES" .
 		       " ON TPLAN.id = USER_TPLAN_ROLES.testplan_id " .
-		       " AND USER_TPLAN_ROLES.user_id = $this->dbID WHERE active=1 AND  ";
+		       " AND USER_TPLAN_ROLES.user_id = $this->dbID WHERE " .
+		       " testproject_id = {$testprojectID} AND ";
+		
+		if (!is_null($my['options']['active'])) {
+			$sql .= " active = {$my['options']['active']} AND ";
+		}
 	
-		$sql .= " testproject_id = {$testprojectID} AND ";
 	  	if (!is_null($testplanID))
 	  	{
 			$sql .= " NH.id = {$testplanID} AND ";

@@ -25,15 +25,6 @@ Rev:
       			<div class="title" style="text-align: center;">{$args_labels.test_exec_result}</div>
     				
     				<div class="resultBox">
-			Command<br />
-			<input type="text" name="collect_command_{$args_tcversion_id}" id="collect_command_{$args_tcversion_id}" size="16"  maxlength="255" value="show version" onkeypress="return disableEnterKey(event)"><br />
-                        IP<br />
-			<input type="text" name="collect_ip_{$args_tcversion_id}" id="collect_ip_{$args_tcversion_id}" size="16"  maxlength="255" value="" onkeypress="return disableEnterKey(event)"><br />
-			<input type="submit" name="save_and_collect[{$args_tcversion_id}]"
-                                                    {$args_input_enable_mgmt}
-                        onclick="document.getElementById('save_button_clicked').value={$args_tcversion_id};return checkCollectForStatus(document.getElementById('collect_ip_{$args_tcversion_id}').value, {$args_tcversion_id}, document.getElementById('collect_command_{$args_tcversion_id}').value)"  value="Collect Info" />
-                        <HR>
-
                 {foreach key=verbose_status item=locale_status from=$tlCfg->results.status_label_for_exec_ui}
     						      <input type="radio" {$args_input_enable_mgmt} name="{$radio_id_prefix}[{$args_tcversion_id}]" 
     						      id="{$radio_id_prefix}_{$args_tcversion_id}_{$ResultsStatusCode.$verbose_status}" 
@@ -48,7 +39,7 @@ Rev:
     					  <br />		
     		 			
     		 			  {if $args_save_type == 'single'}
-			    <input type="submit" name="save_results[{$args_tcversion_id}]" 
+    		 			      <input type="submit" name="save_results[{$args_tcversion_id}]" 
     		 			            {$args_input_enable_mgmt}
                           onclick="document.getElementById('save_button_clicked').value={$args_tcversion_id};return checkSubmitForStatus('{$ResultsStatusCode.not_run}')"
     		 			            value="{$args_labels.btn_save_tc_exec_results}" />
@@ -56,7 +47,8 @@ Rev:
     		 			      <input type="submit" name="save_and_next[{$args_tcversion_id}]" 
     		 			            {$args_input_enable_mgmt}
                           onclick="document.getElementById('save_button_clicked').value={$args_tcversion_id};return checkSubmitForStatus('{$ResultsStatusCode.not_run}')"
-    		 			            value="{$args_labels.btn_save_exec_and_movetonext}" /><br />
+    		 			            value="{$args_labels.btn_save_exec_and_movetonext}" />
+
     		 			  {else}
      	    	        <input type="submit" id="do_bulk_save" name="do_bulk_save"
       	    	             value="{$args_labels.btn_save_tc_exec_results}"/>

@@ -4,13 +4,17 @@
  * This script is distributed under the GNU General Public License 2 or later. 
  *  
  * @filesource $RCSfile: resultsReqs.php,v $
- * @version $Revision: 1.32 $
- * @modified $Date: 2010/08/26 07:27:47 $ by $Author: mx-julian $
+ * @version $Revision: 1.39 $
+ * @modified $Date: 2010/10/07 13:27:58 $ by $Author: asimon83 $
  * @author Martin Havlat
  * 
  * Report requirement based results
  * 
  * rev:
+ * 20101007 - asimon - BUGID 3856: Requirement based report should regard platforms
+ * 20101005 - asimon - added linked icon also for testcases linked to requirements
+ * 20101001 - asimon - added icon for requirement editing
+ * 20100902 - Julian - BUGID 3717 - show linked tcs and the results for each req
  * 20100823 - Julian - table now uses a unique table id per test project
  * 20100820 - asimon - BUGID 3439: little refactorizations
  * 20100819 - asimon - BUGIDs 3261, 3439, 3488, 3569, 3299, 3259, 3687: 
@@ -32,8 +36,11 @@ $tproject_mgr = new testproject($db);
 $tplan_mgr = new testplan($db);
 $req_mgr = new requirement_mgr($db);
 $req_spec_mgr = new requirement_spec_mgr($db);
+// BUGID 3856
+$platform_mgr = new tlPlatform($db);
 
 $glue_char = config_get('gui_title_separator_1');
+$glue_char_tc = config_get('testcase_cfg')->glue_character;
 // BUGID 3439
 $no_srs_msg_key = 'no_srs_defined';
 $no_finished_reqs_msg_key = 'no_finished_reqs';
@@ -47,10 +54,16 @@ $external_req_mgmt = $req_cfg->external_req_management;
 $req_type_labels = init_labels($req_cfg->type_labels);
 $req_spec_type_labels = init_labels($req_spec_cfg->type_labels);
 $status_labels = init_labels($req_cfg->status_labels);
-$labels = array('requirements' => lang_get('requirements'),
+$labels = array('requirement' => lang_get('requirement'),
+	            'requirements' => lang_get('requirements'),
                 'type' => lang_get('type'),
                 'na' => lang_get('not_aplicable'),
-                'req_availability' => lang_get('req_availability'));
+                'req_availability' => lang_get('req_availability'),
+                'linked_tcs' => lang_get('linked_tcs'),
+                'no_linked_tcs' => lang_get('no_linked_tcs'),
+                'goto_testspec' => lang_get('goto_testspec'),
+                'design' => null);
+$edit_icon = TL_THEME_IMG_DIR . "edit_icon.png";
 
 $status_code_map = array();
 foreach ($results_cfg['status_label_for_exec_ui'] as $status => $label) {
@@ -75,12 +88,17 @@ $eval_status_map['uncovered'] = array('label' => lang_get('uncovered'),
 
 $args = init_args($tproject_mgr);
 $gui = init_gui($args);
+// BUGID 3856
+$gui_open = config_get('gui_separator_open');
+$gui_close = config_get('gui_separator_close');
+$platforms = $platform_mgr->getLinkedToTestplanAsMap($args->tplan_id);
+$gui->platforms = $platforms ? array(0 => $gui_open . lang_get('any') . $gui_close) + $platforms : null;
 
 $req_ids = $tproject_mgr->get_all_requirement_ids($args->tproject_id);
+$prefix = $tproject_mgr->getTestCasePrefix($args->tproject_id);
 $req_spec_map = array();
 $tc_ids = array();
 $testcases = array();
-
 
 // first step: get the requirements and linked testcases with which we have to work,
 // order them into $req_spec_map by spec
@@ -125,10 +143,14 @@ if(count($req_spec_map)) {
 	$testcases = array();
 	if (count($tc_ids)) {
 		$filters = array('tcase_id' => $tc_ids);
-		$options = null;
+		// BUGID 3856
+		if ($args->platform != 0) {
+			$filters['platform_id'] = $args->platform;
+		}
+		$options = array('last_execution' => true, 'output' => 'map');
 		$testcases = $tplan_mgr->get_linked_tcversions($args->tplan_id, $filters, $options);
 	}
-	
+
 	foreach ($req_spec_map as $req_spec_id => $req_spec_info) {
 		$req_spec_map[$req_spec_id]['req_counters'] = array('total' => 0);
 		
@@ -195,6 +217,9 @@ if (count($req_spec_map)) {
 	// complete progress
 	$columns[] = array('title' => lang_get('progress'), 'width' => 60, 'groupable' => 'false');
 	
+	$columns[] = array ('title' => $labels['linked_tcs'], 'groupable' => 'false', 'width' => 250, 
+	             'hidden' => 'true', 'type' => 'text');
+	
 	// data for rows
 	$rows = array();
 	
@@ -219,11 +244,16 @@ if (count($req_spec_map)) {
 			// create the linked title to display
 			$title = htmlentities($req_info['req_doc_id'], ENT_QUOTES, $charset) . $glue_char . 
 			         htmlentities($req_info['title'], ENT_QUOTES, $charset);
-			$linked_title = '<!-- ' . $title . ' -->' . 
-			                '<a href="javascript:openLinkedReqWindow(' . $req_id . ')">' . 
-			                $title . '</a>';
-			
-			$single_row[] = $linked_title;
+			//$linked_title = '<!-- ' . $title . ' -->' .
+			//                '<a href="javascript:openLinkedReqWindow(' . $req_id . ')">' .
+			//                $title . '</a>';
+
+			$edit_link = "<a href=\"javascript:openLinkedReqWindow(" . $req_id . ")\">" .
+						 "<img title=\"{$labels['requirement']}\" src=\"{$edit_icon}\" /></a> ";
+
+		    $link = $edit_link . $title;
+
+			$single_row[] = $link;
 	    	
 	    	// version number
 	    	$version_num = $req_info['version'];
@@ -292,14 +322,42 @@ if (count($req_spec_map)) {
 			// complete progress
 			$single_row[] = ($total_count) ? comment_percentage($progress_percentage) : $labels['na'];
 			
+			//BUGID 3717 - show all linked tcversions incl exec result
+			$linked_tcs_with_status = '';
+			if (count($req_info['linked_testcases']) > 0 ) {
+				foreach($req_info['linked_testcases'] as $testcase) {
+					$tc_id = $testcase['id'];
+					
+					$status = $status_code_map['not_run'];
+					if(isset($testcases[$tc_id]['exec_status'])) {
+						$status = $testcases[$tc_id]['exec_status'];
+					}
+					
+					$colored_status = '<span class="' . $eval_status_map[$status]['css_class'] . '">[' . 
+					                  $eval_status_map[$status]['label'] . ']</span>';
+					
+					$tc_name = $prefix . $glue_char_tc . $testcase['tc_external_id'] . $glue_char .
+					           $testcase['name'];
+					           
+					//$tc_edit_link = "<a href=\"lib/testcases/archiveData.php?edit=testcase&id=" .
+					//                $tc_id . "\" title = \"{$labels['goto_testspec']}\">" . $tc_name . "</a>";
+					$edit_link = "<a href=\"javascript:openTCEditWindow({$tc_id});\">" .
+								 "<img title=\"{$labels['design']}\" src=\"{$edit_icon}\" /></a> ";
+
+					$linked_tcs_with_status .= "{$edit_link} {$colored_status} {$tc_name}<br>";
+				}
+			} else  {
+				$linked_tcs_with_status = $labels['no_linked_tcs'];
+			}
+			
+			$single_row[] = $linked_tcs_with_status;
+			
 			$rows[] = $single_row;
 		}
 	}
 	
-	// create unique table id for each project
-	$table_id = 'tl_'.$args->tproject_id.'_table_results_reqs';
 	// create table object
-	$matrix = new tlExtTable($columns, $rows, $table_id);
+	$matrix = new tlExtTable($columns, $rows, 'tl_table_results_reqs');
 	$matrix->title = $gui->pageTitle;
 	
 	// group by Req Spec and hide that column
@@ -458,7 +516,10 @@ function init_args(&$tproject_mgr)
 	$args->tplan_id = intval($_SESSION['resultsNavigator_testplanID']);
 	
 	$args->format = $_SESSION['resultsNavigator_format'];
-	
+
+	// BUGID 3856
+	$args->platform = isset($_REQUEST['platform']) ? $_REQUEST['platform'] : 0;
+
 	return $args;
 }
 
@@ -478,7 +539,9 @@ function init_gui(&$argsObj) {
 	$gui->tproject_name = $argsObj->tproject_name;
 	$gui->show_only_finished = $argsObj->show_only_finished;
 	$gui->tableSet = null;
-	
+	// BUGID 3856
+	$gui->selected_platform = $argsObj->platform;
+
 	return $gui;
 }
 

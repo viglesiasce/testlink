@@ -7,7 +7,7 @@
  * @package    TestLink
  * @author     Andreas Simon
  * @copyright  2006-2010, TestLink community
- * @version    CVS: $Id: tlRequirementFilterControl.class.php,v 1.10 2010/08/27 07:49:03 asimon83 Exp $
+ * @version    CVS: $Id: tlRequirementFilterControl.class.php,v 1.14 2010/10/05 15:44:35 asimon83 Exp $
  * @link       http://www.teamst.org/index.php
  * @filesource http://testlink.cvs.sourceforge.net/viewvc/testlink/testlink/lib/functions/tlRequirementFilterControl.class.php?view=markup
  *
@@ -16,6 +16,9 @@
  * 
  * @internal Revisions:
  *
+ * 20101005 - asimon - BUGID 3853: show_filters disabled still shows panel
+ * 20101005 - asimon - BUGID 3852: filter requirements by status resets on apply
+ * 20100906 - franciscom - BUGID 2877 - Custom Fields linked to Req version
  * 20100827 - asimon - BUGID 3718 - enable drag&drop per default, disable only if filtering is done
  * 20100812 - asimon - fixed cf input field size
  * 20100812 - asimon - don't show textarea inputs on filter panel
@@ -134,7 +137,7 @@ class tlRequirementFilterControl extends tlFilterControl {
 				$this->settings[$name] = false;
 			}
 		}
-		
+
 		// add the important settings to active filter array
 		foreach ($this->all_settings as $name => $info) {
 			if ($this->settings[$name]) {
@@ -143,7 +146,7 @@ class tlRequirementFilterControl extends tlFilterControl {
 				$this->active_filters[$name] = null;
 			}
 		}
-		
+
 		// // if at least one active setting is left to display, switch settings panel on
 		// if ($at_least_one_active) {
 		// 	$this->display_req_settings = true;
@@ -157,28 +160,26 @@ class tlRequirementFilterControl extends tlFilterControl {
 	 * If no filters are active at all, the filters panel will be disabled and not displayed.
 	 */
 	protected function init_filters() {
-		$at_least_one_active = false;
-
-		// iterate through all filters and activate the needed ones
-		foreach ($this->all_filters as $name => $info) {
-			$init_method = "init_$name";
-			if (method_exists($this, $init_method) && $this->configuration->{$name} == ENABLED) {
-				// valid
-				$this->$init_method();
-				// $at_least_one_active = true;
-				$this->display_req_filters = true;
-			} else {
-				// is not needed, deactivate filter by setting it to false in main array
-				// and of course also in active filters array
-				$this->filters[$name] = false;
-				$this->active_filters[$name] = null;
+		// BUGID 3853
+		if ($this->configuration->show_filters == ENABLED) {
+			// iterate through all filters and activate the needed ones
+			foreach ($this->all_filters as $name => $info) {
+				$init_method = "init_$name";
+				if (method_exists($this, $init_method) && $this->configuration->{$name} == ENABLED) {
+					// valid
+					$this->$init_method();
+					// $at_least_one_active = true;
+					$this->display_req_filters = true;
+				} else {
+					// is not needed, deactivate filter by setting it to false in main array
+					// and of course also in active filters array
+					$this->filters[$name] = false;
+					$this->active_filters[$name] = null;
+				}
 			}
+		} else {
+			$this->display_req_filters = false;
 		}
-				
-		// if at least one filter item is left to display, switch panel on
-		// if ($at_least_one_active) {
-		// 	$this->display_req_filters = true;
-		// }
 	} // end of method
 
 	/**
@@ -311,8 +312,9 @@ class tlRequirementFilterControl extends tlFilterControl {
 		$items = array(self::ANY => $this->option_strings['any']) + 
 		         (array) init_labels($this->configuration->req_cfg->status_labels);
 
-		if (!$selection || $this->args->reset_filters || $selection == self::ANY
-		|| (is_array($selection) && in_array(self::ANY, $selection))) {
+		// BUGID 3852
+		if (!$selection || $this->args->reset_filters
+		|| (is_array($selection) && in_array('0', $selection, true))) {
 			$selection = null;
 		} else {
 			$this->do_filtering = true;
@@ -463,7 +465,9 @@ class tlRequirementFilterControl extends tlFilterControl {
 			$this->req_mgr = new requirement_mgr($this->db);
 		}
 		
-		$cfields = $this->req_mgr->get_linked_cfields(null, $this->args->testproject_id);
+		// BUGID 2877 -  Custom Fields linked to Req version
+		// $cfields = $this->req_mgr->get_linked_cfields(null, $this->args->testproject_id);
+		$cfields = $this->req_mgr->get_linked_cfields(null, null, $this->args->testproject_id);
 		$cf_prefix = $this->req_mgr->cfield_mgr->name_prefix;
 		$cf_html_code = "";
 		$selection = array();

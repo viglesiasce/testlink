@@ -124,8 +124,6 @@ $TLS_test_status_failed = "Failed";
 $TLS_test_status_passed = "Passed";
 $TLS_test_status_not_available = "Not Available";
 $TLS_test_status_unknown 	= "Unknown";
-$TLS_test_status_in_progress        = "In Progress";
-
 
 $TLS_review_status_valid 	= "Valid";
 $TLS_review_status_draft 	= 'Draft';
@@ -692,7 +690,6 @@ $TLS_trep_comp_perc = "Completed [%]";
 $TLS_trep_failed = $TLS_test_status_failed;
 $TLS_trep_not_run = $TLS_test_status_not_run;
 $TLS_trep_passed = $TLS_test_status_passed;
-$TLS_trep_in_progress = $TLS_test_status_in_progress;
 $TLS_trep_total = "Total";
 
 
@@ -1330,7 +1327,6 @@ $TLS_last_status_blocked = $TLS_test_status_blocked;
 $TLS_last_status_failed = $TLS_test_status_failed;
 $TLS_last_status_not_run = $TLS_test_status_not_run;
 $TLS_last_status_passed = $TLS_test_status_passed;
-$TLS_last_status_in_progress = $TLS_test_status_in_progress;
 $TLS_select_builds_header = "Select Builds";
 $TLS_select_components_header = "Top level Test Suites";
 $TLS_select_keyword_header = "Select Keyword";
@@ -1367,7 +1363,6 @@ $TLS_th_total_cases = "#Test Cases";
 $TLS_th_total_fail = "#" . $TLS_test_status_failed;
 $TLS_th_total_not_run = "#" . $TLS_test_status_not_run;
 $TLS_th_total_pass = "#" . $TLS_test_status_passed;
-$TLS_th_total_in_progress = "#" . $TLS_test_status_in_progress;
 $TLS_th_start_time = "Start Time";
 $TLS_th_end_time = "End Time";
 $TLS_th_executor = "Executed By";
@@ -1392,7 +1387,7 @@ $TLS_req_title_blocked = "Blocked Requirements";
 $TLS_req_title_failed = "Failed Requirements";
 $TLS_req_title_not_run = "Unexecuted Requirements";
 $TLS_req_title_passed = "Passed Requirements";
-$TLS_req_title_in_progress = "In Progress Requirements";
+
 $TLS_title_result_req_testplan = "Test Results based on Requirements Specification";
 $TLS_title_test_plan = $TLS_testplan;
 
@@ -1463,8 +1458,8 @@ $TLS_user_bulk_assignment = "Bulk user assignment";
 // ----- tc_exec_assignment.php -----
 $TLS_mail_subject_testcase_assigned='Test Link - Test Case Assignment - Test Plan';
 $TLS_mail_subject_testcase_assignment_removed='Test Link - Test Case Assignment REMOVED - Test Plan';
-$TLS_mail_testcase_assigned = "Following Test Cases have been assigned to you %s by %s <br /><br />";
-$TLS_mail_testcase_assignment_removed = "%s - Your following Test Cases assigments have been REMOVED  by %s <br /><br />";
+$TLS_mail_testcase_assigned = "Following Test Cases has been assigned to you %s by %s <br /><br />";
+$TLS_mail_testcase_assignment_removed = "%s - Your following Test Cases assigments AS BEEN REMOVED  by %s <br /><br />";
 $TLS_send_mail_to_tester="Send mail notification to tester";
 
 
@@ -1699,7 +1694,6 @@ $TLS_number_executions = "# Test Cases Run";
 $TLS_number_failed = "# " . $TLS_test_status_failed;
 $TLS_number_not_run = "# " . $TLS_test_status_blocked;
 $TLS_number_passed = "# " . $TLS_test_status_passed;
-$TLS_number_in_progress = "# " . $TLS_test_status_in_progress;
 $TLS_owner = "Tester";
 $TLS_owner_header = $TLS_owner. " =";
 $TLS_runby = "Run By";
@@ -2024,7 +2018,6 @@ $TLS_link_report_general_tp_metrics = "General Test Plan Metrics";
 $TLS_link_report_metrics_active_build = "Metrics of Active Build";
 $TLS_link_report_metrics_more_builds = "Query Metrics";
 $TLS_link_report_not_run = "Not run Test Cases";
-$TLS_link_report_in_progress = "In Progress Test Cases";
 $TLS_link_report_overall_build = "Overall Build Status";
 $TLS_link_report_reqs_coverage = "Requirements based Report";
 $TLS_link_report_tcases_without_tester = "Test Cases without Tester Assignment";

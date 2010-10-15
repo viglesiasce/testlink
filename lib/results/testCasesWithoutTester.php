@@ -4,13 +4,14 @@
  * This script is distributed under the GNU General Public License 2 or later. 
  *  
  * @filesource $RCSfile: testCasesWithoutTester.php,v $
- * @version $Revision: 1.11 $
- * @modified $Date: 2010/08/31 09:46:45 $ by $Author: mx-julian $
+ * @version $Revision: 1.14 $
+ * @modified $Date: 2010/10/01 14:26:50 $ by $Author: asimon83 $
  * @author Francisco Mancardi - francisco.mancardi@gmail.com
  * 
  * For a test plan, list test cases that has no tester assigned
  *
  * @internal Revisions:
+ * 20101001 - asimon - added linked icon for testcase editing
  * 20100830 - Julian - Added test case summary column
  * 20100830 - franciscom - refactoring
  * 20100830 - Julian - BUGID 3723 - filter shown test cases by not run status
@@ -33,6 +34,9 @@ $gui->pageTitle = lang_get('caption_testCasesWithoutTester');
 $gui->warning_msg = '';
 $gui->tproject_name = $args->tproject_name;
 $gui->tplan_name = $args->tplan_name;
+
+$labels = init_labels(array('design' => null, 'execution' => null));
+$edit_img = TL_THEME_IMG_DIR . "edit_icon.png";
 
 $msg_key = 'no_linked_tcversions';
 if($tplan_mgr->count_testcases($args->tplan_id) > 0)
@@ -67,7 +71,12 @@ if($tplan_mgr->count_testcases($args->tplan_id) > 0)
 		{
 			$verbosePath = join(" / ", $path_info[$item['tc_id']]);
 			$name = buildExternalIdString($prefix,$item['external_id'] . ': ' . $item['name']);
-			$link = '<a href="lib/testcases/archiveData.php?edit=testcase&id=' . $item['tc_id'] . '">' . $name . '</a>';
+
+			// create linked icons
+		    $edit_link = "<a href=\"javascript:openTCEditWindow({$item['tc_id']});\">" .
+						 "<img title=\"{$labels['design']}\" src=\"{$edit_img}\" /></a> ";
+
+		    $link = $edit_link . $name;
 
 			$row = array($verbosePath,$link);
 			if ($args->show_platforms)
@@ -119,9 +128,7 @@ function buildTable($data, $tproject_id, $show_platforms, $priorityMgmtEnabled)
 	
 	$columns[] = array('title' => $labels['summary'], 'type' => 'text', 'width' => 40);
 	
-	// unique table id for each project
-	$table_id = 'tl_'. $tproject_id . '_table_tc_without_tester';
-	$matrix = new tlExtTable($columns, $data, $table_id);
+	$matrix = new tlExtTable($columns, $data, 'tl_table_tc_without_tester');
 	
 	$matrix->setGroupByColumnName($labels['testsuite']);
 	$matrix->setSortByColumnName($labels['testcase']);

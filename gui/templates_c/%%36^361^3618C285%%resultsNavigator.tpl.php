@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-27 15:34:50
+<?php /* Smarty version 2.6.26, created on 2010-10-12 14:00:59
          compiled from results/resultsNavigator.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'results/resultsNavigator.tpl', 9, false),array('function', 'config_load', 'results/resultsNavigator.tpl', 13, false),array('function', 'html_options', 'results/resultsNavigator.tpl', 46, false),array('modifier', 'replace', 'results/resultsNavigator.tpl', 12, false),)), $this); ?>

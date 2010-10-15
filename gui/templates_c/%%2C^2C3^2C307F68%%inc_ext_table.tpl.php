@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-24 15:27:43
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:23:27
          compiled from inc_ext_table.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'inc_ext_table.tpl', 41, false),array('modifier', 'escape', 'inc_ext_table.tpl', 101, false),)), $this); ?>
@@ -120,12 +120,12 @@ Ext.onReady(function() {
 				fields['<?php echo $this->_tpl_vars['tableID']; ?>
 '])
 				<?php if ($this->_tpl_vars['matrix']->groupByColumn >= 0): ?>
-					,groupField: 'idx<?php echo $this->_tpl_vars['matrix']->groupByColumn; ?>
+					,groupField: '<?php echo $this->_tpl_vars['matrix']->groupByColumn; ?>
 '
 				<?php endif; ?>
 				// 20100816 - asimon - enable sorting by a default column
-				<?php if ($this->_tpl_vars['matrix']->sortByColumn >= 0): ?>
-					,sortInfo:{field:'idx<?php echo $this->_tpl_vars['matrix']->sortByColumn; ?>
+				<?php if (! is_null ( $this->_tpl_vars['matrix']->sortByColumn )): ?>
+					,sortInfo:{field:'<?php echo $this->_tpl_vars['matrix']->sortByColumn; ?>
 ',direction:'<?php echo $this->_tpl_vars['matrix']->sortDirection; ?>
 '}
 				<?php endif; ?>
@@ -203,10 +203,10 @@ Ext.onReady(function() {
 					}
 				<?php endif; ?> //end plugins for multisort
 			}), //END tbar
-			<?php endif; ?> 
+			<?php endif; ?> //ENDIF showtoolbar
 			
 			listeners: {
-			<?php if ($this->_tpl_vars['matrix']->allowMultiSort): ?>
+			<?php if ($this->_tpl_vars['matrix']->allowMultiSort && $this->_tpl_vars['matrix']->showToolbar): ?>
 				scope: this,
 				render: function() {
 					dragProxy = grid['<?php echo $this->_tpl_vars['tableID']; ?>
@@ -309,6 +309,16 @@ Ext.onReady(function() {
 			});
 		<?php endif; ?>
 		
+		//Export Button
+		<?php if ($this->_tpl_vars['matrix']->showExportButton && $this->_tpl_vars['matrix']->showToolbar): ?>
+			tbar.add(new Ext.ux.Exporter.Button({
+				component: grid['<?php echo $this->_tpl_vars['tableID']; ?>
+'],
+				store: store['<?php echo $this->_tpl_vars['tableID']; ?>
+']
+			}));
+		<?php endif; ?>
+
 		//MULTISORT
 		<?php if ($this->_tpl_vars['matrix']->allowMultiSort && $this->_tpl_vars['matrix']->showToolbar): ?>
 			

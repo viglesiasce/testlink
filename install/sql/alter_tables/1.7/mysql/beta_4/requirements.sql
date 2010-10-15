@@ -2,7 +2,7 @@
 $Revision: 1.1 $
 $Date: 2007/01/31 14:14:56 $
 $Author: franciscom $
-$Name: testlink_1_9_beta6 $
+$Name:  $
 */
 ALTER TABLE requirements MODIFY req_doc_id varchar(32) default NULL;
 ALTER TABLE requirements DROP INDEX req_doc_id; 

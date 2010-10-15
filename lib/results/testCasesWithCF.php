@@ -4,13 +4,15 @@
  * This script is distributed under the GNU General Public License 2 or later.
  *
  * @filesource $RCSfile: testCasesWithCF.php,v $
- * @version $Revision: 1.22 $
- * @modified $Date: 2010/08/30 21:11:29 $ by $Author: erikeloff $
+ * @version $Revision: 1.29 $
+ * @modified $Date: 2010/09/30 13:42:43 $ by $Author: asimon83 $
  * @author Amit Khullar - amkhullar@gmail.com
  *
  * For a test plan, list test cases with Execution Custom Field Data
  *
  * @internal Revisions:
+ *  20100930 - asimon - added icons for testcase execution and editing
+ *  20100901 - Julian - added execution notes column
  *	20100830 - franciscom - fixed warnings on eventviewer
  *	20100828 - eloff - adapt to rendering of status column
  *	20100827 - franciscom - refactoring - removed unused variables
@@ -29,6 +31,11 @@ require_once('exttable.class.php');
 testlinkInitPage($db,false,false,"checkRights");
 
 $templateCfg = templateConfiguration();
+$charset = config_get('charset');
+$labels = init_labels(array('design' => null, 'execution' => null, 'no_linked_tc_cf' => null));
+
+$exec_img = TL_THEME_IMG_DIR . "exec_icon.png";
+$edit_img = TL_THEME_IMG_DIR . "edit_icon.png";
 
 $tcase_mgr = new testcase($db);
 $args = init_args($db);
@@ -52,9 +59,24 @@ if( $args->doIt )
 		$dummy = end($dummy);
 		$rowData[] = $dummy['value'];
 
-		$rowData[] = '<a href="lib/testcases/archiveData.php?edit=testcase&id=' . $item['tcase_id'] . '">' .
-					 buildExternalIdString($gui->tcasePrefix, $item['tc_external_id']) .
-					 ' : ' . $item['tcase_name'] . '</a>';
+		// create linked icons
+		$exec_link = "<a href=\"javascript:openExecutionWindow(" .
+		             "{$item['tcase_id']}, {$item['tcversion_id']}, {$item['builds_id']}, " .
+		             "{$args->tplan_id}, {$item['platform_id']});\">" .
+		             "<img title=\"{$labels['execution']}\" src=\"{$exec_img}\" /></a> ";
+
+		$edit_link = "<a href=\"javascript:openTCEditWindow({$item['tcase_id']});\">" .
+					 "<img title=\"{$labels['design']}\" src=\"{$edit_img}\" /></a> ";
+
+		$tcaseName = buildExternalIdString($gui->tcasePrefix, $item['tc_external_id']) .
+					 ' : ' . $item['tcase_name'];
+
+		$tcLink = $exec_link . $edit_link . $tcaseName;
+		$rowData[] = $tcLink;
+
+		//$rowData[] = '<a href="lib/testcases/archiveData.php?edit=testcase&id=' . $item['tcase_id'] . '">' .
+		//			 buildExternalIdString($gui->tcasePrefix, $item['tc_external_id']) .
+		//			 ' : ' . $item['tcase_name'] . '</a>';
 		$rowData[] = $item['tcversion_number'];
 		if ($args->showPlatforms)
 		{
@@ -66,11 +88,14 @@ if( $args->doIt )
 		// use html comment to be able to sort table by timestamp and not by link
 		// only link is visible in table but comment is used for sorting
 		$dummy = null;
-		$rowData[] = "<!--{$item['execution_ts']}--><a href=\"lib/execute/execSetResults.php?" .
-					 "level=testcase&build_id={$item['builds_id']}&id={$item['tcase_id']}" .
-					 "&version_id={$item['tcversion_id']}&tplan_id={$gui->tplan_id}\">" .
-					 localize_dateOrTimeStamp(null, $dummy, 'timestamp_format', $item['execution_ts']) . '</a>';
-			
+//		$rowData[] = "<!--{$item['execution_ts']}--><a href=\"lib/execute/execSetResults.php?" .
+//					 "level=testcase&build_id={$item['builds_id']}&id={$item['tcase_id']}" .
+//					 "&version_id={$item['tcversion_id']}&tplan_id={$gui->tplan_id}\">" .
+//					 localize_dateOrTimeStamp(null, $dummy, 'timestamp_format', $item['execution_ts']) . '</a>';
+
+		$rowData[] = "<!--{$item['execution_ts']}-->" .
+		             localize_dateOrTimeStamp(null, $dummy, 'timestamp_format', $item['execution_ts']);
+
 		// Use array for status to get correct rendering and sorting
 		$rowData[] = array(
 			'value' => $item['exec_status'],
@@ -79,9 +104,16 @@ if( $args->doIt )
 		);
 		
 		$hasValue = false;
+		
+		$rowData[] = strip_tags($item['exec_notes']);
+		
+		if($item['exec_notes']) {
+			$hasValue = true;
+		}
+		
 		foreach ($item['cfields'] as $cf_value)
 		{
-			$rowData[] = $cf_value;
+			$rowData[] = preg_replace('!\s+!', ' ', htmlspecialchars($cf_value, ENT_QUOTES, $charset));;
 			if ($cf_value) {
 				$hasValue = true;
 			}
@@ -91,21 +123,23 @@ if( $args->doIt )
 		}
 	}
 
-	// create unique table id for each test plan
-	$table_id = 'tl_'.$args->tplan_id.'_table_tc_with_cf';
-	$table = new tlExtTable($columns, $matrixData, $table_id);
-	$table->addCustomBehaviour('status', array('render' => 'statusRenderer'));
-	$table->addCustomBehaviour('text', array('render' => 'columnWrap'));
-	
-	$table->setGroupByColumnName(lang_get('build'));
-	$table->setSortByColumnName(lang_get('date'));
-	$table->sortDirection = 'DESC';
-	
-	$table->showToolbar = true;
-	$table->toolbarExpandCollapseGroupsButton = true;
-	$table->toolbarShowAllColumnsButton = true;
+	if (count($matrixData) > 0) {
+		$table = new tlExtTable($columns, $matrixData, 'tl_table_tc_with_cf');
+		$table->addCustomBehaviour('status', array('render' => 'statusRenderer'));
+		$table->addCustomBehaviour('text', array('render' => 'columnWrap'));
 
-	$gui->tableSet = array($table);
+		$table->setGroupByColumnName(lang_get('build'));
+		$table->setSortByColumnName(lang_get('date'));
+		$table->sortDirection = 'DESC';
+
+		$table->showToolbar = true;
+		$table->toolbarExpandCollapseGroupsButton = true;
+		$table->toolbarShowAllColumnsButton = true;
+
+		$gui->tableSet = array($table);
+	} else {
+		$gui->warning_msg = $labels['no_linked_tc_cf'];
+	}
 }
 
 $smarty = new TLSmarty();
@@ -192,8 +226,7 @@ function buildResultSet(&$dbHandler,&$guiObj,$tproject_id,$tplan_id)
 
     // Get the custom fields linked/enabled on execution to a test project
     // This will be used on report to give name to header of columns that hold custom field value
-    $guiObj->cfields = $cfieldMgr->get_linked_cfields_at_execution($tproject_id,1,'testcase',
-                                                                 null,null,null,'name');
+    $guiObj->cfields = $cfieldMgr->get_linked_cfields_at_execution($tproject_id,1,'testcase',null,null,null,'name');
     
     // this way on caller can be used on array operations, without warnings
     $guiObj->cfields = (array)$guiObj->cfields;  
@@ -213,7 +246,8 @@ function buildResultSet(&$dbHandler,&$guiObj,$tproject_id,$tplan_id)
     // 'cfields' => CFNAME1 => value
     //              CFNAME2 => value
     $guiObj->resultSet = array();
-    if(!is_null($cf_map))
+
+	if(!is_null($cf_map))
     {
         foreach($cf_map as $exec_id => $exec_info)
         {
@@ -234,9 +268,9 @@ function buildResultSet(&$dbHandler,&$guiObj,$tproject_id,$tplan_id)
         }
     }
 
-    if(($guiObj->row_qty=count($cf_map)) > 0 )
+    if(($guiObj->row_qty=count($cf_map)) == 0 )
     {
-        $guiObj->pageTitle .= " - " . lang_get('match_count') . ":" . $guiObj->row_qty;
+        $guiObj->warning_msg = lang_get('no_linked_tc_cf');
     }
 }
 
@@ -248,8 +282,8 @@ function buildResultSet(&$dbHandler,&$guiObj,$tproject_id,$tplan_id)
 function getColumnsDefinition($showPlatforms,$customFields)
 {
 
-	$colDef = array(array('title' => lang_get('test_suite'), 'width' => 80 ),
-					array('title' => lang_get('test_case'), 'width' => 80),
+	$colDef = array(array('title' => lang_get('test_suite'), 'width' => 80, 'type' => 'text'),
+					array('title' => lang_get('test_case'), 'width' => 80, 'type' => 'text'),
 					array('title' => lang_get('version'), 'width' => 20));
 		
 	if ($showPlatforms)
@@ -261,6 +295,8 @@ function getColumnsDefinition($showPlatforms,$customFields)
 				array('title' => lang_get('th_owner'), 'width' => 60),
 				array('title' => lang_get('date'), 'width' => 60),
 				array('title' => lang_get('status'), 'type' => 'status', 'width' => 30));
+				
+	$colDef[] = array('title' => lang_get('title_execution_notes'), 'type' => 'text');
 
 
 	foreach ($customFields as $cfield)

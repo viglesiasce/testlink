@@ -1,13 +1,13 @@
 {*
 TestLink Open Source Project - http://testlink.sourceforge.net/
-$Id: resultsMoreBuilds.tpl,v 1.1 2010/05/15 12:33:03 franciscom Exp $
+$Id: resultsMoreBuilds.tpl,v 1.2 2010/09/17 17:20:54 franciscom Exp $
 
 rev :
+     20100917 - franciscom - BUGID 3789
      20100218 - amitkhullar - BUGID 2541
      20100215 - eloff - BUGID 3160 - fixed missing platform column
      20090409 - amitkhullar - BUGID 2156 - added new option on 	Query Metrics for latest results
      20080524 - franciscom - BUGID 1430
-     20070902 - franciscom - refactoring
 *}
 {lang_get var="labels"
           s="query_metrics_report,th_test_plan,th_builds,th_test_suites,th_keyword,
@@ -122,7 +122,6 @@ progress();
 				<th>{$sortHintIcon}{$labels.th_status}</th>
 				<th>{$labels.th_notes}</th>
 				<th>{$labels.th_bugs}</th>
-				<th>Attachments</th>
 			</tr>
 	{/if}
 
@@ -219,7 +218,6 @@ progress();
 			    			<th>{$sortHintIcon}{$labels.th_status}</th>
 			    			<th>{$labels.th_notes}</th>
 			    			<th>{$labels.th_bugs}</th>
-						<th>Attachments</th>
 			    		</tr>
 			    		{/if}
 			    		{foreach key=executionInstance item=array from=$gui->suiteList[$suiteId]}
@@ -230,7 +228,7 @@ progress();
 								  {if $inst.status == $gui->resultsCfg.status_code.not_run}
 								  	<td>{$inst.testcasePrefix|escape}{$inst.external_id}:&nbsp;{$inst.name|escape}</td>
 								  	{if $gui->showPlatforms}
-								  	  <td>{$gui->platformSet[inst.platform_id]|escape}</td>
+								  	  <td>{$gui->platformSet[$inst.platform_id]|escape}</td>
 								  	{/if}
 								  	<td>&nbsp;</td>
 								  	<td>&nbsp;</td>
@@ -250,16 +248,10 @@ progress();
 								  {if $inst.status == $gui->resultsCfg.status_code.not_run}
 								  	<td>&nbsp;</td>
 								  	<td>&nbsp;</td>
-								  	<td style="text-align:center;">No&nbsp;</td>
 								  {else}
 								  	<td>{$inst.notes}&nbsp;</td>
 								  	<td style="text-align:center;">{$inst.bugString}&nbsp;</td>
-                                                                        {if $inst.has_attach == 1 }
-                                                                        <td style="text-align:center;">Yes&nbsp;</td>
-									{else}
-                                                                        <td style="text-align:center;">No&nbsp;</td>
-									{/if}
-                                                                  {/if}          
+								  {/if}
 							</tr>
 			    			{/if}
 

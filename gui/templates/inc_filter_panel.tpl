@@ -1,6 +1,6 @@
 {*
  * TestLink Open Source Project - http://testlink.sourceforge.net/
- * $Id: inc_filter_panel.tpl,v 1.6 2010/08/11 23:08:13 asimon83 Exp $
+ * $Id: inc_filter_panel.tpl,v 1.10 2010/10/09 08:54:00 franciscom Exp $
  *
  * Shows the filter panel. Included by some other templates.
  * At the moment: planTCNavigator, execNavigator, planAddTCNavigator, tcTree.
@@ -12,6 +12,8 @@
  *
  * @author Andreas Simon
  * @internal revision
+ *  20101009 - franciscom - fixed error viewer warning
+ *  20101007 - franciscom - BUGID 3270 - Export Test Plan in XML Format
  *  20100811 - asimon - BUGID 3566: show/hide CF
  *  20100810 - asimon - added TC ID filter for Test Cases
  *  20100808 - asimon - additional fields for requirement filtering
@@ -30,7 +32,7 @@
                         btn_bulk_update_to_latest_version, priority, tc_title,
                         custom_field, search_type_like,
                         document_id, req_expected_coverage, title,
-                        status, req_type, req_spec_type, th_tcid, has_relation_type'}
+                        status, req_type, req_spec_type, th_tcid, has_relation_type,btn_export_testplan_tree'}
 
 {config_load file="input_dimensions.conf" section="treeFilterForm"}
 
@@ -38,8 +40,10 @@
 
 {* hidden input with token to manage transfer of data between left and right frame *}
 {if isset($control->form_token)}
-<input type="hidden" name="form_token" value="{$control->form_token}">
+  <input type="hidden" name="form_token" value="{$control->form_token}">
 {/if}
+
+{assign var="platformID" value=0}
 
 {if $control->draw_tc_unassign_button}
 	<input type="button" 
@@ -91,6 +95,7 @@
 			{/if}
 
 			{if $control->settings.setting_platform}
+			  {assign var="platformID" value=$control->settings.setting_platform.selected}
 				<tr>
 					<th>{$labels.platform}</th>
 					<td>
@@ -132,6 +137,15 @@
 		  		</tr>
 			{/if}
 
+			{if $control->draw_export_testplan_button && FALSE} {* Forced to disable on RC1 till dev will be finished*}
+				<tr>
+		   			<td colspan="2">
+	          <input type="button" id="doTestPlanExport" name="doTestPlanExport" value="{$labels.btn_export_testplan_tree}"
+         	         onclick="javascript: openExportTestPlan('export_testplan','{$control->settings.setting_testplan.selected}',
+         	                                                 '{$platformID}');" />
+            </td>
+		  		</tr>
+			{/if}
 			</table>
 		</div> {* settings *}
 	</div> {* settings_panel *}
@@ -239,7 +253,7 @@
 				{html_options options=$control->filters.filter_assigned_user.items
 				              selected=$control->filters.filter_assigned_user.selected}
 				</select>
-		    	{else}
+		    {else}
 				<select name="filter_assigned_user" 
 				        id="filter_assigned_user"
 				        onchange="javascript: triggerAssignedBox('filter_assigned_user',
@@ -261,7 +275,7 @@
 	  		           		checked="checked"
 	  		           {/if}
 	  		    />
-				{$labels.include_unassigned_testcases} 
+				{$labels.include_unassigned_testcases}
 			{/if}
 
  			</td>

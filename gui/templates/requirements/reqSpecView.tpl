@@ -1,10 +1,13 @@
 {* TestLink Open Source Project - http://testlink.sourceforge.net/ *}
-{* $Id: reqSpecView.tpl,v 1.40 2010/08/10 14:10:11 asimon83 Exp $ *}
+{* $Id: reqSpecView.tpl,v 1.43 2010/10/08 11:15:27 asimon83 Exp $ *}
 {*
    Purpose: view a requirement specification
    Author: Martin Havlat
 
-   rev: 20100810 - asimon - BUGID 3317: disabled total count of requirements by default
+   rev:
+        20101008 - asimon - BUGID 3311
+        20101006 - asimon - BUGID 3854
+        20100810 - asimon - BUGID 3317: disabled total count of requirements by default
         20100321 - franciscom - req_spec_import/export url
         20071226 - franciscom - fieldset class added (thanks ext je team)
         20071106 - franciscom - added ext js library
@@ -65,16 +68,22 @@
 </script>
 </head>
 
-<body {$body_onload}>
+{* 20101008 - asimon - BUGID 3311 *}
+<body {$body_onload} onUnload="storeWindowSize('ReqSpecPopup')" >
 <h1 class="title">
+  {if isset($gui->direct_link)}
   {$toggle_direct_link_img} &nbsp;
+  {/if}
 	{$gui->main_descr|escape}
+	{if $gui->req_spec.id}
 	{include file="inc_help.tpl" helptopic="hlp_requirementsCoverage" show_help_icon=true}
+	{/if}
 </h1>
 
 <div class="workBack">
+   {if isset($gui->direct_link)}
    <div class="direct_link" style='display:none'><a href="{$gui->direct_link}" target="_blank">{$gui->direct_link}</a></div>
-
+   {/if}
 {* contribution by asimon *}
 {if $gui->req_spec.id}
 {* end contribution by asimon *}
@@ -145,8 +154,8 @@
 {/if}
 
 </div>
-{if $gui->refresh_tree == 'yes'}
-   {include file="inc_refreshTree.tpl"}
+{if isset($gui->refreshTree) && $gui->refreshTree}
+   {include file="inc_refreshTreeWithFilters.tpl"}
 {/if}
 </body>
 </html>

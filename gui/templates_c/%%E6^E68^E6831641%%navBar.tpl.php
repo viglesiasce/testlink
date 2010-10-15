@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.26, created on 2010-09-24 15:21:51
+<?php /* Smarty version 2.6.26, created on 2010-10-09 10:23:22
          compiled from navBar.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'lang_get', 'navBar.tpl', 14, false),array('function', 'config_load', 'navBar.tpl', 19, false),array('modifier', 'replace', 'navBar.tpl', 18, false),array('modifier', 'escape', 'navBar.tpl', 38, false),array('modifier', 'truncate', 'navBar.tpl', 40, false),)), $this); ?>
@@ -19,7 +19,7 @@ unset($_smarty_tpl_vars);
 <body style="min-width: 800px;">
 <div style="float:left; height: 100%;">
 	<a href="index.php" target="_parent">
-	<img alt="Company logo"	title="logo" style="width: 130px; height: 50px;" 
+	<img alt="Company logo"	title="logo" style="width: 115px; height: 53px;" 
 	src="<?php echo @TL_THEME_IMG_DIR; ?>
 <?php echo $this->_tpl_vars['tlCfg']->company_logo; ?>
 " /></a>

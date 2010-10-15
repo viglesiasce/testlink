@@ -6,10 +6,16 @@
  * @package 	TestLink
  * @author 		franciscom
  * @copyright 	2005-2009, TestLink community 
- * @version    	CVS: $Id: testproject.class.php,v 1.171 2010/08/30 16:06:28 franciscom Exp $
+ * @version    	CVS: $Id: testproject.class.php,v 1.178 2010/10/03 17:51:17 franciscom Exp $
  * @link 		http://www.teamst.org/index.php
  *
  * @internal Revisions:
+ *
+ * 20101003 - franciscom - and_not_in_clause -> additionalWhereClause
+ * 20100930 - franciscom - BUGID 2344: Private test project
+ * 20100929 - asimon - BUGID 3814: fixed keyword filtering with "and" selected as type
+ * 20100920 - Julian - getFreeTestCases() added importance to output
+ * 20100911 - amitkhullar - BUGID 3764
  * 20100821 - franciscom - get_all_testplans() - interface changes
  * 20100516 - franciscom - BUGID 3464 - delete()
  * 20100310 - asimon - BUGID 3227 - refactored get_all_requirement_ids() and count_all_requirements()
@@ -499,7 +505,7 @@ function get_accessible_for_user($user_id,$output_type='map',$order_by=" ORDER B
     $items = array();
 
     // Get default role
-    $sql = " SELECT id,role_id FROM {$this->tables['users']}  where id={$user_id}";
+    $sql = " SELECT id,role_id FROM {$this->tables['users']} where id={$user_id}";
     $user_info = $this->db->get_recordset($sql);
 	$role_id=$user_info[0]['role_id'];
 
@@ -508,16 +514,30 @@ function get_accessible_for_user($user_id,$output_type='map',$order_by=" ORDER B
  	          JOIN {$this->object_table} testprojects ON nodes_hierarchy.id=testprojects.id
 	          LEFT OUTER JOIN {$this->tables['user_testproject_roles']} user_testproject_roles
 		        ON testprojects.id = user_testproject_roles.testproject_id AND
-		 	      user_testproject_roles.user_id = {$user_id} WHERE ";
+		 	      user_testproject_roles.user_id = {$user_id} WHERE 1=1 ";
 
-	if ($role_id != TL_ROLES_NO_RIGHTS)
+	
+	// BUGID 2344: Private test project
+	if( $role_id != TL_ROLES_ADMIN )
 	{
-		$sql .=  "(role_id IS NULL OR role_id != ".TL_ROLES_NO_RIGHTS.")";
+		if ($role_id != TL_ROLES_NO_RIGHTS)
+		{
+			// $sql .=  "(role_id IS NULL OR role_id != ".TL_ROLES_NO_RIGHTS.")";
+			// (A AND (B OR C) ) OR (NOT A AND C) 
+			$sql .=  " AND "; 
+			$sql_public = " ( is_public = 1 AND (role_id IS NULL OR role_id != " . TL_ROLES_NO_RIGHTS. ") )";
+			$sql_private = " ( is_public = 0 AND role_id != " . TL_ROLES_NO_RIGHTS. ") ";
+    	
+			$sql .= " ( {$sql_public}  OR {$sql_private} ) ";
+		}
+		else
+		{
+			// User need specific role
+			$sql .=  " AND (role_id IS NOT NULL AND role_id != ".TL_ROLES_NO_RIGHTS.")";
+    	}
 	}
-	else
-	{
-		$sql .=  "(role_id IS NOT NULL AND role_id != ".TL_ROLES_NO_RIGHTS.")";
-    }
+
+	// $sql .=  " AND (role_id IS NULL OR role_id != ".TL_ROLES_NO_RIGHTS.")";
 
 	if (has_rights($this->db,'mgt_modify_product') != 'yes')
 	{
@@ -577,7 +597,7 @@ function get_accessible_for_user($user_id,$output_type='map',$order_by=" ORDER B
         [recursive_mode]: default false
         [exclude_testcases]: default: false
         [exclude_branches]
-        [and_not_in_clause]:
+        [additionalWhereClause]:
 
 
   returns: map
@@ -587,14 +607,14 @@ function get_accessible_for_user($user_id,$output_type='map',$order_by=" ORDER B
 
 */
 function get_subtree($id,$recursive_mode=false,$exclude_testcases=false,
-                     $exclude_branches=null, $and_not_in_clause='')
+                     $exclude_branches=null, $additionalWhereClause='')
 {
   
   	$my['options']=array('recursive' => $recursive_mode);
  	$my['filters'] = array('exclude_node_types' => $this->nt2exclude,
  	                       'exclude_children_of' => $this->nt2exclude_children,
  	                       'exclude_branches' => $exclude_branches,
- 	                       'and_not_in_clause' => $and_not_in_clause);      
+ 	                       'additionalWhereClause' => $additionalWhereClause);      
  
   	if($exclude_testcases)
   	{
@@ -634,7 +654,7 @@ function show(&$smarty,$guiObj,$template_dir,$id,$sqlResult='', $action = 'updat
  	$gui->moddedItem = $gui->container_data;
  	$gui->level = 'testproject';
  	$gui->page_title = lang_get('testproject');
- 	$gui->refreshTree = false;
+	$gui->refreshTree = property_exists($gui,'refreshTree') ? $gui->refreshTree : false;
     $gui->attachmentInfos = getAttachmentInfosFrom($this,$id);
  	
 	if ($modded_item_id)
@@ -1319,6 +1339,7 @@ function setPublicStatus($id,$status)
 	 *
 	 * @author Martin Havlat
 	 * @internal rev: 
+	 * 20100911 - amitkhullar - BUGID 3764
 	 * 20090506 - francisco.mancardi@gruppotesi.com - Requirements Refactoring
 	 *       
 	 **/
@@ -1332,14 +1353,14 @@ function setPublicStatus($id,$status)
     
 	    $fields = is_null($fields) ? $fields2get : implode(',',$fields);
     	$sql = "  /* $debugMsg */ SELECT {$fields} FROM {$this->tables['req_specs']} RSPEC, " .
-       		   " {$this->tables['nodes_hierarchy']} NH " .
-           	   " WHERE testproject_id={$testproject_id} AND RSPEC.id=NH.id ";
+       		   " {$this->tables['nodes_hierarchy']} NH , {$this->tables['requirements']} REQ " .
+           	   " WHERE testproject_id={$testproject_id} AND RSPEC.id=NH.id AND REQ.SRS_ID = RSPEC.id" ;
            
 		if (!is_null($id))
 	    {
     	    $sql .= " AND RSPEC.id=" . $id;
 	    }
-    	$sql .= "  ORDER BY title";
+    	$sql .= "  ORDER BY RSPEC.id,title";
 	    $rs = is_null($access_key) ? $this->db->get_recordset($sql) : $this->db->fetchRowsIntoMap($sql,$access_key);
 	      
 		return $rs;
@@ -1784,18 +1805,20 @@ function setPublicStatus($id,$status)
                                                [keyword_id] => 2
                                                [keyword] => Terminator ) )
 
-
+@internal revisions:
+  20100929 - asimon - BUGID 3814: fixed keyword filtering with "and" selected as type
 */
-function get_keywords_tcases($testproject_id, $keyword_id=0, $keyword_filter_type='OR')
+function get_keywords_tcases($testproject_id, $keyword_id=0, $keyword_filter_type='Or')
 {
     $keyword_filter= '' ;
     $subquery='';
-    
+
     if( is_array($keyword_id) )
     {
         $keyword_filter = " AND keyword_id IN (" . implode(',',$keyword_id) . ")";          	
-        
-        if($keyword_filter_type == 'AND')
+
+        // asimon - BUGID 3814: fixed keyword filtering with "and" selected as type
+        if($keyword_filter_type == 'And')
         {
 		        $subquery = "AND testcase_id IN (" .
 		                    " SELECT FOXDOG.testcase_id FROM
@@ -2051,7 +2074,7 @@ function getFreeTestCases($id,$options=null)
     {
         $in_clause=implode(',',array_keys($free));
    	    $sql = " SELECT MAX(TCV.version) AS version, TCV.tc_external_id, " .
-   	           " NHA.parent_id AS id, NHB.name " .
+   	           " TCV.importance AS importance, NHA.parent_id AS id, NHB.name " .
    	           " FROM {$this->tables['tcversions']} TCV,{$this->tables['nodes_hierarchy']} NHA, " .
 	           "      {$this->tables['nodes_hierarchy']} NHB " .
 	           " WHERE NHA.parent_id IN ({$in_clause}) " .
