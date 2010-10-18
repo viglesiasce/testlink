@@ -18,14 +18,10 @@
  *
  * @package 	TestLink
  * @copyright 	2005-2009, TestLink community
- * @version    	CVS: $Id: config.inc.php,v 1.326 2010/10/07 08:18:43 mx-julian Exp $
+ * @version    	CVS: $Id: config.inc.php,v 1.317 2010/08/31 14:19:26 asimon83 Exp $
  * @link 		http://www.teamst.org/index.php
  *
  * @internal Revisions:
- *  20100924 - asimon - added $tlCfg->enableTableExportButton
- *  20100915 - amitkhullar - BUGID 3639 - added $tlcfg->testcase_reorder_by for Reorder Test Cases
- *  20100915 - Julian - BUGID 3777 - added $tlCfg->req_cfg->allow_insertion_of_last_doc_id
- *  20100901 - asimon - re-enabled filter for assigned user when assigning testcases
  *	20100814 - franciscom - BUGID 3681 - new BTS youtrack (www.jetbrains.com)	
  *  20100810 - asimon - BUGID 3317: added $tlCfg->req_cfg->external_req_management
  *  20100810 - asimon - added TC ID filter for Test Cases to $tlCfg->tree_filter_cfg
@@ -158,8 +154,8 @@ require_once(TL_ABS_PATH . 'cfg' . DIRECTORY_SEPARATOR . 'const.inc.php');
 // The value must be available in $g_locales (see cfg/const.inc.php).
 // Note: An attempt will be done to establish the default locale
 // automatically using $_SERVER['HTTP_ACCEPT_LANGUAGE']
-$tlCfg->default_language = 'en_GB';
-
+$tlCfg->default_language = 'en_US';
+$g_interface_bugs='BUGZILLA';
 /**
  * @var string Charset 'UTF-8' is only officially supported charset (Require
  * MySQL version >= 4.1) 'ISO-8859-1' or another Charset could be set for
@@ -245,7 +241,7 @@ $tlCfg->log_path = TL_ABS_PATH . 'logs' . DIRECTORY_SEPARATOR ;
  *         user will receive a message on screen.
  * 'SILENT': same that FILE, but user will not receive message on screen.
  */
-$tlCfg->config_check_warning_mode = 'FILE';
+$tlCfg->config_check_warning_mode = 'SILENT';
 
 /**
  * Configure if individual logging data stores are enabled of disabled
@@ -284,7 +280,7 @@ $g_removeEventsOlderThan = 30;
  * 'YOUTRACK' : edit configuration in TL_ABS_PATH/cfg/youtrack.cfg.php
  * ]
  */
-$g_interface_bugs = 'NO';
+$g_interface_bugs = 'BUGZILLA';
 
 // do not change this
 $g_bugInterfaceOn = false;
@@ -310,7 +306,7 @@ $g_return_path_email  = '[return_path_email_not_configured]';
  * Email notification priority (low by default)
  * Urgent = 1, Not Urgent = 5, Disable = 0
  **/
-$g_mail_priority = 5;
+$g_mail_priority = 0;
 
 # Taken from mantis for phpmailer config
 define ("SMTP_SEND",2);
@@ -329,17 +325,17 @@ $g_smtp_password    = '';  # password
  * 	'MD5' => use password stored on db
  *	'LDAP' => use password from LDAP Server
  */
-$tlCfg->authentication['method'] = 'MD5';
+$tlCfg->authentication['method'] = 'LDAP';
 
 /** LDAP authentication credentials */
-$tlCfg->authentication['ldap_server'] = 'localhost';
+$tlCfg->authentication['ldap_server'] = 'corp.occamnetworks.com';
 $tlCfg->authentication['ldap_port'] = '389';
 $tlCfg->authentication['ldap_version'] = '3'; // could be '2' in some cases
-$tlCfg->authentication['ldap_root_dn'] = 'dc=mycompany,dc=com';
+$tlCfg->authentication['ldap_root_dn'] = 'OU=OccamUsers,DC=corp,DC=occamnetworks,DC=COM';
 $tlCfg->authentication['ldap_organization']	= '';    // e.g. '(organizationname=*Traffic)'
-$tlCfg->authentication['ldap_uid_field'] = 'uid'; // Use 'sAMAccountName' for Active Directory
-$tlCfg->authentication['ldap_bind_dn'] = ''; // Left empty for anonymous LDAP binding
-$tlCfg->authentication['ldap_bind_passwd'] = ''; // Left empty for anonymous LDAP binding
+$tlCfg->authentication['ldap_uid_field'] = 'sAMAccountName'; // Use 'sAMAccountName' for Active Directory
+$tlCfg->authentication['ldap_bind_dn'] = 'linuxldap@corp.occamnetworks.com'; // Left empty for anonymous LDAP binding
+$tlCfg->authentication['ldap_bind_passwd'] = 'L!nuxLD@P'; // Left empty for anonymous LDAP binding
 $tlCfg->authentication['ldap_tls'] = false; // true -> use tls
 
 /** Enable/disable Users to create accounts on login page */
@@ -383,7 +379,7 @@ $tlCfg->temp_dir = TL_ABS_PATH . 'gui' . DIRECTORY_SEPARATOR . 'templates_c' . D
 /** Company logo (used by navigation bar and login page page) */
 //$tlCfg->company_logo = '<img alt="TestLink" title="TestLink" style="width: 115px; height: 53px;" src="' .
 //                          $tlCfg->theme_dir . 'images/company_logo.png" />';
-$tlCfg->company_logo = 'company_logo.png';
+$tlCfg->company_logo = 'occam_logo.jpg';
 
 /** Login page could show an informational text */
 $tlCfg->login_info = ''; // Empty by default
@@ -525,14 +521,6 @@ $tlCfg->treemenu_default_testcase_order = 100;
 /** show/hide testcase id on tree menu */
 $tlCfg->treemenu_show_testcase_id = TRUE;
 
-/** Reorder test cases based on TC Name or External ID in tree on
- *  test suite level using reorder button 
- */
-// 'EXTERNAL_ID' -> Sort on Test Case External ID field displayed on tree.(Default)
-// 'NAME' -> Sort on Test Case Name field
-
-$tlCfg->testcase_reorder_by = 'EXTERNAL_ID';
-// $tlCfg->testcase_reorder_by = 'NAME';
 
 // ----------------------------------------------------------------------------
 /* [GUI: Javascript libraries] */
@@ -577,8 +565,8 @@ $tlCfg->resultMatrixReport->buildColumns['latestBuildOnLeft'] = false;
  * Image is expected in directory <testlink_root>/gui/themes/<your_theme>/images/
  * Leave text values empty if you would like to hide parameters.
  */
-$tlCfg->document_generator->company_name = 'TestLink Community [configure $tlCfg->document_generator->company_name]';
-$tlCfg->document_generator->company_copyright = '2009 &copy; TestLink Community';
+$tlCfg->document_generator->company_name = 'Occam Networks';
+$tlCfg->document_generator->company_copyright = '2010 &copy; Occam Networks';
 $tlCfg->document_generator->confidential_msg = '';
 
 /** CSS used in printed html documents */
@@ -588,7 +576,6 @@ $tlCfg->document_generator->confidential_msg = '';
 $tlCfg->document_generator->css_template = 'css/tl_documents.css';
 
 /** Misc settings */
-// Display test case version when creating test spec document
 $tlCfg->document_generator->tc_version_enabled = FALSE;
 
 
@@ -603,7 +590,7 @@ $tlCfg->exec_cfg->enable_test_automation = DISABLED;
 
 // 1 -> user can edit execution notes, on old executions (Attention: user must have test case execution right)
 // DISABLED -> no edit allowed [STANDARD BEHAVIOUR]
-$tlCfg->exec_cfg->edit_notes = DISABLED;
+$tlCfg->exec_cfg->edit_notes = 1;
 
 // ASCending   -> last execution at bottom
 // DESCending  -> last execution on top      [STANDARD BEHAVIOUR]
@@ -690,7 +677,7 @@ $tlCfg->exec_cfg->user_filter_default='none';
 
 // 'horizontal' ->  step and results on the same row
 // 'vertical'   ->  steps on one row, results in the row bellow
-$tlCfg->exec_cfg->steps_results_layout = 'horizontal';
+$tlCfg->exec_cfg->steps_results_layout = 'vertical';
 
 
 // Parameters to show notes/details when entering test execution feature
@@ -711,7 +698,7 @@ $tlCfg->exec_cfg->expand_collapse->testsuite_details = LAST_USER_CHOICE;
 // 'horizontal' ->  step and results on the same row
 // 'vertical'   ->  steps on one row, results in the row bellow
 // $g_spec_cfg->steps_results_layout = 'vertical';
-$tlCfg->spec_cfg->steps_results_layout = 'horizontal';
+$tlCfg->spec_cfg->steps_results_layout = 'vertical';
 
 
 // ENABLED -> User will see a test suite filter while creating test specification
@@ -873,7 +860,7 @@ $g_repositoryCompressionType = TL_REPOSITORY_COMPRESSIONTYPE_NONE;
 $tlCfg->repository_max_filesize = 1; //MB
 
 // TRUE -> when you upload a file you can give no title
-$g_attachments->allow_empty_title = TRUE;
+$g_attachments->allow_empty_title = FALSE;
 
 // $g_attachments->allow_empty_title == TRUE, you can ask the system
 // to do something
@@ -1061,12 +1048,6 @@ $tlCfg->req_cfg->importDocBook->table_entry_children = array('para');
 $tlCfg->req_cfg->external_req_management = DISABLED;
 
 
-//If enabled an icon next to Document ID field will show up that allows
-//to insert the last defined Requirement Document ID within the same Project
-//into Document ID field
-$tlCfg->req_cfg->allow_insertion_of_last_doc_id = DISABLED;
-
-
 // ----------------------------------------------------------------------------
 /* [TREE FILTER CONFIGURATION] */
 
@@ -1143,7 +1124,6 @@ $tlCfg->tree_filter_cfg->testcases->plan_mode->filter_toplevel_testsuite = ENABL
 $tlCfg->tree_filter_cfg->testcases->plan_mode->filter_keywords = ENABLED;
 $tlCfg->tree_filter_cfg->testcases->plan_mode->filter_priority = ENABLED;
 $tlCfg->tree_filter_cfg->testcases->plan_mode->filter_execution_type = ENABLED;
-$tlCfg->tree_filter_cfg->testcases->plan_mode->filter_assigned_user = ENABLED;
 $tlCfg->tree_filter_cfg->testcases->plan_mode->filter_custom_fields = ENABLED;
 $tlCfg->tree_filter_cfg->testcases->plan_mode->filter_result = ENABLED;
 $tlCfg->tree_filter_cfg->testcases->plan_mode->advanced_filter_mode_choice = ENABLED;
@@ -1276,15 +1256,6 @@ $tlCfg->urgencyImportance->threshold['high'] = 6;
  */
 $tlCfg->demoMode = OFF;
 
-/**
- * If enabled, every Ext JS table in TestLink will offer an export button,
- * which generates a file with the contents of the table.
- * ATTENTION: This feature is fully experimental. Enable at your own risk!
- *            Enabling it can cause broken tables.
- */
-$tlCfg->enableTableExportButton = DISABLED;
-
-
 // ----- End of Config ------------------------------------------------------------------
 // --------------------------------------------------------------------------------------
 // DO NOT CHANGE NOTHING BELOW
@@ -1349,6 +1320,9 @@ define ('TL_DEFAULT_LOCALE', $tlCfg->default_language);
 //
 /** Revered list of Test Case execution results */
 $tlCfg->results['code_status'] = array_flip($tlCfg->results['status_code']);
+
+
+// var_dump($tlCfg->testcase_cfg->duplicated_name_algorithm);
 
 // --------------------------------------------------------------------------------------
 /** Converted and derived variables (Users should not modify this section) */

@@ -91,6 +91,34 @@ class bugzillaInterface extends bugtrackingInterface
 		}
 		return $status;
 	}
+
+	 /**<ADDED BY VIC>
+         * Returns the severity of the bug with the given id
+         * this function is not directly called by TestLink. 
+         *
+         * @return string returns the status of the given bug (if found in the db), or null else
+         **/
+
+        function getBugSeverity($id)
+        {   
+                if (!$this->isConnected())
+                        return null;
+    
+                $severity = null;
+                $query = "SELECT bug_severity FROM {$this->dbSchema}.bugs WHERE bug_id='" . $id."'";
+                $result = $this->dbConnection->exec_query($query);
+		if ($result)
+                {   
+                        $severity = $this->dbConnection->fetch_array($result);
+                        if ($severity)
+                        {   
+                                $severity = $severity['bug_severity'];
+                        }   
+                        else
+                                $severity = null; 
+                }   
+                return $severity;
+        }   
 	
 	/**
 	 * Returns the bug summary in a human redable format, cutted down to 45 chars
@@ -148,16 +176,27 @@ class bugzillaInterface extends bugtrackingInterface
 	function getBugStatusString($id)
 	{
 		$status = $this->getBugStatus($id);
-		
+		$severity = $this->getBugSeverity($id);
 		//if the bug wasn't found the status is null and we simply display the bugID
 		$str = htmlspecialchars($id);
 		if (!is_null($status))
 		{
 			//strike through all bugs that have a resolved, verified, or closed status.. 
-			if('RESOLVED' == $status || 'VERIFIED' == $status || 'CLOSED' == $status)
-				$str = "<del>" . htmlspecialchars($id). "</del>";
+			if('RESOLVED' == $status || 'VERIFIED' == $status || 'CLOSED' == $status){
+				$str = "<del>$severity - " . htmlspecialchars($id). "</del>";
+			}else{
+		//when its is resolved but severity >critical ensure that the font is red and larger for visibility
+		if (!is_null($severity))
+                {
+		 if( 'critical' == $severity  || 'blocker' == $severity){
+                     $severity = "<font color=\"red\" size=\"+1\">$severity</font>" ;
+                
+		}}
+		
 		}
-		return $str;
+		}
+		return $status . " " . $severity . " " . $str;
+		
 	}
 	
 	/**
