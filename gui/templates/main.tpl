@@ -17,7 +17,7 @@
 </head>
 
 {* 20060226 - franciscom - changes in dimensions due to logo on navbar*}
-<frameset rows="70,*" frameborder="0" framespacing="0">
+<frameset rows="70,*" cols="*" frameborder="0" framespacing="0">
 	<frame src="{$titleframe}" name="titlebar" scrolling="no" noresize="noresize" />
 	<frame src="{$mainframe}" scrolling='auto' name='mainframe' />
 	<noframes>

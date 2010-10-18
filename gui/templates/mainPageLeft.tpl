@@ -150,14 +150,7 @@
     {/literal}
     </script>
 
-<div class="vertical_menu" style="float: left">
   {* ---------------------------------------------------------------------------------------- *}
-  <div id='menu_left_block_1'></div><br />
-  <div id='menu_left_block_2'></div><br />
-  <div id="menu_left_block_3"></div><br />
-  <div id="menu_left_block_4"></div><br />
-  <div id="menu_left_block_5"></div><br />
-  
 	{if $display_left_block_1}
     <div id='testproject_topics'>
 	  {if $gui->grants.project_edit == "yes"}

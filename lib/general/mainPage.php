@@ -69,7 +69,7 @@ $gui->grants['view_tc'] = $currentUser->hasRight($db,"mgt_view_tc");
 $gui->grants['project_inventory_view'] = ($_SESSION['testprojectOptions']->inventoryEnabled 
 	&& ($currentUser->hasRight($db,"project_inventory_view") == 'yes')) ? 1 : 0;
 $gui->grants['modify_tc'] = null; 
-$gui->hasTestCases = false;
+$gui->hasTestCases = true;
 
 if($gui->grants['view_tc'])
 { 
@@ -122,7 +122,6 @@ if($testplanID > 0)
     $arrPlans[$index]['selected']=1;
 }
 
-
 $gui->testplanRole = null;
 if ($testplanID && isset($currentUser->tplanRoles[$testplanID]))
 {
@@ -160,7 +159,7 @@ $gui->securityNotes = getSecurityNotes($db);
 $gui->testprojectID = $testprojectID;
 $gui->testplanID = $testplanID;
 $gui->docs = getUserDocumentation();
-
+$gui->current_tp_name = $arrPlans[$index]['name'];
 $smarty->assign('gui',$gui);
 $smarty->display('mainPage.tpl');
 
